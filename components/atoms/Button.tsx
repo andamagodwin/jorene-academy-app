@@ -25,15 +25,15 @@ export const Button: React.FC<ButtonProps> = ({
   const isDisabled = disabled || loading;
 
   const variantClasses = {
-    primary: 'bg-blue-500',
-    secondary: 'bg-gray-500',
-    outline: 'bg-transparent border border-blue-500',
+    primary: 'bg-primary',
+    secondary: 'bg-secondary',
+    outline: 'bg-transparent border border-primary',
   };
 
   const textVariantClasses = {
     primary: 'text-white',
     secondary: 'text-white',
-    outline: 'text-blue-500',
+    outline: 'text-primary',
   };
 
   return (
@@ -44,7 +44,7 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={isDisabled}
       {...props}>
       {loading ? (
-        <ActivityIndicator color={variant === 'outline' ? '#3B82F6' : '#FFFFFF'} />
+        <ActivityIndicator color={variant === 'outline' ? '#750E11' : '#FFFFFF'} />
       ) : (
         <Text className={`text-base font-semibold ${textVariantClasses[variant]}`}>{title}</Text>
       )}

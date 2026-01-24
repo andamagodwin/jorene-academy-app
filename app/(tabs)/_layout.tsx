@@ -25,7 +25,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#3B82F6',
+        tabBarActiveTintColor: '#750E11',
       }}>
       <Tabs.Screen
         name="index"
@@ -34,7 +34,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
             <TouchableOpacity onPress={handleLogout} className="mr-4">
-              <Text className="text-red-500 font-semibold">Logout</Text>
+              <Text className="text-primary font-semibold">Logout</Text>
             </TouchableOpacity>
           ),
         }}

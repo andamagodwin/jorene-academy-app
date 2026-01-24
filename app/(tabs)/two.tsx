@@ -24,9 +24,9 @@ export default function Profile() {
   return (
     <>
       <Stack.Screen options={{ title: 'Profile' }} />
-      <ScrollView className="flex-1 bg-gray-50">
-        <View className="bg-white items-center py-8 px-6 border-b border-gray-200">
-          <View className="w-20 h-20 rounded-full bg-blue-500 justify-center items-center mb-4">
+      <ScrollView className="flex-1 bg-background">
+        <View className="bg-white items-center py-8 px-6 border-b border-neutral">
+          <View className="w-20 h-20 rounded-full bg-primary justify-center items-center mb-4">
             <Text className="text-4xl font-bold text-white">
               {user?.user_metadata?.full_name?.charAt(0).toUpperCase() || 
                user?.email?.charAt(0).toUpperCase() || '?'}

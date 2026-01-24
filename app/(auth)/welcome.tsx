@@ -20,7 +20,7 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <View className="flex-1 bg-gray-50">
+    <View className="flex-1 bg-background">
       <View className="flex-1 justify-between p-6 pt-20 pb-12">
         <View className="items-center mt-10">
           <Text className="text-4xl font-bold text-gray-800 mb-4 text-center">

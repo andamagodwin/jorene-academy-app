@@ -1,18 +1,23 @@
 import { User, Session } from '@supabase/supabase-js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { supabase } from '../utils/supabase';
+
+const HAS_VISITED_KEY = '@jorene_academy_has_visited';
 
 export interface AuthState {
   user: User | null;
   session: Session | null;
   isLoading: boolean;
   isInitialized: boolean;
+  isFirstVisit: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   initialize: () => Promise<void>;
   setUser: (user: User | null) => void;
   setSession: (session: Session | null) => void;
+  markAsVisited: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -20,9 +25,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   session: null,
   isLoading: false,
   isInitialized: false,
+  isFirstVisit: true,
 
   initialize: async () => {
     try {
+      // Check if user has visited before
+      const hasVisited = await AsyncStorage.getItem(HAS_VISITED_KEY);
+      
       // Get the current session from Supabase
       const { data: { session } } = await supabase.auth.getSession();
       
@@ -30,6 +39,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         user: session?.user ?? null,
         session: session ?? null,
         isInitialized: true,
+        isFirstVisit: hasVisited === null,
       });
 
       // Listen for auth state changes
@@ -42,6 +52,18 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } catch (error) {
       console.error('Error initializing auth:', error);
       set({ isInitialized: true });
+    }
+  },
+
+  markAsVisited: async () => {
+    try {
+      await AsyncStorage.setItem(HAS_VISITED_KEY, 'true');
+      set({ isFirstVisit: false });
+    } catch (error) {
+      // Mark as visited on successful login
+      await get().markAsVisited();
+
+      console.error('Error marking as visited:', error);
     }
   },
 
@@ -80,7 +102,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           },
         },
       });
+// Mark as visited on successful signup
+      await get().markAsVisited();
 
+      
       if (error) throw error;
 
       set({

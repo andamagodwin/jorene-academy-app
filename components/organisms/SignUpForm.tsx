@@ -116,7 +116,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
           }}
           error={errors.password}
           placeholder="Enter your password"
-          secureTextEntry
+          isPassword
           autoCapitalize="none"
           autoComplete="password"
           required
@@ -131,7 +131,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
           }}
           error={errors.confirmPassword}
           placeholder="Confirm your password"
-          secureTextEntry
+          isPassword
           autoCapitalize="none"
           autoComplete="password"
           required

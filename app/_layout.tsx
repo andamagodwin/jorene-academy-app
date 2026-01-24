@@ -10,7 +10,7 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-  const { user, isInitialized, initialize } = useAuthStore();
+  const { user, isInitialized, isFirstVisit, initialize } = useAuthStore();
   const segments = useSegments();
   const router = useRouter();
 
@@ -27,13 +27,17 @@ export default function RootLayout() {
     const inTabsGroup = segments[0] === '(tabs)';
 
     if (!user && inTabsGroup) {
-      // Redirect to welcome if not authenticated
-      router.replace('/(auth)/welcome');
+      // Redirect based on first visit status
+      if (isFirstVisit) {
+        router.replace('/(auth)/welcome');
+      } else {
+        router.replace('/(auth)/login');
+      }
     } else if (user && inAuthGroup) {
       // Redirect to home if authenticated
       router.replace('/(tabs)');
     }
-  }, [user, segments, isInitialized]);
+  }, [user, segments, isInitialized, isFirstVisit]);
 
   return (
     <Stack>

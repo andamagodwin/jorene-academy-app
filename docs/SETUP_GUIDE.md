@@ -42,7 +42,7 @@ Then press:
 ## 📱 Testing the Flow
 
 ### First Time User:
-1. App opens → **Welcome Screen**
+1. App opens → **Welcome Screen** (first time only)
 2. Tap "Create Account" → **Sign Up Screen**
 3. Enter details:
    - Full Name: "John Doe"
@@ -52,12 +52,11 @@ Then press:
 4. Tap "Sign Up"
 5. ✅ Automatically redirected to **Home Screen**
 
-### Returning User:
-1. App opens → **Welcome Screen**
-2. Tap "Sign In" → **Login Screen**
-3. Enter credentials
-4. Tap "Sign In"
-5. ✅ Redirected to **Home Screen**
+### Returning User (After First Login):
+1. App opens → **Login Screen** (skips Welcome)
+2. Enter credentials
+3. Tap "Sign In"
+4. ✅ Redirected to **Home Screen**
 
 ### Session Persistence:
 1. Close the app completely
@@ -67,12 +66,12 @@ Then press:
 ### Sign Out:
 - **Option 1**: Tap "Logout" in Home screen header
 - **Option 2**: Go to Profile tab → Tap "Sign Out"
-- ✅ Redirected to Welcome Screen
+- ✅ Redirected to Login Screen (not Welcome)
 
 ## 🎨 What's Included
 
 ### Screens
-- ✅ Welcome/Landing screen
+- ✅ Welcome/Landing screen (first time only)
 - ✅ Login screen with validation
 - ✅ Sign up screen with validation
 - ✅ Protected Home screen
@@ -85,7 +84,8 @@ Then press:
 - ✅ Session persistence (stays logged in)
 - ✅ Auto token refresh
 - ✅ Protected routes (can't access home without login)
-- ✅ Professional UI with atomic design
+- ✅ Smart routing (welcome screen only on first visit)
+- ✅ Professional UI with Tailwind CSS (NativeWind)
 
 ### Architecture
 ```

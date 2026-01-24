@@ -76,7 +76,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSignUpPress }) => {
           }}
           error={errors.password}
           placeholder="Enter your password"
-          secureTextEntry
+          isPassword
           autoCapitalize="none"
           autoComplete="password"
           required

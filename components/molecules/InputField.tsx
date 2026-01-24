@@ -8,18 +8,20 @@ interface InputFieldProps extends TextInputProps {
   label?: string;
   error?: string;
   required?: boolean;
+  isPassword?: boolean;
 }
 
 export const InputField: React.FC<InputFieldProps> = ({
   label,
   error,
   required,
+  isPassword = false,
   ...inputProps
 }) => {
   return (
     <View className="mb-4">
       {label && <Label required={required}>{label}</Label>}
-      <Input error={!!error} {...inputProps} />
+      <Input error={!!error} isPassword={isPassword} {...inputProps} />
       <ErrorText>{error}</ErrorText>
     </View>
   );

@@ -2,10 +2,23 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { router } from 'expo-router';
 import { Button } from '../../components/atoms/Button';
+import { useAuthStore } from '~/store/authStore';
 
 type Href = Parameters<typeof router.push>[0];
 
 export default function WelcomeScreen() {
+  const { markAsVisited } = useAuthStore();
+
+  const handleSignIn = () => {
+    markAsVisited();
+    router.push('/(auth)/login' as Href);
+  };
+
+  const handleSignUp = () => {
+    markAsVisited();
+    router.push('/(auth)/signup' as Href);
+  };
+
   return (
     <View className="flex-1 bg-gray-50">
       <View className="flex-1 justify-between p-6 pt-20 pb-12">
@@ -21,14 +34,14 @@ export default function WelcomeScreen() {
         <View className="w-full max-w-md self-center">
           <Button
             title="Sign In"
-            onPress={() => router.push('/(auth)/login' as Href)}
+            onPress={handleSignIn}
             fullWidth
             className="mb-4"
           />
           <Button
             title="Create Account"
             variant="outline"
-            onPress={() => router.push('/(auth)/signup' as Href)}
+            onPress={handleSignUp}
             fullWidth
             className="mb-4"
           />

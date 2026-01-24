@@ -1,27 +1,15 @@
 import React from 'react';
-import { Text, StyleSheet, TextProps } from 'react-native';
+import { Text, TextProps } from 'react-native';
 
 interface LabelProps extends TextProps {
   required?: boolean;
 }
 
-export const Label: React.FC<LabelProps> = ({ children, required, style, ...props }) => {
+export const Label: React.FC<LabelProps> = ({ children, required, className, ...props }) => {
   return (
-    <Text style={[styles.label, style]} {...props}>
+    <Text className={`text-sm font-medium text-gray-700 mb-1.5 ${className || ''}`} {...props}>
       {children}
-      {required && <Text style={styles.required}> *</Text>}
+      {required && <Text className="text-red-500"> *</Text>}
     </Text>
   );
 };
-
-const styles = StyleSheet.create({
-  label: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#374151',
-    marginBottom: 6,
-  },
-  required: {
-    color: '#EF4444',
-  },
-});

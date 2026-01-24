@@ -2,7 +2,6 @@ import React from 'react';
 import {
   TouchableOpacity,
   Text,
-  StyleSheet,
   ActivityIndicator,
   TouchableOpacityProps,
 } from 'react-native';
@@ -20,67 +19,35 @@ export const Button: React.FC<ButtonProps> = ({
   loading = false,
   fullWidth = false,
   disabled,
-  style,
+  className,
   ...props
 }) => {
   const isDisabled = disabled || loading;
 
+  const variantClasses = {
+    primary: 'bg-blue-500',
+    secondary: 'bg-gray-500',
+    outline: 'bg-transparent border border-blue-500',
+  };
+
+  const textVariantClasses = {
+    primary: 'text-white',
+    secondary: 'text-white',
+    outline: 'text-blue-500',
+  };
+
   return (
     <TouchableOpacity
-      style={[
-        styles.button,
-        styles[variant],
-        fullWidth && styles.fullWidth,
-        isDisabled && styles.disabled,
-        style,
-      ]}
+      className={`h-[50px] rounded-lg justify-center items-center px-6 ${variantClasses[variant]} ${
+        fullWidth ? 'w-full' : ''
+      } ${isDisabled ? 'opacity-50' : ''} ${className || ''}`}
       disabled={isDisabled}
       {...props}>
       {loading ? (
         <ActivityIndicator color={variant === 'outline' ? '#3B82F6' : '#FFFFFF'} />
       ) : (
-        <Text style={[styles.text, styles[`${variant}Text`]]}>{title}</Text>
+        <Text className={`text-base font-semibold ${textVariantClasses[variant]}`}>{title}</Text>
       )}
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    height: 50,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  primary: {
-    backgroundColor: '#3B82F6',
-  },
-  secondary: {
-    backgroundColor: '#6B7280',
-  },
-  outline: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: '#3B82F6',
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  primaryText: {
-    color: '#FFFFFF',
-  },
-  secondaryText: {
-    color: '#FFFFFF',
-  },
-  outlineText: {
-    color: '#3B82F6',
-  },
-});

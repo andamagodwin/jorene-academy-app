@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TextInputProps } from 'react-native';
+import { View, TextInputProps } from 'react-native';
 import { Input } from '../atoms/Input';
 import { Label } from '../atoms/Label';
 import { ErrorText } from '../atoms/ErrorText';
@@ -17,16 +17,10 @@ export const InputField: React.FC<InputFieldProps> = ({
   ...inputProps
 }) => {
   return (
-    <View style={styles.container}>
+    <View className="mb-4">
       {label && <Label required={required}>{label}</Label>}
       <Input error={!!error} {...inputProps} />
       <ErrorText>{error}</ErrorText>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
-  },
-});

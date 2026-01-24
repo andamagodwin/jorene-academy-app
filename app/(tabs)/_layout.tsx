@@ -1,7 +1,6 @@
 import { Link, Tabs } from 'expo-router';
 import { TouchableOpacity, Text, Alert } from 'react-native';
 
-import { HeaderButton } from '../../components/HeaderButton';
 import { TabBarIcon } from '../../components/TabBarIcon';
 import { useAuthStore } from '../../store/authStore';
 
@@ -34,8 +33,8 @@ export default function TabLayout() {
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
-            <TouchableOpacity onPress={handleLogout} style={{ marginRight: 16 }}>
-              <Text style={{ color: '#EF4444', fontWeight: '600' }}>Logout</Text>
+            <TouchableOpacity onPress={handleLogout} className="mr-4">
+              <Text className="text-red-500 font-semibold">Logout</Text>
             </TouchableOpacity>
           ),
         }}
@@ -44,7 +43,7 @@ export default function TabLayout() {
         name="two"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </Tabs>

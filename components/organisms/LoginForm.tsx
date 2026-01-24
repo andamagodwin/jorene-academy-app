@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { InputField } from '../molecules/InputField';
 import { Button } from '../atoms/Button';
 import { useAuthStore } from '../../store/authStore';
@@ -45,13 +45,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSignUpPress }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Welcome Back</Text>
-        <Text style={styles.subtitle}>Sign in to continue</Text>
+    <View className="w-full">
+      <View className="mb-8">
+        <Text className="text-3xl font-bold text-gray-800 mb-2">Welcome Back</Text>
+        <Text className="text-base text-gray-500">Sign in to continue</Text>
       </View>
 
-      <View style={styles.form}>
+      <View className="w-full">
         <InputField
           label="Email"
           value={email}
@@ -87,14 +87,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSignUpPress }) => {
           onPress={handleLogin}
           loading={isLoading}
           fullWidth
-          style={styles.button}
+          className="mt-2"
         />
 
         {onSignUpPress && (
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Don&apos;t have an account? </Text>
+          <View className="flex-row justify-center items-center mt-6">
+            <Text className="text-sm text-gray-500">Don&apos;t have an account? </Text>
             <TouchableOpacity onPress={onSignUpPress}>
-              <Text style={styles.link}>Sign Up</Text>
+              <Text className="text-sm text-blue-500 font-semibold">Sign Up</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -102,43 +102,3 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSignUpPress }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
-  header: {
-    marginBottom: 32,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#1F2937',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#6B7280',
-  },
-  form: {
-    width: '100%',
-  },
-  button: {
-    marginTop: 8,
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 24,
-  },
-  footerText: {
-    fontSize: 14,
-    color: '#6B7280',
-  },
-  link: {
-    fontSize: 14,
-    color: '#3B82F6',
-    fontWeight: '600',
-  },
-});

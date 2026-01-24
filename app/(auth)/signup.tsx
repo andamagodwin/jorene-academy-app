@@ -1,43 +1,25 @@
 import React from 'react';
 import {
   View,
-  StyleSheet,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
 } from 'react-native';
 import { router } from 'expo-router';
-import { SignUpForm } from '../components/organisms/SignUpForm';
+import { SignUpForm } from '../../components/organisms/SignUpForm';
 
 export default function SignUpScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
+      className="flex-1 bg-gray-50">
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 24 }}
         keyboardShouldPersistTaps="handled">
-        <View style={styles.formContainer}>
+        <View className="w-full max-w-md self-center">
           <SignUpForm onSignInPress={() => router.back()} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-  },
-  scrollContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    padding: 24,
-  },
-  formContainer: {
-    width: '100%',
-    maxWidth: 400,
-    alignSelf: 'center',
-  },
-});

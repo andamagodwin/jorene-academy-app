@@ -23,12 +23,13 @@ export default function RootLayout() {
   useEffect(() => {
     if (!isInitialized) return;
 
-    const inAuthGroup = segments[0] === '(tabs)';
+    const inAuthGroup = segments[0] === '(auth)';
+    const inTabsGroup = segments[0] === '(tabs)';
 
-    if (!user && inAuthGroup) {
+    if (!user && inTabsGroup) {
       // Redirect to welcome if not authenticated
-      router.replace('/welcome');
-    } else if (user && !inAuthGroup) {
+      router.replace('/(auth)/welcome');
+    } else if (user && inAuthGroup) {
       // Redirect to home if authenticated
       router.replace('/(tabs)');
     }
@@ -36,9 +37,7 @@ export default function RootLayout() {
 
   return (
     <Stack>
-      <Stack.Screen name="welcome" options={{ headerShown: false }} />
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen name="signup" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
     </Stack>

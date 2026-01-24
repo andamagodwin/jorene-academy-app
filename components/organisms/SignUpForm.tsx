@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { InputField } from '../molecules/InputField';
 import { Button } from '../atoms/Button';
+import { Alert } from '../atoms/Alert';
 import { useAuthStore } from '../../store/authStore';
 
 interface SignUpFormProps {
@@ -13,6 +14,8 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [alertVariant, setAlertVariant] = useState<'success' | 'error'>('error');
   const [errors, setErrors] = useState<{
     fullName?: string;
     email?: string;
@@ -61,12 +64,15 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
   const handleSignUp = async () => {
     if (!validate()) return;
 
+    setAlertMessage(null);
     const { error } = await signUp(email, password, fullName);
 
     if (error) {
-      Alert.alert('Sign Up Failed', error.message);
+      setAlertVariant('error');
+      setAlertMessage(error.message);
     } else {
-      Alert.alert('Success', 'Account created successfully!');
+      setAlertVariant('success');
+      setAlertMessage('Account created successfully!');
     }
   };
 
@@ -78,6 +84,16 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
       </View>
 
       <View className="w-full">
+        {alertMessage && (
+          <Alert
+            variant={alertVariant}
+            title={alertVariant === 'success' ? 'Success' : 'Sign Up Failed'}
+            message={alertMessage}
+            onClose={() => setAlertMessage(null)}
+            visible={!!alertMessage}
+          />
+        )}
+
         <InputField
           label="Full Name"
           value={fullName}

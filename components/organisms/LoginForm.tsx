@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text } from 'react-native';
 import { InputField } from '../molecules/InputField';
 import { Button } from '../atoms/Button';
+import { Alert } from '../atoms/Alert';
 import { useAuthStore } from '../../store/authStore';
 
 interface LoginFormProps {
@@ -12,6 +13,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSignUpPress }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
   
   const { signIn, isLoading } = useAuthStore();
 
@@ -37,10 +39,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSignUpPress }) => {
   const handleLogin = async () => {
     if (!validate()) return;
 
+    setAlertMessage(null);
     const { error } = await signIn(email, password);
 
     if (error) {
-      Alert.alert('Login Failed', error.message);
+      setAlertMessage(error.message);
     }
   };
 
@@ -52,6 +55,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSignUpPress }) => {
       </View>
 
       <View className="w-full">
+        {alertMessage && (
+          <Alert
+            variant="error"
+            title="Login Failed"
+            message={alertMessage}
+            onClose={() => setAlertMessage(null)}
+            visible={!!alertMessage}
+          />
+        )}
+
         <InputField
           label="Email"
           value={email}

@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  Image,
 } from 'react-native';
 import { router } from 'expo-router';
 import { SignUpForm } from '../../components/organisms/SignUpForm';
@@ -24,6 +25,13 @@ export default function SignUpScreen() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}>
           <View className="w-full max-w-md self-center">
+            <View className="items-center mb-6">
+              <Image
+                source={require('../../assets/images/jorene-logo-1.png')}
+                className="w-32 h-32"
+                resizeMode="contain"
+              />
+            </View>
             <SignUpForm onSignInPress={() => router.back()} />
           </View>
         </ScrollView>

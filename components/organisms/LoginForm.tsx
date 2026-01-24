@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { InputField } from '../molecules/InputField';
 import { Button } from '../atoms/Button';
 import { useAuthStore } from '../../store/authStore';
@@ -92,10 +92,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSignUpPress }) => {
 
         {onSignUpPress && (
           <View className="flex-row justify-center items-center mt-6">
-            <Text className="text-sm text-gray-500">Don&apos;t have an account? </Text>
+            {/* <Text className="text-sm text-gray-500">Don&apos;t have an account? </Text>
             <TouchableOpacity onPress={onSignUpPress}>
-              <Text className="text-sm text-blue-500 font-semibold">Sign Up</Text>
-            </TouchableOpacity>
+              <Text className="text-sm text-primary font-semibold">Sign Up</Text>
+            </TouchableOpacity> */}
           </View>
         )}
       </View>

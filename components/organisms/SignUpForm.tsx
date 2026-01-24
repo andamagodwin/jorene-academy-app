@@ -149,7 +149,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
           <View className="flex-row justify-center items-center mt-6">
             <Text className="text-sm text-gray-500">Already have an account? </Text>
             <TouchableOpacity onPress={onSignInPress}>
-              <Text className="text-sm text-blue-500 font-semibold">Sign In</Text>
+              <Text className="text-sm text-primary font-semibold">Sign In</Text>
             </TouchableOpacity>
           </View>
         )}

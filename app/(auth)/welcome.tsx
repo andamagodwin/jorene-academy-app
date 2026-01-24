@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { router } from 'expo-router';
 import { Button } from '../../components/atoms/Button';
 import { useAuthStore } from '~/store/authStore';
@@ -23,6 +23,11 @@ export default function WelcomeScreen() {
     <View className="flex-1 bg-background">
       <View className="flex-1 justify-between p-6 pt-20 pb-12">
         <View className="items-center mt-10">
+          <Image
+            source={require('../../assets/images/jorene-logo-1.png')}
+            className="w-48 h-48 mb-6"
+            resizeMode="contain"
+          />
           <Text className="text-4xl font-bold text-gray-800 mb-4 text-center">
             Jorene Academy
           </Text>

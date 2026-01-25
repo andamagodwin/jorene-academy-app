@@ -1,126 +1,136 @@
-import { Stack } from 'expo-router';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
+import { View, Text, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '~/store/authStore';
+import { useDashboardStore } from '~/store/dashboardStore';
+import { AttendanceCard } from '~/components/organisms/AttendanceCard';
+import { HomeworkCard } from '~/components/organisms/HomeworkCard';
+import { AnnouncementCard } from '~/components/organisms/AnnouncementCard';
+import { AlertCard } from '~/components/organisms/AlertCard';
 
 export default function Home() {
-  const { user, profile, students, selectedStudent, setSelectedStudent } = useAuthStore();
+  const router = useRouter();
+  const { profile, selectedStudent } = useAuthStore();
+  const { attendance, homework, announcements, alerts, isLoading, loadDashboardData } = useDashboardStore();
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Load dashboard data when student changes
+  useEffect(() => {
+    if (selectedStudent && profile?.role === 'parent') {
+      loadDashboardData(selectedStudent.id, selectedStudent.class);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStudent?.id, profile?.role]);
+
+  const handleRefresh = async () => {
+    if (selectedStudent) {
+      setRefreshing(true);
+      await loadDashboardData(selectedStudent.id, selectedStudent.class);
+      setRefreshing(false);
+    }
+  };
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  };
 
   return (
-    <>
-      <Stack.Screen options={{ title: 'Home' }} />
-      <ScrollView className="flex-1 bg-background">
-        {/* Header */}
-        <View className="p-6 bg-white border-b border-neutral">
-          <Text className="text-3xl font-bold text-gray-800 mb-2">
-            Welcome back{profile?.full_name ? `, ${profile.full_name.split(' ')[0]}` : ''}!
-          </Text>
-          <Text className="text-base text-gray-500">{user?.email}</Text>
-          
-          {/* Role Badge */}
-          {profile?.role && (
-            <View className={`mt-3 self-start px-4 py-2 rounded-full ${
-              profile.role === 'admin' ? 'bg-primary' :
-              profile.role === 'teacher' ? 'bg-info' :
-              'bg-accent'
-            }`}>
-              <Text className="text-white font-semibold text-sm">
-                {profile.role === 'admin' && '🧑‍💼 Admin'}
-                {profile.role === 'teacher' && '👨‍🏫 Teacher'}
-                {profile.role === 'parent' && '👨‍👩‍👧 Parent'}
+    <View className="flex-1 bg-background">
+      {/* Scrollable Content */}
+      <ScrollView 
+        className="flex-1"
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      >
+          {/* Greeting */}
+          <View className="px-6 pt-6 pb-4">
+            <Text className="text-2xl font-bold text-gray-800">
+              {getGreeting()}, {profile?.full_name?.split(' ')[0] || 'Parent'} 👋
+            </Text>
+            {selectedStudent && (
+              <Text className="text-sm text-gray-500 mt-1">
+                Viewing {selectedStudent.full_name}&apos;s dashboard
+              </Text>
+            )}
+          </View>
+
+          {/* Dashboard Cards - Only show for parents with selected student */}
+          {profile?.role === 'parent' && selectedStudent ? (
+            <>
+              {/* Alerts Card - Full Width */}
+              <AlertCard alerts={alerts} />
+
+              {/* 2x2 Grid of Cards */}
+              <View className="px-4">
+                <View className="flex-row flex-wrap justify-between">
+                  {/* Attendance Card */}
+                  <View className="w-[48%] mb-3">
+                    <AttendanceCard attendance={attendance} isLoading={isLoading} />
+                  </View>
+
+                  {/* Homework Card */}
+                  <View className="w-[48%] mb-3">
+                    <HomeworkCard homework={homework} isLoading={isLoading} />
+                  </View>
+
+                  {/* Announcements Card */}
+                  <View className="w-[48%] mb-3">
+                    <AnnouncementCard announcements={announcements} isLoading={isLoading} />
+                  </View>
+
+                  {/* Quick Actions Card */}
+                  <View className="w-[48%] mb-3">
+                    <View className="bg-white rounded-xl p-4 shadow-sm">
+                      <View className="flex-row items-center mb-3">
+                        <Ionicons name="flash" size={20} color="#4D3E84" />
+                        <Text className="text-gray-800 font-semibold ml-2">Quick Actions</Text>
+                      </View>
+                      <TouchableOpacity className="flex-row items-center py-2">
+                        <Ionicons name="call-outline" size={16} color="#6B7280" />
+                        <Text className="text-gray-600 text-sm ml-2">Contact School</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity className="flex-row items-center py-2">
+                        <Ionicons name="calendar-outline" size={16} color="#6B7280" />
+                        <Text className="text-gray-600 text-sm ml-2">View Calendar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </>
+          ) : profile?.role === 'parent' && !selectedStudent ? (
+            <View className="bg-white mx-4 my-2 p-8 rounded-xl shadow-sm items-center">
+              <Ionicons name="people" size={48} color="#CCBEB7" />
+              <Text className="text-gray-600 text-center mt-4">
+                No students linked to your account yet.
+              </Text>
+              <Text className="text-gray-400 text-center mt-2 text-sm">
+                Contact admin to link students to your profile.
+              </Text>
+            </View>
+          ) : null}
+
+          {/* Teacher/Admin View - Coming Soon */}
+          {(profile?.role === 'teacher' || profile?.role === 'admin') && (
+            <View className="bg-white mx-4 my-2 p-8 rounded-xl shadow-sm items-center">
+              <Ionicons name="construct" size={48} color="#CCBEB7" />
+              <Text className="text-gray-800 font-bold text-lg mt-4">
+                {profile.role === 'teacher' ? 'Teacher' : 'Admin'} Dashboard
+              </Text>
+              <Text className="text-gray-500 text-center mt-2">
+                Coming soon! This section is under development.
               </Text>
             </View>
           )}
-        </View>
 
-        {/* Student Switcher (for parents with multiple children) */}
-        {profile?.role === 'parent' && students.length > 1 && (
-          <View className="bg-white m-4 p-5 rounded-xl shadow-sm">
-            <Text className="text-lg font-semibold text-gray-800 mb-4">My Children</Text>
-            <View className="gap-2">
-              {students.map((student) => (
-                <TouchableOpacity
-                  key={student.id}
-                  onPress={() => setSelectedStudent(student)}
-                  className={`p-4 rounded-lg border-2 ${
-                    selectedStudent?.id === student.id
-                      ? 'bg-primary/10 border-primary'
-                      : 'bg-gray-50 border-gray-200'
-                  }`}
-                >
-                  <Text className={`font-semibold ${
-                    selectedStudent?.id === student.id ? 'text-primary' : 'text-gray-800'
-                  }`}>
-                    {student.full_name}
-                  </Text>
-                  <Text className="text-sm text-gray-500 mt-1">
-                    {student.class} • {student.admission_no}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* Current Student Info (for parents) */}
-        {profile?.role === 'parent' && selectedStudent && (
-          <View className="bg-white m-4 p-5 rounded-xl shadow-sm">
-            <Text className="text-lg font-semibold text-gray-800 mb-4">Student Profile</Text>
-            <View className="flex-row justify-between py-2 border-b border-gray-100">
-              <Text className="text-sm text-gray-500 font-medium">Name:</Text>
-              <Text className="text-sm text-gray-800 flex-1 text-right">{selectedStudent.full_name}</Text>
-            </View>
-            <View className="flex-row justify-between py-2 border-b border-gray-100">
-              <Text className="text-sm text-gray-500 font-medium">Class:</Text>
-              <Text className="text-sm text-gray-800 flex-1 text-right">{selectedStudent.class}</Text>
-            </View>
-            <View className="flex-row justify-between py-2 border-b border-gray-100">
-              <Text className="text-sm text-gray-500 font-medium">Admission No:</Text>
-              <Text className="text-sm text-gray-800 flex-1 text-right">{selectedStudent.admission_no}</Text>
-            </View>
-            {selectedStudent.gender && (
-              <View className="flex-row justify-between py-2 border-b border-gray-100">
-                <Text className="text-sm text-gray-500 font-medium">Gender:</Text>
-                <Text className="text-sm text-gray-800 flex-1 text-right capitalize">{selectedStudent.gender}</Text>
-              </View>
-            )}
-          </View>
-        )}
-
-        {/* Account Information */}
-        <View className="bg-white m-4 p-5 rounded-xl shadow-sm">
-          <Text className="text-lg font-semibold text-gray-800 mb-4">Account Information</Text>
-          <View className="flex-row justify-between py-2 border-b border-gray-100">
-            <Text className="text-sm text-gray-500 font-medium">Full Name:</Text>
-            <Text className="text-sm text-gray-800 flex-1 text-right">{profile?.full_name || 'N/A'}</Text>
-          </View>
-          <View className="flex-row justify-between py-2 border-b border-gray-100">
-            <Text className="text-sm text-gray-500 font-medium">Email:</Text>
-            <Text className="text-sm text-gray-800 flex-1 text-right">{user?.email}</Text>
-          </View>
-          <View className="flex-row justify-between py-2 border-b border-gray-100">
-            <Text className="text-sm text-gray-500 font-medium">Role:</Text>
-            <Text className="text-sm text-gray-800 flex-1 text-right capitalize">{profile?.role || 'N/A'}</Text>
-          </View>
-          {profile?.phone && (
-            <View className="flex-row justify-between py-2 border-b border-gray-100">
-              <Text className="text-sm text-gray-500 font-medium">Phone:</Text>
-              <Text className="text-sm text-gray-800 flex-1 text-right">{profile.phone}</Text>
-            </View>
-          )}
-        </View>
-
-        {/* Session Status */}
-        <View className="bg-white m-4 p-5 rounded-xl shadow-sm">
-          <Text className="text-lg font-semibold text-gray-800 mb-4">Session Status</Text>
-          <View className="bg-accent/20 py-2 px-4 rounded-lg self-start mb-3">
-            <Text className="text-accent font-semibold text-sm">✓ Authenticated</Text>
-          </View>
-          <Text className="text-sm text-gray-500 leading-5">
-            Your session is active and will be automatically refreshed. You can safely close the
-            app and return without logging in again.
-          </Text>
-        </View>
+          {/* Bottom Spacing */}
+          <View className="h-8" />
       </ScrollView>
-    </>
+    </View>
   );
 }

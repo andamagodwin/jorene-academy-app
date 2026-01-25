@@ -1,11 +1,12 @@
-import { Link, Tabs } from 'expo-router';
-import { TouchableOpacity, Text, Alert } from 'react-native';
-
+import { Tabs, useRouter } from 'expo-router';
+import { Alert } from 'react-native';
 import { TabBarIcon } from '../../components/TabBarIcon';
 import { useAuthStore } from '../../store/authStore';
+import { StudentSwitcher } from '../../components/molecules/StudentSwitcher';
 
 export default function TabLayout() {
-  const { signOut } = useAuthStore();
+  const router = useRouter();
+  const { signOut, profile, students, selectedStudent, setSelectedStudent } = useAuthStore();
 
   const handleLogout = () => {
     Alert.alert(
@@ -22,6 +23,10 @@ export default function TabLayout() {
     );
   };
 
+  const handleNotificationPress = () => {
+    router.push('/(tabs)/notifications');
+  };
+
   return (
     <Tabs
       screenOptions={{
@@ -32,11 +37,15 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerRight: () => (
-            <TouchableOpacity onPress={handleLogout} className="mr-4">
-              <Text className="text-primary font-semibold">Logout</Text>
-            </TouchableOpacity>
-          ),
+          headerShown: profile?.role === 'parent' && students.length > 0,
+          header: () => profile?.role === 'parent' && students.length > 0 ? (
+            <StudentSwitcher
+              students={students}
+              selectedStudent={selectedStudent}
+              onSelectStudent={setSelectedStudent}
+              onNotificationPress={handleNotificationPress}
+            />
+          ) : null,
         }}
       />
       <Tabs.Screen
@@ -44,6 +53,12 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="notifications"
+        options={{
+          href: null,
         }}
       />
     </Tabs>

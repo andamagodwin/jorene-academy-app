@@ -6,6 +6,10 @@ export type Gender = 'male' | 'female';
 
 export type Relationship = 'father' | 'mother' | 'guardian';
 
+export type AttendanceStatus = 'present' | 'absent';
+
+export type AnnouncementAudience = 'all' | 'parents' | 'teachers' | 'specific_class';
+
 export interface Profile {
   id: string; // references auth.users.id
   full_name: string;
@@ -40,6 +44,35 @@ export interface ParentStudent {
   parent_id: string;
   student_id: string;
   relationship: Relationship;
+  created_at: string;
+}
+
+export interface Attendance {
+  id: string;
+  student_id: string;
+  date: string; // ISO date string
+  status: AttendanceStatus;
+  time_marked?: string; // ISO timestamp
+  created_at: string;
+}
+
+export interface Homework {
+  id: string;
+  class: string;
+  subject: string;
+  title: string;
+  description?: string;
+  due_date: string; // ISO date string
+  file_url?: string;
+  created_at: string;
+}
+
+export interface Announcement {
+  id: string;
+  title: string;
+  content: string;
+  target_audience?: AnnouncementAudience;
+  specific_class?: string;
   created_at: string;
 }
 

@@ -4,6 +4,7 @@ import { InputField } from '../molecules/InputField';
 import { Button } from '../atoms/Button';
 import { Alert } from '../atoms/Alert';
 import { useAuthStore } from '../../store/authStore';
+import { UserRole } from '../../types/database';
 
 interface SignUpFormProps {
   onSignInPress?: () => void;
@@ -14,6 +15,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState<UserRole>('parent');
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [alertVariant, setAlertVariant] = useState<'success' | 'error'>('error');
   const [errors, setErrors] = useState<{
@@ -65,7 +67,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
     if (!validate()) return;
 
     setAlertMessage(null);
-    const { error } = await signUp(email, password, fullName);
+    const { error } = await signUp(email, password, fullName, role);
 
     if (error) {
       setAlertVariant('error');
@@ -122,6 +124,35 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
           autoComplete="email"
           required
         />
+
+        {/* Role Selection */}
+        <View className="mb-4">
+          <Text className="text-sm font-medium text-gray-700 mb-2">
+            I am a <Text className="text-primary">*</Text>
+          </Text>
+          <View className="flex-row gap-2">
+            <TouchableOpacity
+              onPress={() => setRole('parent')}
+              className={`flex-1 py-3 px-4 rounded-lg border-2 ${
+                role === 'parent' ? 'bg-primary border-primary' : 'bg-white border-gray-300'
+              }`}
+            >
+              <Text className={`text-center font-semibold ${role === 'parent' ? 'text-white' : 'text-gray-700'}`}>
+                👨‍👩‍👧 Parent
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setRole('teacher')}
+              className={`flex-1 py-3 px-4 rounded-lg border-2 ${
+                role === 'teacher' ? 'bg-primary border-primary' : 'bg-white border-gray-300'
+              }`}
+            >
+              <Text className={`text-center font-semibold ${role === 'teacher' ? 'text-white' : 'text-gray-700'}`}>
+                👨‍🏫 Teacher
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
         <InputField
           label="Password"

@@ -1,8 +1,6 @@
 import React from 'react';
 import {
   View,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
@@ -17,9 +15,7 @@ export default function SignUpScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="flex-1 bg-background">
+      <View className="flex-1 bg-background">
         <ScrollView
           contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 24, paddingBottom: paddingBottom + 24 }}
           keyboardShouldPersistTaps="handled"
@@ -35,7 +31,7 @@ export default function SignUpScreen() {
             <SignUpForm onSignInPress={() => router.back()} />
           </View>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </View>
     </TouchableWithoutFeedback>
   );
 }

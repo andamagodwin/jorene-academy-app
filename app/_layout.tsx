@@ -10,7 +10,7 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-  const { user, isInitialized, isFirstVisit, initialize } = useAuthStore();
+  const { user, profile, isInitialized, isFirstVisit, initialize } = useAuthStore();
   const segments = useSegments();
   const router = useRouter();
 
@@ -19,7 +19,7 @@ export default function RootLayout() {
     initialize();
   }, []);
 
-  // Handle navigation based on auth state
+  // Handle navigation based on auth state and role
   useEffect(() => {
     if (!isInitialized) return;
 
@@ -34,10 +34,10 @@ export default function RootLayout() {
         router.replace('/(auth)/login');
       }
     } else if (user && inAuthGroup) {
-      // Redirect to home if authenticated
+      // Redirect to appropriate home based on role
       router.replace('/(tabs)');
     }
-  }, [user, segments, isInitialized, isFirstVisit]);
+  }, [user, profile, segments, isInitialized, isFirstVisit]);
 
   return (
     <Stack>

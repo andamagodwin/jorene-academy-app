@@ -11,7 +11,7 @@ export const AttendanceView: React.FC<AttendanceViewProps> = ({
   attendancePercentage,
   isLoading = false,
 }) => {
-  // Generate calendar days for current month
+  // Generate calendar days for current month with attendance status
   const calendarData = useMemo(() => {
     const today = new Date();
     const year = today.getFullYear();
@@ -20,18 +20,54 @@ export const AttendanceView: React.FC<AttendanceViewProps> = ({
     const lastDay = new Date(year, month + 1, 0);
     const daysInMonth = lastDay.getDate();
     const startingDayOfWeek = firstDay.getDay();
+    const currentDay = today.getDate();
 
-    const days: (number | null)[] = [];
+    const days: Array<{ day: number | null; status: 'present' | 'absent' | 'future' | 'weekend' }> = [];
+    
+    // Add empty cells for days before month starts
     for (let i = 0; i < startingDayOfWeek; i++) {
-      days.push(null);
+      days.push({ day: null, status: 'future' });
     }
+    
+    // Add days of the month with simulated attendance
     for (let i = 1; i <= daysInMonth; i++) {
-      days.push(i);
+      const date = new Date(year, month, i);
+      const dayOfWeek = date.getDay();
+      
+      // Determine status
+      let status: 'present' | 'absent' | 'future' | 'weekend';
+      
+      if (i > currentDay) {
+        status = 'future';
+      } else if (dayOfWeek === 0 || dayOfWeek === 6) {
+        status = 'weekend';
+      } else {
+        // Simulate attendance based on the percentage (90% present, 10% absent)
+        status = Math.random() < (attendancePercentage / 100) ? 'present' : 'absent';
+      }
+      
+      days.push({ day: i, status });
     }
-    return days;
-  }, []);
+    
+    return { days, currentDay };
+  }, [attendancePercentage]);
 
   const monthName = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  const getStatusColor = (status: string, isToday: boolean) => {
+    if (isToday) return 'bg-primary border-2 border-primary';
+    switch (status) {
+      case 'present': return 'bg-green-500';
+      case 'absent': return 'bg-red-500';
+      case 'weekend': return 'bg-gray-200';
+      default: return 'bg-gray-100';
+    }
+  };
+
+  const getTextColor = (status: string, isToday: boolean) => {
+    if (isToday || status === 'present' || status === 'absent') return 'text-white';
+    return 'text-gray-600';
+  };
 
   if (isLoading) {
     return (
@@ -75,55 +111,71 @@ export const AttendanceView: React.FC<AttendanceViewProps> = ({
         </View>
 
         {/* Calendar View */}
-        <View className="bg-white rounded-lg p-4 border border-gray-200">
-          <Text className="text-lg font-semibold text-gray-800 mb-4">
-            {monthName}
-          </Text>
+        <View className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+          <View className="flex-row items-center justify-between mb-4">
+            <Text className="text-lg font-semibold text-gray-800">
+              {monthName}
+            </Text>
+            <Ionicons name="calendar" size={20} color="#750E11" />
+          </View>
 
           {/* Day Headers */}
-          <View className="flex-row mb-3">
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-              <Text key={day} className="flex-1 text-center text-xs font-semibold text-gray-600">
-                {day}
-              </Text>
+          <View className="flex-row mb-2">
+            {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
+              <View key={index} className="flex-1 items-center py-2">
+                <Text className="text-xs font-bold text-gray-500">
+                  {day}
+                </Text>
+              </View>
             ))}
           </View>
 
           {/* Calendar Grid */}
           <View>
-            {Array.from({ length: Math.ceil(calendarData.length / 7) }).map((_, weekIndex) => (
-              <View key={weekIndex} className="flex-row mb-2">
-                {calendarData.slice(weekIndex * 7, (weekIndex + 1) * 7).map((day, dayIndex) => (
-                  <View
-                    key={dayIndex}
-                    className="flex-1 aspect-square items-center justify-center"
-                  >
-                    {day ? (
-                      <View
-                        className={`w-8 h-8 rounded items-center justify-center ${
-                          day % 7 === 0 ? 'bg-red-100' : 'bg-green-100'
-                        }`}
-                      >
-                        <Text className="text-xs font-medium text-gray-800">
-                          {day}
-                        </Text>
-                      </View>
-                    ) : null}
-                  </View>
-                ))}
+            {Array.from({ length: Math.ceil(calendarData.days.length / 7) }).map((_, weekIndex) => (
+              <View key={weekIndex} className="flex-row mb-1">
+                {calendarData.days.slice(weekIndex * 7, (weekIndex + 1) * 7).map((item, dayIndex) => {
+                  const isToday = item.day === calendarData.currentDay;
+                  return (
+                    <View
+                      key={dayIndex}
+                      className="flex-1 items-center justify-center p-1"
+                    >
+                      {item.day ? (
+                        <View
+                          className={`w-9 h-9 rounded-full items-center justify-center ${getStatusColor(item.status, isToday)}`}
+                        >
+                          <Text className={`text-sm font-semibold ${getTextColor(item.status, isToday)}`}>
+                            {item.day}
+                          </Text>
+                        </View>
+                      ) : (
+                        <View className="w-9 h-9" />
+                      )}
+                    </View>
+                  );
+                })}
               </View>
             ))}
           </View>
 
           {/* Legend */}
-          <View className="flex-row justify-center mt-4 pt-4 border-t border-gray-200">
-            <View className="flex-row items-center mr-4">
-              <View className="w-3 h-3 bg-red-400 rounded mr-2" />
+          <View className="flex-row flex-wrap justify-center mt-4 pt-4 border-t border-gray-200">
+            <View className="flex-row items-center mr-4 mb-2">
+              <View className="w-4 h-4 bg-green-500 rounded-full mr-2" />
+              <Text className="text-xs text-gray-600">Present</Text>
+            </View>
+            <View className="flex-row items-center mr-4 mb-2">
+              <View className="w-4 h-4 bg-red-500 rounded-full mr-2" />
               <Text className="text-xs text-gray-600">Absent</Text>
             </View>
-            <View className="flex-row items-center">
-              <View className="w-3 h-3 bg-green-400 rounded mr-2" />
-              <Text className="text-xs text-gray-600">Present</Text>
+            <View className="flex-row items-center mr-4 mb-2">
+              <View className="w-4 h-4 bg-gray-200 rounded-full mr-2" />
+              <Text className="text-xs text-gray-600">Weekend</Text>
+            </View>
+            <View className="flex-row items-center mb-2">
+              <View className="w-4 h-4 bg-primary rounded-full mr-2" />
+              <Text className="text-xs text-gray-600">Today</Text>
             </View>
           </View>
         </View>

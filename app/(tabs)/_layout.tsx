@@ -33,13 +33,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="academics"
         options={{
           title: 'Academics',
@@ -53,6 +46,29 @@ export default function TabLayout() {
               onNotificationPress={handleNotificationPress}
             />
           ) : null,
+        }}
+      />
+      <Tabs.Screen
+        name="resources"
+        options={{
+          title: 'Resources',
+          tabBarIcon: ({ color }) => <TabBarIcon name="folder" color={color} />,
+          headerShown: profile?.role === 'parent',
+          header: () => profile?.role === 'parent' ? (
+            <StudentSwitcher
+              students={students}
+              selectedStudent={selectedStudent}
+              onSelectStudent={setSelectedStudent}
+              onNotificationPress={handleNotificationPress}
+            />
+          ) : null,
+        }}
+      />
+      <Tabs.Screen
+        name="two"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
       <Tabs.Screen

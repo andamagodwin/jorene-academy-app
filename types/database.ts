@@ -99,6 +99,19 @@ export interface Timetable {
   created_at: string;
 }
 
+export interface Resource {
+  id: string;
+  title: string;
+  class: string;
+  subject: string;
+  file_url: string;
+  file_type?: string;
+  file_size?: number;
+  description?: string;
+  uploaded_by?: string;
+  created_at: string;
+}
+
 // Extended types with relationships
 export interface StudentWithRelationship extends Student {
   relationship?: Relationship;

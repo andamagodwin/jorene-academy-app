@@ -76,6 +76,29 @@ export interface Announcement {
   created_at: string;
 }
 
+export interface Result {
+  id: string;
+  student_id: string;
+  subject: string;
+  term: string; // e.g., "Term 1", "Term 2"
+  score: number; // 0-100
+  grade: string; // A, B, C, D, E, F
+  teacher_comment?: string;
+  created_at: string;
+}
+
+export interface Timetable {
+  id: string;
+  class: string;
+  day: string; // Monday, Tuesday, etc.
+  start_time: string; // HH:MM format
+  end_time: string; // HH:MM format
+  subject: string;
+  teacher: string;
+  room?: string;
+  created_at: string;
+}
+
 // Extended types with relationships
 export interface StudentWithRelationship extends Student {
   relationship?: Relationship;

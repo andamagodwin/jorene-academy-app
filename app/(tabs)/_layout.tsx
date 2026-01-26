@@ -1,27 +1,11 @@
 import { Tabs, useRouter } from 'expo-router';
-import { Alert } from 'react-native';
 import { TabBarIcon } from '../../components/TabBarIcon';
 import { useAuthStore } from '../../store/authStore';
 import { StudentSwitcher } from '../../components/molecules/StudentSwitcher';
 
 export default function TabLayout() {
   const router = useRouter();
-  const { signOut, profile, students, selectedStudent, setSelectedStudent } = useAuthStore();
-
-  const handleLogout = () => {
-    Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Sign Out',
-          style: 'destructive',
-          onPress: signOut,
-        },
-      ]
-    );
-  };
+  const { profile, students, selectedStudent, setSelectedStudent } = useAuthStore();
 
   const handleNotificationPress = () => {
     router.push('/(tabs)/notifications');
@@ -53,6 +37,22 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="academics"
+        options={{
+          title: 'Academics',
+          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
+          headerShown: profile?.role === 'parent',
+          header: () => profile?.role === 'parent' ? (
+            <StudentSwitcher
+              students={students}
+              selectedStudent={selectedStudent}
+              onSelectStudent={setSelectedStudent}
+              onNotificationPress={handleNotificationPress}
+            />
+          ) : null,
         }}
       />
       <Tabs.Screen

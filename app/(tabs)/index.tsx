@@ -1,6 +1,5 @@
-import { useRouter } from 'expo-router';
 import { View, Text, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '~/store/authStore';
 import { useDashboardStore } from '~/store/dashboardStore';
@@ -8,20 +7,47 @@ import { AttendanceCard } from '~/components/organisms/AttendanceCard';
 import { HomeworkCard } from '~/components/organisms/HomeworkCard';
 import { AnnouncementCard } from '~/components/organisms/AnnouncementCard';
 import { AlertCard } from '~/components/organisms/AlertCard';
+import { LoadingScreen } from '~/components/organisms/LoadingScreen';
 
 export default function Home() {
-  const router = useRouter();
-  const { profile, selectedStudent } = useAuthStore();
+  const { profile, selectedStudent, isInitialized } = useAuthStore();
   const { attendance, homework, announcements, alerts, isLoading, loadDashboardData } = useDashboardStore();
   const [refreshing, setRefreshing] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const hasLoadedOnce = useRef(false);
 
-  // Load dashboard data when student changes
+  // Single effect to handle all initial loading
   useEffect(() => {
-    if (selectedStudent && profile?.role === 'parent') {
+    // Wait for auth to be initialized
+    if (!isInitialized) return;
+
+    const loadInitialData = async () => {
+      // For parents with students, load dashboard data
+      if (profile?.role === 'parent' && selectedStudent) {
+        await loadDashboardData(selectedStudent.id, selectedStudent.class);
+      }
+      
+      // Mark as ready only once after first successful load
+      if (!hasLoadedOnce.current) {
+        hasLoadedOnce.current = true;
+        setIsReady(true);
+      }
+    };
+
+    // Only run if we haven't loaded yet, or if student changed after initial load
+    if (!hasLoadedOnce.current) {
+      loadInitialData();
+    } else if (selectedStudent) {
+      // Subsequent student changes - load without showing loading screen
       loadDashboardData(selectedStudent.id, selectedStudent.class);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedStudent?.id, profile?.role]);
+  }, [isInitialized, profile?.role, selectedStudent?.id, loadDashboardData]);
+
+  // Show loading screen only during initial app load
+  if (!isInitialized || !isReady) {
+    return <LoadingScreen />;
+  }
 
   const handleRefresh = async () => {
     if (selectedStudent) {

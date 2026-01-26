@@ -78,6 +78,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const { user } = get();
     if (!user) return;
 
+    set({ isLoading: true });
     try {
       // Fetch parent record
       const { data: parent, error: parentError } = await supabase
@@ -112,6 +113,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       });
     } catch (error) {
       console.error('Error loading students:', error);
+    } finally {
+      set({ isLoading: false });
     }
   },
 
@@ -130,14 +133,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({
         user: session?.user ?? null,
         session: session ?? null,
-        isInitialized: true,
         isFirstVisit: hasVisited === null,
       });
 
-      // Load profile if user is authenticated
+      // Load profile if user is authenticated (wait for it to complete)
       if (session?.user) {
         await get().loadProfile();
       }
+
+      // Mark as initialized AFTER all data is loaded
+      set({ isInitialized: true });
 
       // Listen for auth state changes
       supabase.auth.onAuthStateChange(async (_event, session) => {

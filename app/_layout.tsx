@@ -3,6 +3,7 @@ import '../global.css';
 import { useEffect } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useAuthStore } from '../store/authStore';
+import { LoadingScreen } from '../components/organisms/LoadingScreen';
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
@@ -38,6 +39,11 @@ export default function RootLayout() {
       router.replace('/(tabs)');
     }
   }, [user, profile, segments, isInitialized, isFirstVisit]);
+
+  // Show loading screen while initializing
+  if (!isInitialized) {
+    return <LoadingScreen />;
+  }
 
   return (
     <Stack>

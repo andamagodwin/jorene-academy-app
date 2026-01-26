@@ -112,6 +112,56 @@ export interface Resource {
   created_at: string;
 }
 
+export interface FeesStructure {
+  id: string;
+  class: string;
+  term: string;
+  amount: number;
+  year: number;
+  tuition?: number;
+  meals?: number;
+  uniform?: number;
+  transport?: number;
+  other?: number;
+  created_at: string;
+}
+
+export interface Payment {
+  id: string;
+  student_id: string;
+  amount: number;
+  method: string; // cash, mobile_money, bank_transfer
+  reference?: string;
+  date: string; // ISO timestamp
+  recorded_by?: string;
+  notes?: string;
+  created_at: string;
+}
+
+export interface Invoice {
+  id: string;
+  student_id: string;
+  term: string;
+  year: number;
+  total_amount: number;
+  status: 'paid' | 'partial' | 'unpaid';
+  due_date?: string; // ISO date string
+  tuition?: number;
+  meals?: number;
+  uniform?: number;
+  transport?: number;
+  other?: number;
+  created_at: string;
+}
+
+export interface Receipt {
+  id: string;
+  payment_id: string;
+  receipt_no: string;
+  file_url?: string;
+  issued_at: string; // ISO timestamp
+}
+
 // Extended types with relationships
 export interface StudentWithRelationship extends Student {
   relationship?: Relationship;

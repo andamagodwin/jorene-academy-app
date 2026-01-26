@@ -47,12 +47,12 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
   return (
     <>
       <View 
-        className="bg-white px-4 py-3 border-b border-gray-200 flex-row items-center justify-between"
+        className="bg-primary px-4 py-3 border-b border-gray-200 flex-row items-center justify-between"
         style={{ paddingTop: statusBarHeight + 12 }}
       >
         <TouchableOpacity
           onPress={() => setIsOpen(true)}
-          className="bg-gray-100 rounded-lg px-3 py-2 flex-row items-center"
+          className="bg-gray-100 rounded-2xl px-5 py-1 flex-row items-center"
           style={{ width: '40%' }}
         >
           <View className="flex-1">
@@ -67,7 +67,7 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
         </TouchableOpacity>
         {onNotificationPress && (
           <TouchableOpacity onPress={onNotificationPress} className="p-2">
-            <Ionicons name="notifications-outline" size={24} color="#750E11" />
+            <Ionicons name="notifications-outline" size={24} color="white" />
           </TouchableOpacity>
         )}
       </View>

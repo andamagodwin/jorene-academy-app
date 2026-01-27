@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, ScrollView, Platform, StatusBar } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, ScrollView, Platform, StatusBar, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Student } from '../../types/database';
 
@@ -29,11 +29,25 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
         className="bg-white px-4 py-3 border-b border-gray-200 flex-row items-center justify-between"
         style={{ paddingTop: statusBarHeight + 12 }}
       >
-        <View className="bg-gray-100 rounded-lg px-3 py-2" style={{ width: '40%' }}>
-          <Text className="text-sm font-semibold text-gray-800" numberOfLines={1}>
-            {students[0].full_name}
-          </Text>
-          <Text className="text-xs text-gray-500">{students[0].class}</Text>
+        <View className="bg-gray-100 rounded-lg px-3 py-2 flex-row items-center" style={{ width: '40%' }}>
+          {students[0].photo_url ? (
+            <Image 
+              source={{ uri: students[0].photo_url }} 
+              className="w-8 h-8 rounded-full mr-2 bg-white"
+            />
+          ) : (
+            <View className="w-8 h-8 rounded-full bg-primary/10 justify-center items-center mr-2">
+              <Text className="text-sm font-bold text-primary">
+                {students[0].full_name.charAt(0).toUpperCase()}
+              </Text>
+            </View>
+          )}
+          <View className="flex-1">
+            <Text className="text-sm font-semibold text-gray-800" numberOfLines={1}>
+              {students[0].full_name}
+            </Text>
+            <Text className="text-xs text-gray-500">{students[0].class}</Text>
+          </View>
         </View>
         {onNotificationPress && (
           <TouchableOpacity onPress={onNotificationPress} className="p-2">
@@ -55,6 +69,18 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
           className=" rounded-2xl px-5 py-1 flex-row items-center"
           style={{ width: '40%' }}
         >
+          {selectedStudent?.photo_url ? (
+            <Image 
+              source={{ uri: selectedStudent.photo_url }} 
+              className="w-8 h-8 rounded-full mr-2 bg-white"
+            />
+          ) : (
+            <View className="w-8 h-8 rounded-full bg-white/20 justify-center items-center mr-2">
+              <Text className="text-sm font-bold text-white">
+                {selectedStudent?.full_name?.charAt(0).toUpperCase() || '?'}
+              </Text>
+            </View>
+          )}
           <View className="flex-1">
             <Text className="text-sm font-semibold text-white" numberOfLines={1}>
               {selectedStudent?.full_name || 'Select Student'}
@@ -101,6 +127,18 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
                   }`}
                 >
                   <View className="flex-row items-center justify-between">
+                    {student.photo_url ? (
+                      <Image 
+                        source={{ uri: student.photo_url }} 
+                        className="w-12 h-12 rounded-full mr-3 bg-primary/10"
+                      />
+                    ) : (
+                      <View className="w-12 h-12 rounded-full bg-primary/10 justify-center items-center mr-3">
+                        <Text className="text-lg font-bold text-primary">
+                          {student.full_name.charAt(0).toUpperCase()}
+                        </Text>
+                      </View>
+                    )}
                     <View className="flex-1">
                       <Text className="text-base font-semibold text-gray-800">
                         {student.full_name}

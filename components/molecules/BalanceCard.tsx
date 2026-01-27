@@ -15,51 +15,79 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({ balance }) => {
   const getBalanceColor = () => {
     if (balance.balance <= 0) return 'text-accent'; // Fully paid
     if (balance.balance < balance.totalFees * 0.5) return 'text-secondary'; // Over 50% paid
-    return 'text-red-600'; // Less than 50% paid
+    return 'text-white'; // Less than 50% paid
   };
 
   return (
-    <View className="bg-white rounded-2xl p-5 mx-4 mb-4 border border-gray-200">
+    <View style={{ overflow: 'hidden' }} className="bg-primary rounded-2xl p-6 mx-4 mb-4 relative">
+      {/* Decorative circles */}
+      <View 
+        style={{ 
+          position: 'absolute', 
+          top: -40, 
+          right: -40, 
+          width: 128, 
+          height: 128, 
+          borderRadius: 64,
+          backgroundColor: 'rgba(255, 255, 255, 0.1)'
+        }} 
+      />
+      <View 
+        style={{ 
+          position: 'absolute', 
+          top: 64, 
+          right: -24, 
+          width: 96, 
+          height: 96, 
+          borderRadius: 48,
+          backgroundColor: 'rgba(255, 255, 255, 0.05)'
+        }} 
+      />
+      
       {/* Header */}
-      <View className="flex-row items-center justify-between mb-4">
+      <View className="flex-row items-center justify-between mb-6" style={{ zIndex: 10 }}>
         <View className="flex-row items-center">
-          <View className="w-12 h-12 bg-primary/10 rounded-full items-center justify-center mr-3">
-            <Ionicons name="wallet" size={24} color="#750E11" />
+          <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-12 h-12 rounded-full items-center justify-center mr-3">
+            <Ionicons name="wallet" size={24} color="#FFFFFF" />
           </View>
           <View>
-            <Text className="text-lg font-bold text-gray-800">
+            <Text style={{ color: '#FFFFFF' }} className="text-xl font-bold">
               {balance.term} Fees
             </Text>
-            <Text className="text-sm text-gray-600">{balance.year}</Text>
+            <Text style={{ color: 'rgba(255, 255, 255, 0.8)' }} className="text-sm">{balance.year}</Text>
           </View>
         </View>
       </View>
 
       {/* Fees Breakdown */}
-      <View>
+      <View style={{ zIndex: 10 }}>
         {/* Total Fees */}
         <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-gray-600">Total Fees</Text>
-          <Text className="text-base font-semibold text-gray-800">
+          <Text style={{ color: 'rgba(255, 255, 255, 0.8)' }}>Total Fees</Text>
+          <Text style={{ color: '#FFFFFF' }} className="text-lg font-semibold">
             {formatCurrency(balance.totalFees)}
           </Text>
         </View>
 
         {/* Amount Paid */}
         <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-gray-600">Amount Paid</Text>
-          <Text className="text-base font-semibold text-accent">
+          <Text style={{ color: 'rgba(255, 255, 255, 0.8)' }}>Amount Paid</Text>
+          <Text style={{ color: '#10A753' }} className="text-lg font-semibold">
             {formatCurrency(balance.totalPaid)}
           </Text>
         </View>
 
         {/* Divider */}
-        <View className="h-px bg-gray-200 my-2" />
+        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="h-px my-3" />
 
         {/* Balance */}
         <View className="flex-row justify-between items-center">
-          <Text className="text-base font-bold text-gray-800">Balance</Text>
-          <Text className={`text-xl font-bold ${getBalanceColor()}`}>
+          <Text style={{ color: '#FFFFFF' }} className="text-lg font-bold">Balance</Text>
+          <Text className={`text-2xl font-bold ${getBalanceColor()}`} style={
+            balance.balance <= 0 ? { color: '#10A753' } :
+            balance.balance < balance.totalFees * 0.5 ? { color: '#FCB316' } :
+            { color: '#FFFFFF' }
+          }>
             {formatCurrency(balance.balance)}
           </Text>
         </View>
@@ -67,17 +95,26 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({ balance }) => {
 
       {/* Status Badge */}
       {balance.balance <= 0 && (
-        <View className="mt-4 bg-accent/10 rounded-lg p-3 flex-row items-center">
-          <Ionicons name="checkmark-circle" size={20} color="#10A753" />
-          <Text className="text-accent font-semibold ml-2">Fully Paid</Text>
+        <View style={{ backgroundColor: '#10A753', zIndex: 10 }} className="mt-4 rounded-lg p-3 flex-row items-center">
+          <Ionicons name="checkmark-circle" size={20} color="#FFFFFF" />
+          <Text style={{ color: '#FFFFFF' }} className="font-semibold ml-2">Fully Paid</Text>
         </View>
       )}
 
       {balance.balance > 0 && balance.balance < balance.totalFees && (
-        <View className="mt-4 bg-secondary/10 rounded-lg p-3 flex-row items-center">
-          <Ionicons name="time" size={20} color="#FCB316" />
-          <Text className="text-secondary font-semibold ml-2">
+        <View style={{ backgroundColor: '#FCB316', zIndex: 10 }} className="mt-4 rounded-lg p-3 flex-row items-center">
+          <Ionicons name="time" size={20} color="#FFFFFF" />
+          <Text style={{ color: '#FFFFFF' }} className="font-semibold ml-2">
             Partial Payment
+          </Text>
+        </View>
+      )}
+      
+      {balance.balance >= balance.totalFees && (
+        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', zIndex: 10 }} className="mt-4 rounded-lg p-3 flex-row items-center">
+          <Ionicons name="alert-circle" size={20} color="#FFFFFF" />
+          <Text style={{ color: '#FFFFFF' }} className="font-semibold ml-2">
+            Outstanding Balance
           </Text>
         </View>
       )}

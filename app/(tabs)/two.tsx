@@ -138,7 +138,7 @@ export default function Profile() {
               <TouchableOpacity 
                 onPress={handleChangePhoto}
                 disabled={isUploading}
-                className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-secondary justify-center items-center shadow-md"
+                className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-secondary justify-center items-center"
               >
                 {isUploading ? (
                   <ActivityIndicator size="small" color="#FFFFFF" />
@@ -163,7 +163,7 @@ export default function Profile() {
           <View className="px-4 py-4">
             <Text className="text-lg font-semibold text-gray-800 mb-3">My Children</Text>
             {students.map((student) => (
-              <View key={student.id} className="bg-white p-4 rounded-xl mb-3 shadow-sm flex-row items-center">
+              <View key={student.id} className="bg-white p-4 rounded-xl mb-3 flex-row items-center">
                 <View className="relative mr-3">
                   {student.photo_url ? (
                     <Image 
@@ -182,7 +182,7 @@ export default function Profile() {
                   <TouchableOpacity 
                     onPress={() => handleChangeStudentPhoto(student.id, student.photo_url)}
                     disabled={uploadingStudentId === student.id}
-                    className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-secondary justify-center items-center shadow-md"
+                    className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-secondary justify-center items-center"
                   >
                     {uploadingStudentId === student.id ? (
                       <ActivityIndicator size="small" color="#FFFFFF" />
@@ -206,26 +206,26 @@ export default function Profile() {
         <View className="px-4 pb-4">
           <Text className="text-lg font-semibold text-gray-800 mb-3">Account Details</Text>
           
-          <View className="bg-white p-4 rounded-xl mb-3 shadow-sm">
+          <View className="bg-white p-4 rounded-xl mb-3">
             <Text className="text-xs text-gray-500 mb-1 uppercase font-medium">Full Name</Text>
             <Text className="text-base text-gray-800 font-medium">
               {profile?.full_name || 'Not set'}
             </Text>
           </View>
 
-          <View className="bg-white p-4 rounded-xl mb-3 shadow-sm">
+          <View className="bg-white p-4 rounded-xl mb-3">
             <Text className="text-xs text-gray-500 mb-1 uppercase font-medium">Email Address</Text>
             <Text className="text-base text-gray-800 font-medium">{user?.email}</Text>
           </View>
 
-          <View className="bg-white p-4 rounded-xl mb-3 shadow-sm">
+          <View className="bg-white p-4 rounded-xl mb-3">
             <Text className="text-xs text-gray-500 mb-1 uppercase font-medium">Phone Number</Text>
             <Text className="text-base text-gray-800 font-medium">
               {profile?.phone || 'Not set'}
             </Text>
           </View>
 
-          <View className="bg-white p-4 rounded-xl mb-3 shadow-sm">
+          <View className="bg-white p-4 rounded-xl mb-3">
             <Text className="text-xs text-gray-500 mb-1 uppercase font-medium">Member Since</Text>
             <Text className="text-base text-gray-800 font-medium">
               {user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US', {

@@ -90,7 +90,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="notifications"
         options={{
+          title: 'Notifications',
           href: null,
+          headerStyle: {
+            backgroundColor: '#750E11',
+          },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: {
+            color: '#FFFFFF',
+          },
         }}
       />
     </Tabs>

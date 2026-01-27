@@ -1,13 +1,9 @@
-import { useRouter } from 'expo-router';
-import { View, Text, ScrollView, TouchableOpacity, Platform, StatusBar } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useDashboardStore } from '~/store/dashboardStore';
 
 export default function NotificationsScreen() {
-  const router = useRouter();
   const { alerts } = useDashboardStore();
-
-  const statusBarHeight = Platform.OS === 'android' ? StatusBar.currentHeight || 0 : 0;
 
   const getAlertIcon = (type: string) => {
     switch (type) {
@@ -35,15 +31,7 @@ export default function NotificationsScreen() {
   };
 
   return (
-    <View className="flex-1 bg-background" style={{ paddingTop: statusBarHeight }}>
-      {/* Custom Header */}
-      <View className="bg-white px-4 py-3 border-b border-gray-200 flex-row items-center">
-        <TouchableOpacity onPress={() => router.back()} className="p-2 -ml-2">
-          <Ionicons name="arrow-back" size={24} color="#750E11" />
-        </TouchableOpacity>
-        <Text className="text-lg font-semibold text-gray-800 ml-2">Notifications</Text>
-      </View>
-      
+    <View className="flex-1 bg-background">
       <ScrollView className="flex-1">
         {/* Subheader */}
         <View className="px-6 pt-4 pb-3">
@@ -58,7 +46,7 @@ export default function NotificationsScreen() {
             alerts.map((alert, index) => (
               <View
                 key={index}
-                className="bg-white rounded-lg p-4 mb-3 border border-gray-200 shadow-sm"
+                className="bg-white rounded-lg p-4 mb-3"
               >
                 <View className="flex-row items-start">
                   <View className={`w-10 h-10 rounded-full items-center justify-center mr-3 ${getAlertBgColor(alert.severity)}`}>
@@ -103,7 +91,7 @@ export default function NotificationsScreen() {
               Recent Activity
             </Text>
             
-            <View className="bg-white rounded-lg p-4 mb-3 border border-gray-200 shadow-sm opacity-50">
+            <View className="bg-white rounded-lg p-4 mb-3 opacity-50">
               <View className="flex-row items-start">
                 <View className="w-10 h-10 rounded-full bg-green-100 items-center justify-center mr-3">
                   <Ionicons name="checkmark-circle" size={24} color="#10A753" />
@@ -122,7 +110,7 @@ export default function NotificationsScreen() {
               </View>
             </View>
 
-            <View className="bg-white rounded-lg p-4 mb-3 border border-gray-200 shadow-sm opacity-50">
+            <View className="bg-white rounded-lg p-4 mb-3 opacity-50">
               <View className="flex-row items-start">
                 <View className="w-10 h-10 rounded-full bg-blue-100 items-center justify-center mr-3">
                   <Ionicons name="information-circle" size={24} color="#3B82F6" />

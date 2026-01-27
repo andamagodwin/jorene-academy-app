@@ -26,6 +26,7 @@ export interface AuthState {
   setUser: (user: User | null) => void;
   setSession: (session: Session | null) => void;
   markAsVisited: () => Promise<void>;
+  updateProfileAvatar: (avatarUrl: string) => void;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -284,4 +285,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   setUser: (user: User | null) => set({ user }),
   setSession: (session: Session | null) => set({ session }),
+
+  updateProfileAvatar: (avatarUrl: string) => {
+    const { profile } = get();
+    if (profile) {
+      set({ profile: { ...profile, avatar_url: avatarUrl } });
+    }
+  },
 }));

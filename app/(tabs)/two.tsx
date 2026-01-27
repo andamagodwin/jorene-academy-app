@@ -1,11 +1,57 @@
 import { Stack } from 'expo-router';
-import { View, Text, ScrollView, Alert } from 'react-native';
+import { View, Text, ScrollView, Alert, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
 import { useAuthStore } from '~/store/authStore';
 import { Button } from '~/components/atoms/Button';
+import { pickProfilePhoto, uploadProfilePhoto, updateProfileAvatar, deleteOldProfilePhoto } from '~/utils/profilePhoto';
 
 export default function Profile() {
-  const { user, profile, students, signOut } = useAuthStore();
+  const { user, profile, students, signOut, updateProfileAvatar: updateStoreAvatar } = useAuthStore();
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleChangePhoto = async () => {
+    try {
+      // Pick image
+      const image = await pickProfilePhoto();
+      if (!image || !user) return;
+
+      setIsUploading(true);
+
+      // Delete old photo if exists
+      if (profile?.avatar_url) {
+        await deleteOldProfilePhoto(profile.avatar_url);
+      }
+
+      // Upload new photo
+      const uploadResult = await uploadProfilePhoto(user.id, image.uri);
+      
+      if (!uploadResult.success || !uploadResult.url) {
+        Alert.alert('Error', uploadResult.error || 'Failed to upload photo');
+        setIsUploading(false);
+        return;
+      }
+
+      // Update profile in database
+      const updateResult = await updateProfileAvatar(user.id, uploadResult.url);
+      
+      if (!updateResult.success) {
+        Alert.alert('Error', updateResult.error || 'Failed to update profile');
+        setIsUploading(false);
+        return;
+      }
+
+      // Update store
+      updateStoreAvatar(uploadResult.url);
+      
+      Alert.alert('Success', 'Profile photo updated successfully');
+    } catch (error) {
+      console.error('Error changing photo:', error);
+      Alert.alert('Error', 'An unexpected error occurred');
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleSignOut = () => {
     Alert.alert(
@@ -29,13 +75,36 @@ export default function Profile() {
         {/* Header with bg-primary */}
         <View className="bg-primary pt-12 pb-8 px-6">
           <View className="items-center">
-            <View className="w-24 h-24 rounded-full bg-white justify-center items-center mb-4">
-              <Text className="text-4xl font-bold text-primary">
-                {profile?.full_name?.charAt(0).toUpperCase() || 
-                 user?.email?.charAt(0).toUpperCase() || '?'}
-              </Text>
+            <View className="relative">
+              {profile?.avatar_url ? (
+                <Image 
+                  source={{ uri: profile.avatar_url }} 
+                  className="w-24 h-24 rounded-full bg-white"
+                />
+              ) : (
+                <View className="w-24 h-24 rounded-full bg-white justify-center items-center">
+                  <Text className="text-4xl font-bold text-primary">
+                    {profile?.full_name?.charAt(0).toUpperCase() || 
+                     user?.email?.charAt(0).toUpperCase() || '?'}
+                  </Text>
+                </View>
+              )}
+              
+              {/* Edit button */}
+              <TouchableOpacity 
+                onPress={handleChangePhoto}
+                disabled={isUploading}
+                className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-secondary justify-center items-center shadow-md"
+              >
+                {isUploading ? (
+                  <ActivityIndicator size="small" color="#FFFFFF" />
+                ) : (
+                  <Ionicons name="camera" size={16} color="#FFFFFF" />
+                )}
+              </TouchableOpacity>
             </View>
-            <Text className="text-2xl font-bold text-white mb-1">
+            
+            <Text className="text-2xl font-bold text-white mb-1 mt-4">
               {profile?.full_name || 'User'}
             </Text>
             <Text className="text-base text-white/80">{user?.email}</Text>

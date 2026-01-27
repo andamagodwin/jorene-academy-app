@@ -4,11 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { useAuthStore } from '~/store/authStore';
 import { Button } from '~/components/atoms/Button';
-import { pickProfilePhoto, uploadProfilePhoto, updateProfileAvatar, deleteOldProfilePhoto } from '~/utils/profilePhoto';
+import { pickProfilePhoto, uploadProfilePhoto, updateProfileAvatar, deleteOldProfilePhoto, uploadStudentPhoto, updateStudentPhoto, deleteOldStudentPhoto } from '~/utils/profilePhoto';
 
 export default function Profile() {
-  const { user, profile, students, signOut, updateProfileAvatar: updateStoreAvatar } = useAuthStore();
+  const { user, profile, students, signOut, updateProfileAvatar: updateStoreAvatar, loadStudents } = useAuthStore();
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadingStudentId, setUploadingStudentId] = useState<string | null>(null);
 
   const handleChangePhoto = async () => {
     try {
@@ -50,6 +51,49 @@ export default function Profile() {
       Alert.alert('Error', 'An unexpected error occurred');
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  const handleChangeStudentPhoto = async (studentId: string, currentPhotoUrl?: string) => {
+    try {
+      // Pick image
+      const image = await pickProfilePhoto();
+      if (!image) return;
+
+      setUploadingStudentId(studentId);
+
+      // Delete old photo if exists
+      if (currentPhotoUrl) {
+        await deleteOldStudentPhoto(currentPhotoUrl);
+      }
+
+      // Upload new photo
+      const uploadResult = await uploadStudentPhoto(studentId, image.uri);
+      
+      if (!uploadResult.success || !uploadResult.url) {
+        Alert.alert('Error', uploadResult.error || 'Failed to upload photo');
+        setUploadingStudentId(null);
+        return;
+      }
+
+      // Update student in database
+      const updateResult = await updateStudentPhoto(studentId, uploadResult.url);
+      
+      if (!updateResult.success) {
+        Alert.alert('Error', updateResult.error || 'Failed to update student photo');
+        setUploadingStudentId(null);
+        return;
+      }
+
+      // Reload students to get updated data
+      await loadStudents();
+      
+      Alert.alert('Success', 'Student photo updated successfully');
+    } catch (error) {
+      console.error('Error changing student photo:', error);
+      Alert.alert('Error', 'An unexpected error occurred');
+    } finally {
+      setUploadingStudentId(null);
     }
   };
 
@@ -120,9 +164,34 @@ export default function Profile() {
             <Text className="text-lg font-semibold text-gray-800 mb-3">My Children</Text>
             {students.map((student) => (
               <View key={student.id} className="bg-white p-4 rounded-xl mb-3 shadow-sm flex-row items-center">
-                <View className="w-12 h-12 rounded-full bg-primary/10 justify-center items-center mr-3">
-                  <Ionicons name="person" size={24} color="#750E11" />
+                <View className="relative mr-3">
+                  {student.photo_url ? (
+                    <Image 
+                      source={{ uri: student.photo_url }} 
+                      className="w-16 h-16 rounded-full bg-primary/10"
+                    />
+                  ) : (
+                    <View className="w-16 h-16 rounded-full bg-primary/10 justify-center items-center">
+                      <Text className="text-xl font-bold text-primary">
+                        {student.full_name.charAt(0).toUpperCase()}
+                      </Text>
+                    </View>
+                  )}
+                  
+                  {/* Edit button for student photo */}
+                  <TouchableOpacity 
+                    onPress={() => handleChangeStudentPhoto(student.id, student.photo_url)}
+                    disabled={uploadingStudentId === student.id}
+                    className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-secondary justify-center items-center shadow-md"
+                  >
+                    {uploadingStudentId === student.id ? (
+                      <ActivityIndicator size="small" color="#FFFFFF" />
+                    ) : (
+                      <Ionicons name="camera" size={12} color="#FFFFFF" />
+                    )}
+                  </TouchableOpacity>
                 </View>
+                
                 <View className="flex-1">
                   <Text className="text-base font-semibold text-gray-800">{student.full_name}</Text>
                   <Text className="text-sm text-gray-600">{student.class}</Text>

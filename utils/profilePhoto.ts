@@ -140,3 +140,103 @@ export async function deleteOldProfilePhoto(avatarUrl: string): Promise<void> {
     console.error('Error deleting old photo:', error);
   }
 }
+
+/**
+ * Upload student photo to Supabase storage
+ */
+export async function uploadStudentPhoto(
+  studentId: string,
+  imageUri: string
+): Promise<UploadProfilePhotoResult> {
+  try {
+    // Read the file as base64
+    const base64 = await FileSystem.readAsStringAsync(imageUri, {
+      encoding: 'base64',
+    });
+
+    // Get file extension
+    const fileExt = imageUri.split('.').pop()?.toLowerCase() || 'jpg';
+    const fileName = `student-${studentId}-${Date.now()}.${fileExt}`;
+    const filePath = `students/${fileName}`;
+
+    // Upload to Supabase storage
+    const { error } = await supabase.storage
+      .from('profile-photos')
+      .upload(filePath, decode(base64), {
+        contentType: `image/${fileExt}`,
+        upsert: true,
+      });
+
+    if (error) {
+      console.error('Upload error:', error);
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+
+    // Get public URL
+    const { data: urlData } = supabase.storage
+      .from('profile-photos')
+      .getPublicUrl(filePath);
+
+    return {
+      success: true,
+      url: urlData.publicUrl,
+    };
+  } catch (error) {
+    console.error('Upload error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to upload photo',
+    };
+  }
+}
+
+/**
+ * Update student profile with new photo URL
+ */
+export async function updateStudentPhoto(
+  studentId: string,
+  photoUrl: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { error } = await supabase
+      .from('students')
+      .update({ photo_url: photoUrl })
+      .eq('id', studentId);
+
+    if (error) {
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to update student photo',
+    };
+  }
+}
+
+/**
+ * Delete old student photo from storage
+ */
+export async function deleteOldStudentPhoto(photoUrl: string): Promise<void> {
+  try {
+    // Extract the file path from the URL
+    const urlParts = photoUrl.split('/profile-photos/');
+    if (urlParts.length < 2) return;
+
+    const filePath = urlParts[1];
+    
+    await supabase.storage
+      .from('profile-photos')
+      .remove([filePath]);
+  } catch (error) {
+    console.error('Error deleting old student photo:', error);
+  }
+}

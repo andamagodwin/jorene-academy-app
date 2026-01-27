@@ -65,6 +65,22 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="fees"
+        options={{
+          title: 'Fees',
+          tabBarIcon: ({ color }) => <TabBarIcon name="dollar" color={color} />,
+          headerShown: profile?.role === 'parent',
+          header: () => profile?.role === 'parent' ? (
+            <StudentSwitcher
+              students={students}
+              selectedStudent={selectedStudent}
+              onSelectStudent={setSelectedStudent}
+              onNotificationPress={handleNotificationPress}
+            />
+          ) : null,
+        }}
+      />
+      <Tabs.Screen
         name="two"
         options={{
           title: 'Profile',

@@ -47,7 +47,7 @@ export default function ResourcesScreen() {
       <ScrollView className="flex-1">
         {/* Search Bar */}
         <View className="px-4 mb-4">
-          <View className="flex-row items-center bg-white rounded-xl px-4 py-3 border border-gray-200">
+          <View className="flex-row items-center bg-white rounded-xl px-4 py-3">
             <Ionicons name="search" size={20} color="#9CA3AF" />
             <TextInput
               className="flex-1 ml-3 text-gray-800"

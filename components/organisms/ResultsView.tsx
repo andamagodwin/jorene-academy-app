@@ -79,7 +79,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
             {termResults.map((result) => (
               <View
                 key={result.id}
-                className="bg-white rounded-lg p-4 mb-3 border border-gray-200 flex-row items-center justify-between"
+                className="bg-white rounded-lg p-4 mb-3 flex-row items-center justify-between"
               >
                 <View className="flex-1">
                   <Text className="text-base font-semibold text-gray-800">
@@ -111,7 +111,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
             ))}
 
             {/* Term Summary */}
-            <View className="bg-primary/10 rounded-lg p-4 mt-4 border border-primary/20">
+            <View className="bg-primary/10 rounded-lg p-4 mt-4">
               <View className="flex-row items-center justify-between mb-2">
                 <Text className="text-gray-800 font-semibold">Term Average</Text>
                 <Text className="text-2xl font-bold text-primary">{average}%</Text>

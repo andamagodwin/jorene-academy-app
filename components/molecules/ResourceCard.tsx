@@ -36,7 +36,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onDownload
   };
 
   return (
-    <View className="bg-white rounded-lg p-4 mb-3 border border-gray-200">
+    <View className="bg-white rounded-lg p-4 mb-3">
       <View className="flex-row items-start">
         {/* File Icon */}
         <View className="w-12 h-12 bg-primary/10 rounded-lg items-center justify-center mr-3">

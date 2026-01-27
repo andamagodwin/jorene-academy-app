@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Image } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { useAuthStore } from '~/store/authStore';
 import { useDashboardStore } from '~/store/dashboardStore';
 import { AttendanceCard } from '~/components/organisms/AttendanceCard';
@@ -120,6 +121,7 @@ export default function Home() {
                       buttonText="Browse Files"
                       buttonColor="#FFFFFF"
                       buttonTextColor="#750E11"
+                      onPress={() => router.push('/resources')}
                     />
                   </View>
 
@@ -134,6 +136,7 @@ export default function Home() {
                       buttonText="View Details"
                       buttonColor="#FFFFFF"
                       buttonTextColor="#750E11"
+                      onPress={() => router.push('/fees')}
                     />
                   </View>
 
@@ -148,6 +151,7 @@ export default function Home() {
                       buttonText="View Grades"
                       buttonColor="#FCB316"
                       buttonTextColor="#750E11"
+                      onPress={() => router.push('/academics')}
                     />
                   </View>
                 </View>

@@ -49,38 +49,27 @@ export const SubjectsList: React.FC<SubjectsListProps> = ({
             <TouchableOpacity
               key={subject}
               onPress={() => onSelectSubject(isSelected ? null : subject)}
-              className={`mr-3 p-3 rounded-xl border ${
-                isSelected
-                  ? 'bg-primary border-primary'
-                  : 'bg-white border-gray-200'
-              }`}
-              style={{ minWidth: 120 }}
+              className="mr-3 p-3 rounded-xl bg-primary"
+              style={{ 
+                minWidth: 120,
+                opacity: isSelected ? 1 : 0.7
+              }}
             >
               <View className="items-center">
-                <View
-                  className={`w-12 h-12 rounded-full items-center justify-center mb-2 ${
-                    isSelected ? 'bg-white/20' : 'bg-primary/10'
-                  }`}
-                >
+                <View className="w-12 h-12 rounded-full items-center justify-center mb-2 bg-white/20">
                   <Ionicons
                     name={getSubjectIcon(subject)}
                     size={24}
-                    color={isSelected ? 'white' : '#750E11'}
+                    color="white"
                   />
                 </View>
                 <Text
-                  className={`text-sm font-medium text-center mb-1 ${
-                    isSelected ? 'text-white' : 'text-gray-800'
-                  }`}
+                  className="text-sm font-medium text-center mb-1 text-white"
                   numberOfLines={2}
                 >
                   {subject}
                 </Text>
-                <Text
-                  className={`text-xs ${
-                    isSelected ? 'text-white/80' : 'text-gray-500'
-                  }`}
-                >
+                <Text className="text-xs text-white/80">
                   {count} file{count !== 1 ? 's' : ''}
                 </Text>
               </View>

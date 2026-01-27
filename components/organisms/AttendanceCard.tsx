@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, View, Text } from 'react-native';
+import { router } from 'expo-router';
 import { DashboardCard } from '../molecules/DashboardCard';
 import { Attendance } from '../../types/database';
 
@@ -37,6 +38,7 @@ export const AttendanceCard: React.FC<AttendanceCardProps> = ({ attendance, isLo
       buttonText="View Calendar"
       buttonColor={attendance ? (isPresent ? '#10A753' : '#EF4444') : '#FBBF24'}
       buttonTextColor="#FFFFFF"
+      onPress={() => router.push('/academics')}
     />
   );
 };

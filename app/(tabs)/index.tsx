@@ -8,6 +8,7 @@ import { HomeworkCard } from '~/components/organisms/HomeworkCard';
 import { AnnouncementCard } from '~/components/organisms/AnnouncementCard';
 import { AlertCard } from '~/components/organisms/AlertCard';
 import { LoadingScreen } from '~/components/organisms/LoadingScreen';
+import { DashboardCard } from '~/components/molecules/DashboardCard';
 
 export default function Home() {
   const { profile, selectedStudent, isInitialized } = useAuthStore();
@@ -108,32 +109,46 @@ export default function Home() {
                     <AttendanceCard attendance={attendance} isLoading={isLoading} />
                   </View>
 
-                  {/* Homework Card */}
+                  {/* Resources Card */}
                   <View className="w-[48%] mb-3">
-                    <HomeworkCard homework={homework} isLoading={isLoading} />
+                    <DashboardCard
+                      icon="folder"
+                      iconColor="#FFFFFF"
+                      title="Resources"
+                      mainText="26"
+                      subtitle="Learning Materials"
+                      buttonText="Browse Files"
+                      buttonColor="#FFFFFF"
+                      buttonTextColor="#750E11"
+                    />
                   </View>
 
-                  {/* Announcements Card */}
+                  {/* Fees Summary Card */}
                   <View className="w-[48%] mb-3">
-                    <AnnouncementCard announcements={announcements} isLoading={isLoading} />
+                    <DashboardCard
+                      icon="wallet"
+                      iconColor="#FFFFFF"
+                      title="Fees"
+                      mainText="Term 1"
+                      subtitle="Payment Status"
+                      buttonText="View Details"
+                      buttonColor="#FFFFFF"
+                      buttonTextColor="#750E11"
+                    />
                   </View>
 
-                  {/* Quick Actions Card */}
+                  {/* Results Card */}
                   <View className="w-[48%] mb-3">
-                    <View className="bg-white rounded-xl p-4 shadow-sm">
-                      <View className="flex-row items-center mb-3">
-                        <Ionicons name="flash" size={20} color="#4D3E84" />
-                        <Text className="text-gray-800 font-semibold ml-2">Quick Actions</Text>
-                      </View>
-                      <TouchableOpacity className="flex-row items-center py-2">
-                        <Ionicons name="call-outline" size={16} color="#6B7280" />
-                        <Text className="text-gray-600 text-sm ml-2">Contact School</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity className="flex-row items-center py-2">
-                        <Ionicons name="calendar-outline" size={16} color="#6B7280" />
-                        <Text className="text-gray-600 text-sm ml-2">View Calendar</Text>
-                      </TouchableOpacity>
-                    </View>
+                    <DashboardCard
+                      icon="trophy"
+                      iconColor="#FFFFFF"
+                      title="Results"
+                      mainText="Term 1"
+                      subtitle="Academic Performance"
+                      buttonText="View Grades"
+                      buttonColor="#FCB316"
+                      buttonTextColor="#750E11"
+                    />
                   </View>
                 </View>
               </View>

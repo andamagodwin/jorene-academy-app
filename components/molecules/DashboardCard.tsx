@@ -26,7 +26,19 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({
   onPress,
 }) => {
   return (
-    <View className="bg-primary rounded-xl p-4 shadow-sm" style={{ height: 170 }}>
+    <View className="bg-primary rounded-xl p-4 shadow-sm" style={{ height: 170, overflow: 'hidden' }}>
+      {/* Decorative Circle */}
+      <View 
+        className="absolute rounded-full" 
+        style={{ 
+          width: 120, 
+          height: 120, 
+          backgroundColor: 'rgba(255, 255, 255, 0.15)',
+          top: -30,
+          right: -30,
+        }} 
+      />
+      
       <View className="flex-row items-center mb-3">
         <Ionicons name={icon} size={20} color="#FFFFFF" />
         <Text className="text-white font-semibold ml-2">{title}</Text>

@@ -20,7 +20,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home-fill" color={color} family="octicons" />,
           headerShown: profile?.role === 'parent' && students.length > 0,
           header: () => profile?.role === 'parent' && students.length > 0 ? (
             <StudentSwitcher

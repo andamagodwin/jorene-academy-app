@@ -52,18 +52,18 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
       >
         <TouchableOpacity
           onPress={() => setIsOpen(true)}
-          className="bg-gray-100 rounded-2xl px-5 py-1 flex-row items-center"
+          className=" rounded-2xl px-5 py-1 flex-row items-center"
           style={{ width: '40%' }}
         >
           <View className="flex-1">
-            <Text className="text-sm font-semibold text-gray-800" numberOfLines={1}>
+            <Text className="text-sm font-semibold text-white" numberOfLines={1}>
               {selectedStudent?.full_name || 'Select Student'}
             </Text>
             {selectedStudent && (
-              <Text className="text-xs text-gray-500">{selectedStudent.class}</Text>
+              <Text className="text-xs text-white/70">{selectedStudent.class}</Text>
             )}
           </View>
-          <Ionicons name="chevron-down" size={18} color="#6B7280" />
+          <Ionicons name="chevron-down" size={18} color="#c8c9ca" />
         </TouchableOpacity>
         {onNotificationPress && (
           <TouchableOpacity onPress={onNotificationPress} className="p-2">

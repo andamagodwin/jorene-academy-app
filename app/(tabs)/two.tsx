@@ -1,10 +1,11 @@
 import { Stack } from 'expo-router';
 import { View, Text, ScrollView, Alert } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '~/store/authStore';
 import { Button } from '~/components/atoms/Button';
 
 export default function Profile() {
-  const { user, signOut } = useAuthStore();
+  const { user, profile, students, signOut } = useAuthStore();
 
   const handleSignOut = () => {
     Alert.alert(
@@ -23,37 +24,70 @@ export default function Profile() {
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Profile' }} />
+      <Stack.Screen options={{ headerShown: false }} />
       <ScrollView className="flex-1 bg-background">
-        <View className="bg-white items-center py-8 px-6 border-b border-neutral">
-          <View className="w-20 h-20 rounded-full bg-primary justify-center items-center mb-4">
-            <Text className="text-4xl font-bold text-white">
-              {user?.user_metadata?.full_name?.charAt(0).toUpperCase() || 
-               user?.email?.charAt(0).toUpperCase() || '?'}
+        {/* Header with bg-primary */}
+        <View className="bg-primary pt-12 pb-8 px-6">
+          <View className="items-center">
+            <View className="w-24 h-24 rounded-full bg-white justify-center items-center mb-4">
+              <Text className="text-4xl font-bold text-primary">
+                {profile?.full_name?.charAt(0).toUpperCase() || 
+                 user?.email?.charAt(0).toUpperCase() || '?'}
+              </Text>
+            </View>
+            <Text className="text-2xl font-bold text-white mb-1">
+              {profile?.full_name || 'User'}
             </Text>
+            <Text className="text-base text-white/80">{user?.email}</Text>
+            <View className="mt-3 bg-white/20 px-4 py-2 rounded-full">
+              <Text className="text-white font-semibold capitalize">{profile?.role || 'Parent'}</Text>
+            </View>
           </View>
-          <Text className="text-2xl font-bold text-gray-800 mb-1">
-            {user?.user_metadata?.full_name || 'User'}
-          </Text>
-          <Text className="text-base text-gray-500">{user?.email}</Text>
         </View>
 
-        <View className="p-4">
-          <Text className="text-lg font-semibold text-gray-800 mb-3">Profile Details</Text>
+        {/* Children Section */}
+        {profile?.role === 'parent' && students.length > 0 && (
+          <View className="px-4 py-4">
+            <Text className="text-lg font-semibold text-gray-800 mb-3">My Children</Text>
+            {students.map((student) => (
+              <View key={student.id} className="bg-white p-4 rounded-xl mb-3 shadow-sm flex-row items-center">
+                <View className="w-12 h-12 rounded-full bg-primary/10 justify-center items-center mr-3">
+                  <Ionicons name="person" size={24} color="#750E11" />
+                </View>
+                <View className="flex-1">
+                  <Text className="text-base font-semibold text-gray-800">{student.full_name}</Text>
+                  <Text className="text-sm text-gray-600">{student.class}</Text>
+                  <Text className="text-xs text-gray-500 mt-0.5">Admission: {student.admission_no}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* Profile Details */}
+        <View className="px-4 pb-4">
+          <Text className="text-lg font-semibold text-gray-800 mb-3">Account Details</Text>
           
-          <View className="bg-white p-4 rounded-lg mb-3 shadow-sm">
+          <View className="bg-white p-4 rounded-xl mb-3 shadow-sm">
             <Text className="text-xs text-gray-500 mb-1 uppercase font-medium">Full Name</Text>
             <Text className="text-base text-gray-800 font-medium">
-              {user?.user_metadata?.full_name || 'Not set'}
+              {profile?.full_name || 'Not set'}
             </Text>
           </View>
 
-          <View className="bg-white p-4 rounded-lg mb-3 shadow-sm">
+          <View className="bg-white p-4 rounded-xl mb-3 shadow-sm">
             <Text className="text-xs text-gray-500 mb-1 uppercase font-medium">Email Address</Text>
             <Text className="text-base text-gray-800 font-medium">{user?.email}</Text>
           </View>
 
-          <View className="bg-white p-4 rounded-lg mb-3 shadow-sm">
+          <View className="bg-white p-4 rounded-xl mb-3 shadow-sm">
+            <Text className="text-xs text-gray-500 mb-1 uppercase font-medium">Phone Number</Text>
+            <Text className="text-base text-gray-800 font-medium">
+              {profile?.phone || 'Not set'}
+            </Text>
+          </View>
+
+          <View className="bg-white p-4 rounded-xl mb-3 shadow-sm">
             <Text className="text-xs text-gray-500 mb-1 uppercase font-medium">Member Since</Text>
             <Text className="text-base text-gray-800 font-medium">
               {user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US', {
@@ -63,20 +97,9 @@ export default function Profile() {
               }) : 'N/A'}
             </Text>
           </View>
-
-          <View className="bg-white p-4 rounded-lg mb-3 shadow-sm">
-            <Text className="text-xs text-gray-500 mb-1 uppercase font-medium">Last Sign In</Text>
-            <Text className="text-base text-gray-800 font-medium">
-              {user?.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              }) : 'N/A'}
-            </Text>
-          </View>
         </View>
 
-        <View className="p-4">
+        <View className="px-4 pb-8">
           <Button
             title="Sign Out"
             onPress={handleSignOut}

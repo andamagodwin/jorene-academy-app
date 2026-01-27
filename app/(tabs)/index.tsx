@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Image } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '~/store/authStore';
@@ -73,6 +73,15 @@ export default function Home() {
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
       >
+          {/* Banner Image */}
+          <View className="px-4 pt-4">
+            <Image
+              source={require('../../assets/images/banner-1.png')}
+              className="w-full h-40 rounded-2xl"
+              resizeMode="cover"
+            />
+          </View>
+
           {/* Greeting */}
           <View className="px-6 pt-6 pb-4">
             <Text className="text-2xl font-bold text-gray-800">

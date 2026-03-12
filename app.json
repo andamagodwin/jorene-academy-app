@@ -12,7 +12,8 @@
     "plugins": [
       "expo-router",
       "expo-web-browser",
-      "expo-font"
+      "expo-font",
+      "expo-notifications"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -30,14 +31,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.andama.joreneacademyapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.andama.joreneacademyapp"
+      "package": "com.andama.joreneacademyapp",
+      "googleServicesFile": "./google-services.json"
     },
     "extra": {
       "router": {},

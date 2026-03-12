@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { User, Sms, Lock, People, Teacher } from 'iconsax-react-native';
 import { InputField } from '../molecules/InputField';
 import { Button } from '../atoms/Button';
 import { Alert } from '../atoms/Alert';
@@ -81,8 +82,8 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
   return (
     <View className="w-full">
       <View className="mb-8">
-        <Text className="text-3xl font-bold text-gray-800 mb-2">Create Account</Text>
-        <Text className="text-base text-gray-500">Sign up to get started</Text>
+        <Text className="text-3xl font-bold text-black mb-1">Create Account</Text>
+        <Text className="text-sm text-black/50">Sign up to get started</Text>
       </View>
 
       <View className="w-full">
@@ -97,91 +98,94 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
         )}
 
         <InputField
-          label="Full Name"
           value={fullName}
           onChangeText={(text) => {
             setFullName(text);
             setErrors((prev) => ({ ...prev, fullName: undefined }));
           }}
           error={errors.fullName}
-          placeholder="Enter your full name"
+          placeholder="Full name"
           autoCapitalize="words"
           autoComplete="name"
-          required
+          leftIcon={<User size={20} color="#000" variant="Linear" />}
         />
 
         <InputField
-          label="Email"
           value={email}
           onChangeText={(text) => {
             setEmail(text);
             setErrors((prev) => ({ ...prev, email: undefined }));
           }}
           error={errors.email}
-          placeholder="Enter your email"
+          placeholder="Email address"
           keyboardType="email-address"
           autoCapitalize="none"
           autoComplete="email"
-          required
+          leftIcon={<Sms size={20} color="#000" variant="Linear" />}
         />
 
         {/* Role Selection */}
         <View className="mb-4">
-          <Text className="text-sm font-medium text-gray-700 mb-2">
-            I am a <Text className="text-primary">*</Text>
-          </Text>
-          <View className="flex-row gap-2">
+          <View className="flex-row gap-3">
             <TouchableOpacity
               onPress={() => setRole('parent')}
-              className={`flex-1 py-3 px-4 rounded-lg border-2 ${
-                role === 'parent' ? 'bg-primary border-primary' : 'bg-white border-gray-300'
+              className={`flex-1 py-3.5 rounded-xl border flex-row items-center justify-center gap-2 ${
+                role === 'parent' ? 'bg-black border-black' : 'bg-white border-black'
               }`}
             >
-              <Text className={`text-center font-semibold ${role === 'parent' ? 'text-white' : 'text-gray-700'}`}>
-                👨‍👩‍👧 Parent
+              <People
+                size={18}
+                color={role === 'parent' ? '#fff' : '#000'}
+                variant="Linear"
+              />
+              <Text className={`font-semibold text-sm ${role === 'parent' ? 'text-white' : 'text-black'}`}>
+                Parent
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setRole('teacher')}
-              className={`flex-1 py-3 px-4 rounded-lg border-2 ${
-                role === 'teacher' ? 'bg-primary border-primary' : 'bg-white border-gray-300'
+              className={`flex-1 py-3.5 rounded-xl border flex-row items-center justify-center gap-2 ${
+                role === 'teacher' ? 'bg-black border-black' : 'bg-white border-black'
               }`}
             >
-              <Text className={`text-center font-semibold ${role === 'teacher' ? 'text-white' : 'text-gray-700'}`}>
-                👨‍🏫 Teacher
+              <Teacher
+                size={18}
+                color={role === 'teacher' ? '#fff' : '#000'}
+                variant="Linear"
+              />
+              <Text className={`font-semibold text-sm ${role === 'teacher' ? 'text-white' : 'text-black'}`}>
+                Teacher
               </Text>
             </TouchableOpacity>
           </View>
         </View>
 
         <InputField
-          label="Password"
           value={password}
           onChangeText={(text) => {
             setPassword(text);
             setErrors((prev) => ({ ...prev, password: undefined }));
           }}
           error={errors.password}
-          placeholder="Enter your password"
+          placeholder="Password"
           isPassword
           autoCapitalize="none"
           autoComplete="password"
-          required
+          leftIcon={<Lock size={20} color="#000" variant="Linear" />}
         />
 
         <InputField
-          label="Confirm Password"
           value={confirmPassword}
           onChangeText={(text) => {
             setConfirmPassword(text);
             setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
           }}
           error={errors.confirmPassword}
-          placeholder="Confirm your password"
+          placeholder="Confirm password"
           isPassword
           autoCapitalize="none"
           autoComplete="password"
-          required
+          leftIcon={<Lock size={20} color="#000" variant="Linear" />}
         />
 
         <Button
@@ -194,9 +198,9 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onSignInPress }) => {
 
         {onSignInPress && (
           <View className="flex-row justify-center items-center mt-6">
-            <Text className="text-sm text-gray-500">Already have an account? </Text>
+            <Text className="text-sm text-black/40">Already have an account? </Text>
             <TouchableOpacity onPress={onSignInPress}>
-              <Text className="text-sm text-primary font-semibold">Sign In</Text>
+              <Text className="text-sm text-black font-semibold underline">Sign In</Text>
             </TouchableOpacity>
           </View>
         )}

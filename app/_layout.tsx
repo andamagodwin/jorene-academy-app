@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useAuthStore } from '../store/authStore';
+import { usePushNotifications } from '../hooks/usePushNotifications';
 import { LoadingScreen } from '../components/organisms/LoadingScreen';
 
 export const unstable_settings = {
@@ -15,6 +16,9 @@ export default function RootLayout() {
   const { user, profile, isInitialized, isFirstVisit, initialize } = useAuthStore();
   const segments = useSegments();
   const router = useRouter();
+
+  // Initialize Push Notifications (Token is saved to DB if user is logged in)
+  usePushNotifications(user?.id);
 
   // Initialize auth on app start
   useEffect(() => {

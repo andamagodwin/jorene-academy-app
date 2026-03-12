@@ -1,31 +1,104 @@
-import { Link, Tabs } from 'expo-router';
-
-import { HeaderButton } from '../../components/HeaderButton';
+import { Tabs, useRouter } from 'expo-router';
 import { TabBarIcon } from '../../components/TabBarIcon';
+import { useAuthStore } from '../../store/authStore';
+import { StudentSwitcher } from '../../components/molecules/StudentSwitcher';
 
 export default function TabLayout() {
+  const router = useRouter();
+  const { profile, students, selectedStudent, setSelectedStudent } = useAuthStore();
+
+  const handleNotificationPress = () => {
+    router.push('/(tabs)/notifications');
+  };
+
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: 'black',
+        tabBarActiveTintColor: '#750E11',
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <HeaderButton />
-            </Link>
-          ),
+          title: 'Home',
+          tabBarIcon: ({ color }) => <TabBarIcon name="home-fill" color={color} family="octicons" />,
+          headerShown: profile?.role === 'parent' && students.length > 0,
+          header: () => profile?.role === 'parent' && students.length > 0 ? (
+            <StudentSwitcher
+              students={students}
+              selectedStudent={selectedStudent}
+              onSelectStudent={setSelectedStudent}
+              onNotificationPress={handleNotificationPress}
+            />
+          ) : null,
+        }}
+      />
+      <Tabs.Screen
+        name="academics"
+        options={{
+          title: 'Academics',
+          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
+          headerShown: profile?.role === 'parent',
+          header: () => profile?.role === 'parent' ? (
+            <StudentSwitcher
+              students={students}
+              selectedStudent={selectedStudent}
+              onSelectStudent={setSelectedStudent}
+              onNotificationPress={handleNotificationPress}
+            />
+          ) : null,
+        }}
+      />
+      <Tabs.Screen
+        name="resources"
+        options={{
+          title: 'Resources',
+          tabBarIcon: ({ color }) => <TabBarIcon name="folder" color={color} />,
+          headerShown: profile?.role === 'parent',
+          header: () => profile?.role === 'parent' ? (
+            <StudentSwitcher
+              students={students}
+              selectedStudent={selectedStudent}
+              onSelectStudent={setSelectedStudent}
+              onNotificationPress={handleNotificationPress}
+            />
+          ) : null,
+        }}
+      />
+      <Tabs.Screen
+        name="fees"
+        options={{
+          title: 'Fees',
+          tabBarIcon: ({ color }) => <TabBarIcon name="dollar" color={color} />,
+          headerShown: profile?.role === 'parent',
+          header: () => profile?.role === 'parent' ? (
+            <StudentSwitcher
+              students={students}
+              selectedStudent={selectedStudent}
+              onSelectStudent={setSelectedStudent}
+              onNotificationPress={handleNotificationPress}
+            />
+          ) : null,
         }}
       />
       <Tabs.Screen
         name="two"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="notifications"
+        options={{
+          title: 'Notifications',
+          href: null,
+          headerStyle: {
+            backgroundColor: '#750E11',
+          },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: {
+            color: '#FFFFFF',
+          },
         }}
       />
     </Tabs>

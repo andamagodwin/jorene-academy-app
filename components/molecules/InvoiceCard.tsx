@@ -65,7 +65,7 @@ export const InvoiceCard: React.FC<InvoiceCardProps> = ({ invoice, onPress }) =>
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="bg-white rounded-xl p-4 mb-3 border border-gray-200 active:bg-gray-50"
+      className="bg-white rounded-[24px] p-5 mb-3 border border-gray-200 active:bg-gray-50"
     >
       {/* Header */}
       <View className="flex-row items-center justify-between mb-3">

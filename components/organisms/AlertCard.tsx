@@ -48,7 +48,7 @@ export const AlertCard: React.FC<AlertCardProps> = ({ alerts, onFixNow }) => {
   };
 
   return (
-    <View className="bg-white mx-4 my-2 p-5 rounded-xl shadow-sm">
+    <View className="bg-white mx-4 my-2 p-5 rounded-[24px] shadow-sm">
       <View className="flex-row items-center mb-4">
         <AppIcon name="warning" size={24} color="#F59E0B" variant="Bold" />
         <Text className="text-lg font-bold text-gray-800 ml-2">Alerts</Text>
@@ -63,7 +63,7 @@ export const AlertCard: React.FC<AlertCardProps> = ({ alerts, onFixNow }) => {
           return (
             <View
               key={index}
-              className="mb-3 rounded-lg p-4"
+              className="mb-3 rounded-2xl p-4"
               style={{ backgroundColor: colors.bg }}
             >
               <View className="flex-row items-start">

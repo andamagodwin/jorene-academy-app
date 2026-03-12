@@ -26,7 +26,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({
   onPress,
 }) => {
   return (
-    <View className="bg-primary rounded-xl p-4 shadow-sm flex-col justify-between" style={{ height: 170, overflow: 'hidden' }}>
+    <View className="bg-primary rounded-[24px] p-5 flex-col justify-between" style={{ height: 170, overflow: 'hidden' }}>
       {/* Decorative Circle */}
       <View 
         className="absolute rounded-full" 
@@ -55,8 +55,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({
       </View>
 
       <TouchableOpacity 
-        className="rounded-lg py-2 items-center mt-auto"
-        style={{ backgroundColor: buttonColor }}
+        className="rounded-xl py-2.5 items-center mt-auto bg-white"
         onPress={onPress}
       >
         <Text className="font-semibold text-sm" style={{ color: buttonTextColor }}>

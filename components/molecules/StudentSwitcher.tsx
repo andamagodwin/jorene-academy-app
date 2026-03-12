@@ -26,7 +26,7 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
     return (
       <SafeAreaView edges={['top']} className="bg-white border-b border-gray-200">
         <View className="px-4 py-3 flex-row items-center justify-between">
-          <View className="bg-gray-100 rounded-lg px-3 py-2 flex-row items-center" style={{ width: '40%' }}>
+          <View className="bg-gray-100 rounded-2xl px-3 py-2 flex-row items-center" style={{ width: '40%' }}>
             {students[0].photo_url ? (
               <Image 
                 source={{ uri: students[0].photo_url }} 
@@ -106,7 +106,7 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
           onPress={() => setIsOpen(false)}
           className="flex-1 bg-black/50 justify-center items-center p-4"
         >
-          <View className="bg-white rounded-2xl w-full max-w-md overflow-hidden">
+          <View className="bg-white rounded-[24px] w-full max-w-md overflow-hidden">
             <View className="bg-primary px-5 py-4">
               <Text className="text-white text-xl font-bold">Select Student</Text>
             </View>

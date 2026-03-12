@@ -90,7 +90,7 @@ export default function Home() {
           {/* Banner Image */}
           {isBannerVisible && (
             <View className="px-4 pt-4">
-              <View className="relative w-full h-40 rounded-2xl overflow-hidden bg-[#FFEEEE]">
+              <View className="relative w-full h-40 rounded-[24px] overflow-hidden bg-[#FFEEEE]">
                 <BannerNewIllustration width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
                 <TouchableOpacity
                   onPress={() => setIsBannerVisible(false)}
@@ -179,7 +179,7 @@ export default function Home() {
                 </View>
                 {announcements && announcements.length > 0 ? (
                   announcements.slice(0, 3).map((announcement) => (
-                    <View key={announcement.id} className="bg-white rounded-xl p-4 mb-3">
+                    <View key={announcement.id} className="bg-white rounded-[24px] p-5 mb-3">
                       <View className="flex-row items-start">
                          <View className="w-10 h-10 border border-gray-100 rounded-full items-center justify-center mr-3">
                           <AppIcon name="megaphone" size={20} color="#000" variant="Linear" />
@@ -199,7 +199,7 @@ export default function Home() {
                     </View>
                   ))
                 ) : (
-                  <View className="bg-white rounded-xl p-6 items-center border border-gray-100">
+                  <View className="bg-white rounded-[24px] p-8 items-center border border-gray-100">
                     <AppIcon name="megaphone" size={40} color="#000" variant="Linear" />
                     <Text className="text-gray-500 mt-2">No announcements yet</Text>
                   </View>
@@ -207,7 +207,7 @@ export default function Home() {
               </View>
             </>
           ) : profile?.role === 'parent' && !selectedStudent ? (
-            <View className="bg-white mx-4 my-2 p-8 rounded-xl items-center">
+            <View className="bg-white mx-4 my-2 p-8 rounded-[24px] items-center">
               <StudentRaisedHandIllustration width={180} height={180} />
               <Text className="text-black text-center mt-4">
                 No students.
@@ -220,7 +220,7 @@ export default function Home() {
 
           {/* Teacher/Admin View - Coming Soon */}
           {(profile?.role === 'teacher' || profile?.role === 'admin') && (
-            <View className="bg-white mx-4 my-2 p-8 rounded-xl shadow-sm items-center">
+            <View className="bg-white mx-4 my-2 p-8 rounded-[24px] shadow-sm items-center">
               <AppIcon name="construct" size={48} color="#CCBEB7" />
               <Text className="text-gray-800 font-bold text-lg mt-4">
                 {profile.role === 'teacher' ? 'Teacher' : 'Admin'} Dashboard

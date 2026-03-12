@@ -16,7 +16,7 @@ export const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <View className="bg-white p-4 rounded-xl shadow-sm h-full">
+      <View className="bg-white p-4 rounded-[24px] shadow-sm h-full">
         <View className="flex-row items-center mb-2">
           <AppIcon name="megaphone" size={20} color="#750E11" variant="Bold" />
           <Text className="text-sm font-bold text-gray-800 ml-2">News</Text>
@@ -44,7 +44,7 @@ export const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
   };
 
   return (
-    <View className="bg-white p-4 rounded-xl shadow-sm h-full">
+    <View className="bg-white p-4 rounded-[24px] shadow-sm h-full">
       <View className="flex-row items-center justify-between mb-3">
         <View className="flex-row items-center">
           <AppIcon name="megaphone" size={20} color="#750E11" variant="Bold" />

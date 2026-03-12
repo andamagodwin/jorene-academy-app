@@ -12,7 +12,7 @@ interface HomeworkCardProps {
 export const HomeworkCard: React.FC<HomeworkCardProps> = ({ homework, isLoading, onViewAll }) => {
   if (isLoading) {
     return (
-      <View className="bg-white p-4 rounded-xl shadow-sm h-full">
+      <View className="bg-white p-4 rounded-[24px] shadow-sm h-full">
         <View className="flex-row items-center mb-2">
           <AppIcon name="book" size={20} color="#750E11" variant="Bold" />
           <Text className="text-sm font-bold text-gray-800 ml-2">Homework</Text>
@@ -49,7 +49,7 @@ export const HomeworkCard: React.FC<HomeworkCardProps> = ({ homework, isLoading,
   };
 
   return (
-    <View className="bg-white p-4 rounded-xl shadow-sm h-full">
+    <View className="bg-white p-4 rounded-[24px] shadow-sm h-full">
       <View className="flex-row items-center justify-between mb-3">
         <View className="flex-row items-center">
           <AppIcon name="book" size={20} color="#750E11" variant="Bold" />

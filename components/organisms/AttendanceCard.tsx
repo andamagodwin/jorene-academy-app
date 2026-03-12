@@ -12,7 +12,7 @@ interface AttendanceCardProps {
 export const AttendanceCard: React.FC<AttendanceCardProps> = ({ attendance, isLoading }) => {
   if (isLoading) {
     return (
-      <View className="bg-white p-4 rounded-xl shadow-sm" style={{ height: 170 }}>
+      <View className="bg-white p-5 rounded-[24px] shadow-sm" style={{ height: 170 }}>
         <ActivityIndicator size="small" color="#750E11" />
       </View>
     );
@@ -37,7 +37,7 @@ export const AttendanceCard: React.FC<AttendanceCardProps> = ({ attendance, isLo
       subtitle={timeText}
       buttonText="View Calendar"
       buttonColor={attendance ? (isPresent ? '#10A753' : '#EF4444') : '#FBBF24'}
-      buttonTextColor="#FFFFFF"
+      buttonTextColor="#750E11"
       onPress={() => router.push('/academics')}
     />
   );

@@ -30,7 +30,7 @@ export const Input: React.FC<InputProps> = ({
           </View>
         )}
         <TextInput
-          className={`flex-1 h-[50px] border rounded-xl text-base bg-white text-black ${
+          className={`flex-1 h-[50px] border rounded-2xl text-base bg-white text-black ${
             hasLeftIcon ? 'pl-12' : 'px-4'
           } pr-12 ${
             error ? 'border-red-500' : 'border-black'
@@ -61,7 +61,7 @@ export const Input: React.FC<InputProps> = ({
         </View>
       )}
       <TextInput
-        className={`flex-1 h-[50px] border rounded-xl text-base bg-white text-black ${
+        className={`flex-1 h-[50px] border rounded-2xl text-base bg-white text-black ${
           hasLeftIcon ? 'pl-12' : 'px-4'
         } ${
           error ? 'border-red-500' : 'border-black'

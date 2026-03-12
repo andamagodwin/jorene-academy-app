@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useAuthStore } from '../store/authStore';
+import { useDashboardStore } from '../store/dashboardStore';
 import { usePushNotifications } from '../hooks/usePushNotifications';
 import { LoadingScreen } from '../components/organisms/LoadingScreen';
 
@@ -13,12 +14,20 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
-  const { user, profile, isInitialized, isFirstVisit, initialize } = useAuthStore();
+  const { user, profile, selectedStudent, isInitialized, isFirstVisit, initialize } = useAuthStore();
+  const { loadDashboardData } = useDashboardStore();
   const segments = useSegments();
   const router = useRouter();
 
   // Initialize Push Notifications (Token is saved to DB if user is logged in)
-  usePushNotifications(user?.id);
+  const { notification } = usePushNotifications(user?.id);
+
+  // Silently reload the dashboard in the background when a foreground notification is received
+  useEffect(() => {
+    if (notification && profile?.role === 'parent' && selectedStudent) {
+      loadDashboardData(selectedStudent.id, selectedStudent.class);
+    }
+  }, [notification]);
 
   // Initialize auth on app start
   useEffect(() => {

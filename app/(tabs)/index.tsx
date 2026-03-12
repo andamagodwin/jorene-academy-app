@@ -198,8 +198,8 @@ export default function Home() {
           ) : profile?.role === 'parent' && !selectedStudent ? (
             <View className="bg-white mx-4 my-2 p-8 rounded-xl items-center">
               <StudentRaisedHandIllustration width={180} height={180} />
-              <Text className="text-gray-600 text-center mt-4">
-                No students linked to your account yet.
+              <Text className="text-black text-center mt-4">
+                No students.
               </Text>
               <Text className="text-gray-400 text-center mt-2 text-sm">
                 Contact admin to link students to your profile.

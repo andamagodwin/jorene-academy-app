@@ -45,29 +45,29 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
   return (
     <ScrollView className="flex-1 bg-background">
       {/* Term Selector */}
-      <View className="px-4 pt-4 pb-2">
-        <Text className="text-sm text-gray-600 mb-2">Select Term</Text>
+      <View className="px-4 pt-2 pb-2">
+        <Text className="text-sm text-black mb-3 font-semibold">Select Term</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
           {terms.length > 0 ? terms.map((term) => (
             <TouchableOpacity
               key={term}
               onPress={() => onTermChange(term)}
-              className={`px-4 py-2 rounded-lg mr-2 border ${
+              className={`px-4 py-2.5 rounded-2xl mr-2 border ${
                 term === selectedTerm
                   ? 'bg-primary border-primary'
-                  : 'bg-white border-gray-200'
+                  : 'bg-white border-black/10'
               }`}
             >
               <Text
-                className={`font-medium ${
-                  term === selectedTerm ? 'text-white' : 'text-gray-800'
+                className={`font-semibold ${
+                  term === selectedTerm ? 'text-white' : 'text-black'
                 }`}
               >
                 {term}
               </Text>
             </TouchableOpacity>
           )) : (
-            <Text className="text-gray-500">No terms available</Text>
+            <Text className="text-black/70">No terms available</Text>
           )}
         </ScrollView>
       </View>
@@ -79,17 +79,17 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
             {termResults.map((result) => (
               <View
                 key={result.id}
-                className="bg-white rounded-lg p-4 mb-3 flex-row items-center justify-between"
+                className="bg-white rounded-[24px] p-5 mb-3 flex-row items-center justify-between border border-black/5"
               >
                 <View className="flex-1">
-                  <Text className="text-base font-semibold text-gray-800">
+                  <Text className="text-base font-semibold text-black">
                     {result.subject}
                   </Text>
-                  <Text className="text-sm text-gray-600 mt-1">
+                  <Text className="text-sm text-black/75 mt-1">
                     Score: {result.score}%
                   </Text>
                   {result.teacher_comment && (
-                    <Text className="text-xs text-gray-500 mt-2 italic">
+                    <Text className="text-xs text-black/60 mt-2 italic">
                       {result.teacher_comment}
                     </Text>
                   )}
@@ -111,23 +111,23 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
             ))}
 
             {/* Term Summary */}
-            <View className="bg-primary/10 rounded-lg p-4 mt-4">
+            <View className="bg-primary/10 rounded-[24px] p-5 mt-4 border border-primary/10">
               <View className="flex-row items-center justify-between mb-2">
-                <Text className="text-gray-800 font-semibold">Term Average</Text>
+                <Text className="text-black font-semibold">Term Average</Text>
                 <Text className="text-2xl font-bold text-primary">{average}%</Text>
               </View>
               <View className="flex-row items-center mt-3 pt-3 border-t border-primary/20">
                 <AppIcon name="star" size={16} color="#F59E0B" variant="Bold" />
-                <Text className="text-sm text-gray-600 ml-2">
+                <Text className="text-sm text-black/75 ml-2">
                   {termResults.length} subjects
                 </Text>
               </View>
             </View>
           </>
         ) : (
-          <View className="items-center py-12">
+          <View className="items-center py-14 bg-white rounded-[24px] border border-black/5">
             <AppIcon name="document-outline" size={48} color="#CCBEB7" />
-            <Text className="text-gray-600 mt-4">No results available</Text>
+            <Text className="text-black mt-4 font-semibold">No results available</Text>
           </View>
         )}
       </View>

@@ -12,7 +12,7 @@ const TABS: Tab[] = [
   { id: 'results', label: 'Results', icon: 'document-text' },
   { id: 'attendance', label: 'Attendance', icon: 'calendar' },
   { id: 'timetable', label: 'Timetable', icon: 'time' },
-  { id: 'performance', label: 'Performance', icon: 'stats-chart' },
+  { id: 'performance', label: 'Performance', icon: 'analytics' },
 ];
 
 interface AcademicsTabsProps {
@@ -25,27 +25,27 @@ export const AcademicsTabs: React.FC<AcademicsTabsProps> = ({
   onTabChange,
 }) => {
   return (
-    <View className="bg-white border-b border-gray-200 flex-row">
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+    <View className="px-4 pb-3">
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingRight: 16 }}>
         {TABS.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
             <TouchableOpacity
               key={tab.id}
               onPress={() => onTabChange(tab.id)}
-              className={`px-4 py-3 flex-row items-center border-b-2 ${
-                isActive ? 'border-primary' : 'border-transparent'
+              className={`mr-3 px-4 py-3 rounded-2xl flex-row items-center border ${
+                isActive ? 'bg-primary border-primary' : 'bg-white border-black/10'
               }`}
             >
               <AppIcon
                 name={tab.icon as any}
                 size={18}
-                color={isActive ? '#750E11' : '#9CA3AF'}
+                color={isActive ? '#FFFFFF' : '#111111'}
                 variant={isActive ? 'Bold' : 'Linear'}
               />
               <Text
-                className={`ml-2 font-medium ${
-                  isActive ? 'text-primary' : 'text-gray-600'
+                className={`ml-2 font-semibold ${
+                  isActive ? 'text-white' : 'text-black'
                 }`}
               >
                 {tab.label}

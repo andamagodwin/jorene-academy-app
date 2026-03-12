@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuthStore } from '../../store/authStore';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { SubjectsList } from '../../components/organisms/SubjectsList';
@@ -8,7 +9,8 @@ import { ResourceCard } from '../../components/molecules/ResourceCard';
 import { LoadingScreen } from '../../components/organisms/LoadingScreen';
 
 export default function ResourcesScreen() {
-  const { selectedStudent } = useAuthStore();
+  const { selectedStudent, profile, students } = useAuthStore();
+  const showHeader = profile?.role === 'parent' && students.length > 0;
   const {
     filteredResources,
     subjects,
@@ -43,7 +45,7 @@ export default function ResourcesScreen() {
   }
 
   return (
-    <View className="flex-1 bg-background">
+    <SafeAreaView edges={showHeader ? [] : ['top']} className="flex-1 bg-background">
       <ScrollView className="flex-1">
         {/* Search Bar */}
         <View className="px-4 mb-4">
@@ -114,6 +116,6 @@ export default function ResourcesScreen() {
 
         <View className="h-8" />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

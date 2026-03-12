@@ -2,6 +2,7 @@ import { Stack } from 'expo-router';
 import { View, Text, ScrollView, Alert, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuthStore } from '~/store/authStore';
 import { Button } from '~/components/atoms/Button';
 import { pickProfilePhoto, uploadProfilePhoto, updateProfileAvatar, deleteOldProfilePhoto, uploadStudentPhoto, updateStudentPhoto, deleteOldStudentPhoto } from '~/utils/profilePhoto';
@@ -115,9 +116,10 @@ export default function Profile() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <ScrollView className="flex-1 bg-background">
+      <SafeAreaView edges={['top']} className="flex-1 bg-primary">
+        <ScrollView className="flex-1 bg-background">
         {/* Header with bg-primary */}
-        <View className="bg-primary pt-12 pb-8 px-6">
+        <View className="bg-primary pt-6 pb-8 px-6">
           <View className="items-center">
             <View className="relative">
               {profile?.avatar_url ? (
@@ -245,7 +247,8 @@ export default function Profile() {
             fullWidth
           />
         </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 }

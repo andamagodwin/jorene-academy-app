@@ -6,6 +6,7 @@ import { StudentSwitcher } from '../../components/molecules/StudentSwitcher';
 export default function TabLayout() {
   const router = useRouter();
   const { profile, students, selectedStudent, setSelectedStudent } = useAuthStore();
+  const showStudentHeader = profile?.role === 'parent' && students.length > 0;
 
   const handleNotificationPress = () => {
     router.push('/(tabs)/notifications');
@@ -21,8 +22,8 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home-fill" color={color} family="octicons" />,
-          headerShown: profile?.role === 'parent' && students.length > 0,
-          header: () => profile?.role === 'parent' && students.length > 0 ? (
+          headerShown: showStudentHeader,
+          header: () => showStudentHeader ? (
             <StudentSwitcher
               students={students}
               selectedStudent={selectedStudent}
@@ -37,8 +38,8 @@ export default function TabLayout() {
         options={{
           title: 'Academics',
           tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
-          headerShown: profile?.role === 'parent',
-          header: () => profile?.role === 'parent' ? (
+          headerShown: showStudentHeader,
+          header: () => showStudentHeader ? (
             <StudentSwitcher
               students={students}
               selectedStudent={selectedStudent}
@@ -53,8 +54,8 @@ export default function TabLayout() {
         options={{
           title: 'Resources',
           tabBarIcon: ({ color }) => <TabBarIcon name="folder" color={color} />,
-          headerShown: profile?.role === 'parent',
-          header: () => profile?.role === 'parent' ? (
+          headerShown: showStudentHeader,
+          header: () => showStudentHeader ? (
             <StudentSwitcher
               students={students}
               selectedStudent={selectedStudent}
@@ -69,8 +70,8 @@ export default function TabLayout() {
         options={{
           title: 'Fees',
           tabBarIcon: ({ color }) => <TabBarIcon name="dollar" color={color} />,
-          headerShown: profile?.role === 'parent',
-          header: () => profile?.role === 'parent' ? (
+          headerShown: showStudentHeader,
+          header: () => showStudentHeader ? (
             <StudentSwitcher
               students={students}
               selectedStudent={selectedStudent}

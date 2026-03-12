@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Image } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useAuthStore } from '~/store/authStore';
 import { useDashboardStore } from '~/store/dashboardStore';
@@ -15,6 +16,7 @@ export default function Home() {
   const [refreshing, setRefreshing] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const hasLoadedOnce = useRef(false);
+  const showHeader = profile?.role === 'parent' && selectedStudent;
 
   // Single effect to handle all initial loading
   useEffect(() => {
@@ -65,7 +67,7 @@ export default function Home() {
   };
 
   return (
-    <View className="flex-1 bg-background">
+    <SafeAreaView edges={showHeader ? [] : ['top']} className="flex-1 bg-background">
       {/* Scrollable Content */}
       <ScrollView 
         className="flex-1"
@@ -220,6 +222,6 @@ export default function Home() {
           {/* Bottom Spacing */}
           <View className="h-8" />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

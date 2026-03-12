@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, ScrollView, Platform, StatusBar, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, ScrollView, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Student } from '../../types/database';
 
 interface StudentSwitcherProps {
@@ -18,85 +19,81 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const statusBarHeight = Platform.OS === 'android' ? StatusBar.currentHeight || 0 : 0;
-
   if (!students || students.length === 0) return null;
 
   // Don't show switcher if only one student
   if (students.length === 1) {
     return (
-      <View 
-        className="bg-white px-4 py-3 border-b border-gray-200 flex-row items-center justify-between"
-        style={{ paddingTop: statusBarHeight + 12 }}
-      >
-        <View className="bg-gray-100 rounded-lg px-3 py-2 flex-row items-center" style={{ width: '40%' }}>
-          {students[0].photo_url ? (
-            <Image 
-              source={{ uri: students[0].photo_url }} 
-              className="w-8 h-8 rounded-full mr-2 bg-white"
-            />
-          ) : (
-            <View className="w-8 h-8 rounded-full bg-primary/10 justify-center items-center mr-2">
-              <Text className="text-sm font-bold text-primary">
-                {students[0].full_name.charAt(0).toUpperCase()}
+      <SafeAreaView edges={['top']} className="bg-white border-b border-gray-200">
+        <View className="px-4 py-3 flex-row items-center justify-between">
+          <View className="bg-gray-100 rounded-lg px-3 py-2 flex-row items-center" style={{ width: '40%' }}>
+            {students[0].photo_url ? (
+              <Image 
+                source={{ uri: students[0].photo_url }} 
+                className="w-8 h-8 rounded-full mr-2 bg-white"
+              />
+            ) : (
+              <View className="w-8 h-8 rounded-full bg-primary/10 justify-center items-center mr-2">
+                <Text className="text-sm font-bold text-primary">
+                  {students[0].full_name.charAt(0).toUpperCase()}
+                </Text>
+              </View>
+            )}
+            <View className="flex-1">
+              <Text className="text-sm font-semibold text-gray-800" numberOfLines={1}>
+                {students[0].full_name}
               </Text>
+              <Text className="text-xs text-gray-500">{students[0].class}</Text>
             </View>
-          )}
-          <View className="flex-1">
-            <Text className="text-sm font-semibold text-gray-800" numberOfLines={1}>
-              {students[0].full_name}
-            </Text>
-            <Text className="text-xs text-gray-500">{students[0].class}</Text>
           </View>
+          {onNotificationPress && (
+            <TouchableOpacity onPress={onNotificationPress} className="p-2">
+              <Ionicons name="notifications-outline" size={24} color="#750E11" />
+            </TouchableOpacity>
+          )}
         </View>
-        {onNotificationPress && (
-          <TouchableOpacity onPress={onNotificationPress} className="p-2">
-            <Ionicons name="notifications-outline" size={24} color="#750E11" />
-          </TouchableOpacity>
-        )}
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
     <>
-      <View 
-        className="bg-primary px-4 py-3 border-b border-gray-200 flex-row items-center justify-between"
-        style={{ paddingTop: statusBarHeight + 12 }}
-      >
-        <TouchableOpacity
-          onPress={() => setIsOpen(true)}
-          className=" rounded-2xl px-5 py-1 flex-row items-center"
-          style={{ width: '40%' }}
-        >
-          {selectedStudent?.photo_url ? (
-            <Image 
-              source={{ uri: selectedStudent.photo_url }} 
-              className="w-8 h-8 rounded-full mr-2 bg-white"
-            />
-          ) : (
-            <View className="w-8 h-8 rounded-full bg-white/20 justify-center items-center mr-2">
-              <Text className="text-sm font-bold text-white">
-                {selectedStudent?.full_name?.charAt(0).toUpperCase() || '?'}
-              </Text>
-            </View>
-          )}
-          <View className="flex-1">
-            <Text className="text-sm font-semibold text-white" numberOfLines={1}>
-              {selectedStudent?.full_name || 'Select Student'}
-            </Text>
-            {selectedStudent && (
-              <Text className="text-xs text-white/70">{selectedStudent.class}</Text>
+      <SafeAreaView edges={['top']} className="bg-primary border-b border-gray-200">
+        <View className="px-4 py-3 flex-row items-center justify-between">
+          <TouchableOpacity
+            onPress={() => setIsOpen(true)}
+            className=" rounded-2xl px-5 py-1 flex-row items-center"
+            style={{ width: '40%' }}
+          >
+            {selectedStudent?.photo_url ? (
+              <Image 
+                source={{ uri: selectedStudent.photo_url }} 
+                className="w-8 h-8 rounded-full mr-2 bg-white"
+              />
+            ) : (
+              <View className="w-8 h-8 rounded-full bg-white/20 justify-center items-center mr-2">
+                <Text className="text-sm font-bold text-white">
+                  {selectedStudent?.full_name?.charAt(0).toUpperCase() || '?'}
+                </Text>
+              </View>
             )}
-          </View>
-          <Ionicons name="chevron-down" size={18} color="#c8c9ca" />
-        </TouchableOpacity>
-        {onNotificationPress && (
-          <TouchableOpacity onPress={onNotificationPress} className="p-2">
-            <Ionicons name="notifications-outline" size={24} color="white" />
+            <View className="flex-1">
+              <Text className="text-sm font-semibold text-white" numberOfLines={1}>
+                {selectedStudent?.full_name || 'Select Student'}
+              </Text>
+              {selectedStudent && (
+                <Text className="text-xs text-white/70">{selectedStudent.class}</Text>
+              )}
+            </View>
+            <Ionicons name="chevron-down" size={18} color="#c8c9ca" />
           </TouchableOpacity>
-        )}
-      </View>
+          {onNotificationPress && (
+            <TouchableOpacity onPress={onNotificationPress} className="p-2">
+              <Ionicons name="notifications-outline" size={24} color="white" />
+            </TouchableOpacity>
+          )}
+        </View>
+      </SafeAreaView>
 
       <Modal
         visible={isOpen}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '../../components/atoms/Button';
 import { useAuthStore } from '~/store/authStore';
 
@@ -20,7 +21,7 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <View className="flex-1 bg-background">
+    <SafeAreaView edges={['top']} className="flex-1 bg-background">
       <View className="flex-1 justify-between p-6 pt-20 pb-12">
         <View className="items-center mt-10">
           <Image
@@ -52,6 +53,6 @@ export default function WelcomeScreen() {
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

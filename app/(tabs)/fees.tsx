@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuthStore } from '../../store/authStore';
 import { useFeesStore } from '../../store/feesStore';
 import { BalanceCard } from '../../components/molecules/BalanceCard';
@@ -11,7 +12,8 @@ import { LoadingScreen } from '../../components/organisms/LoadingScreen';
 type TabType = 'overview' | 'history' | 'invoices' | 'receipts';
 
 export default function FeesScreen() {
-  const { selectedStudent } = useAuthStore();
+  const { selectedStudent, profile, students } = useAuthStore();
+  const showHeader = profile?.role === 'parent' && students.length > 0;
   const {
     balance,
     payments,
@@ -151,7 +153,7 @@ export default function FeesScreen() {
   };
 
   return (
-    <View className="flex-1 bg-background">
+    <SafeAreaView edges={showHeader ? [] : ['top']} className="flex-1 bg-background">
       {/* Tab Navigation */}
       <View className="bg-white flex-row border-b border-gray-200">
         {renderTabButton('overview', 'Overview')}
@@ -164,6 +166,6 @@ export default function FeesScreen() {
       <ScrollView className="flex-1">
         {renderContent()}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

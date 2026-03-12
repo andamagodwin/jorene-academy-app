@@ -79,6 +79,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
 
   generateAlerts: (attendance: Attendance | null, studentId: string) => {
     const alerts: DashboardAlert[] = [];
+    const announcements = get().announcements;
 
     // Check attendance
     if (!attendance) {
@@ -92,6 +93,17 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
         type: 'attendance',
         message: 'Student was absent today',
         severity: 'error',
+      });
+    }
+
+    // Map recent announcements to general alerts
+    if (announcements && announcements.length > 0) {
+      announcements.forEach((ann) => {
+        alerts.push({
+          type: 'general',
+          message: `${ann.title}: ${ann.content}`,
+          severity: 'info',
+        });
       });
     }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 import { DashboardAlert } from '../../store/dashboardStore';
 
 interface AlertCardProps {
@@ -48,9 +48,9 @@ export const AlertCard: React.FC<AlertCardProps> = ({ alerts, onFixNow }) => {
   };
 
   return (
-    <View className="bg-white mx-4 my-2 p-5 rounded-xl shadow-sm">
+    <View className="bg-white mx-4 my-2 p-5 rounded-[24px] shadow-sm">
       <View className="flex-row items-center mb-4">
-        <Ionicons name="warning" size={24} color="#F59E0B" />
+        <AppIcon name="warning" size={24} color="#F59E0B" variant="Bold" />
         <Text className="text-lg font-bold text-gray-800 ml-2">Alerts</Text>
         <View className="bg-red-500 rounded-full w-6 h-6 items-center justify-center ml-2">
           <Text className="text-white text-xs font-bold">{alerts.length}</Text>
@@ -63,14 +63,15 @@ export const AlertCard: React.FC<AlertCardProps> = ({ alerts, onFixNow }) => {
           return (
             <View
               key={index}
-              className="mb-3 rounded-lg p-4"
+              className="mb-3 rounded-2xl p-4"
               style={{ backgroundColor: colors.bg }}
             >
               <View className="flex-row items-start">
-                <Ionicons
+                <AppIcon
                   name={getAlertIcon(alert.type)}
                   size={20}
                   color={colors.icon}
+                  variant="Bold"
                   style={{ marginTop: 2 }}
                 />
                 <View className="flex-1 ml-3">

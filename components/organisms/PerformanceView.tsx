@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 
 interface PerformanceViewProps {
   termAverages: { term: string; average: number }[];
@@ -41,7 +41,7 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Ionicons name="hourglass" size={48} color="#CCBEB7" />
+        <AppIcon name="hourglass" size={48} color="#CCBEB7" />
         <Text className="text-gray-600 mt-4">Loading performance...</Text>
       </View>
     );
@@ -49,19 +49,19 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({
 
   return (
     <ScrollView className="flex-1 bg-background">
-      <View className="px-4 pt-4">
+      <View className="px-4 pt-2">
         {/* Term Progress */}
         {termAverages.length > 0 && (
           <>
-            <Text className="text-lg font-semibold text-gray-800 mb-3">
+            <Text className="text-lg font-semibold text-black mb-3">
               Term Progress
             </Text>
-            <View className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+            <View className="bg-white rounded-[24px] p-5 mb-4 border border-black/5">
               {termAverages.map((item, index) => (
                 <View key={item.term} className={index !== termAverages.length - 1 ? 'mb-3 pb-3 border-b border-gray-100' : ''}>
                   <View className="flex-row items-center justify-between mb-2">
-                    <Text className="text-sm font-medium text-gray-800">{item.term}</Text>
-                    <Text className="text-lg font-bold text-gray-800">
+                    <Text className="text-sm font-medium text-black">{item.term}</Text>
+                    <Text className="text-lg font-bold text-black">
                       {item.average}%
                     </Text>
                   </View>
@@ -83,22 +83,22 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({
         {/* Subject Analysis */}
         {subjectTrends.length > 0 && (
           <>
-            <Text className="text-lg font-semibold text-gray-800 mb-3">
+            <Text className="text-lg font-semibold text-black mb-3">
               Subject Performance
             </Text>
             {subjectTrends.map((subject) => (
-              <View key={subject.subject} className="bg-white rounded-lg p-4 mb-3 border border-gray-200">
+              <View key={subject.subject} className="bg-white rounded-[24px] p-5 mb-3 border border-black/5">
                 <View className="flex-row items-center justify-between mb-3">
                   <View className="flex-1">
-                    <Text className="text-base font-semibold text-gray-800">
+                    <Text className="text-base font-semibold text-black">
                       {subject.subject}
                     </Text>
-                    <Text className="text-sm text-gray-600 mt-1">
+                    <Text className="text-sm text-black/75 mt-1">
                       {subject.scores.length} assessment{subject.scores.length !== 1 ? 's' : ''}
                     </Text>
                   </View>
                   <View className="items-center">
-                    <Ionicons
+                    <AppIcon
                       name={getTrendIcon(subject.scores)}
                       size={24}
                       color={getTrendColor(subject.scores)}
@@ -117,7 +117,7 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({
                           backgroundColor: getScoreColor(score),
                         }}
                       />
-                      <Text className="text-xs text-gray-600 mt-1">{score}</Text>
+                        <Text className="text-xs text-black/75 mt-1">{score}</Text>
                     </View>
                   ))}
                 </View>
@@ -125,19 +125,19 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({
                 {/* Stats */}
                 <View className="flex-row justify-between mt-3 pt-3 border-t border-gray-100">
                   <View className="items-center">
-                    <Text className="text-xs text-gray-600">Avg</Text>
-                    <Text className="text-sm font-semibold text-gray-800 mt-1">
+                      <Text className="text-xs text-black">Avg</Text>
+                      <Text className="text-sm font-semibold text-black mt-1">
                       {Math.round(subject.scores.reduce((a, b) => a + b, 0) / subject.scores.length)}%
                     </Text>
                   </View>
                   <View className="items-center">
-                    <Text className="text-xs text-gray-600">High</Text>
+                      <Text className="text-xs text-black">High</Text>
                     <Text className="text-sm font-semibold text-accent mt-1">
                       {Math.max(...subject.scores)}%
                     </Text>
                   </View>
                   <View className="items-center">
-                    <Text className="text-xs text-gray-600">Low</Text>
+                      <Text className="text-xs text-black">Low</Text>
                     <Text className="text-sm font-semibold text-red-500 mt-1">
                       {Math.min(...subject.scores)}%
                     </Text>
@@ -149,9 +149,9 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({
         )}
 
         {termAverages.length === 0 && subjectTrends.length === 0 && (
-          <View className="items-center py-12">
-            <Ionicons name="analytics" size={48} color="#CCBEB7" />
-            <Text className="text-gray-600 mt-4">No performance data available</Text>
+          <View className="items-center py-14 bg-white rounded-[24px] border border-black/5">
+            <AppIcon name="analytics" size={48} color="#CCBEB7" />
+            <Text className="text-black mt-4 font-semibold">No performance data available</Text>
           </View>
         )}
       </View>

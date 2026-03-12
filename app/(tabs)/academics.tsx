@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { AcademicsTabs } from '../../components/organisms/AcademicsTabs';
 import { ResultsView } from '../../components/organisms/ResultsView';
 import { AttendanceView } from '../../components/organisms/AttendanceView';
 import { TimetableView } from '../../components/organisms/TimetableView';
 import { PerformanceView } from '../../components/organisms/PerformanceView';
+import { AppIcon } from '../../components/AppIcon';
 import { useAcademicsStore } from '../../store/academicsStore';
 import { useAuthStore } from '../../store/authStore';
 import { LoadingScreen } from '../../components/organisms/LoadingScreen';
@@ -29,7 +31,8 @@ export default function AcademicsScreen() {
     setSelectedTerm,
   } = useAcademicsStore();
 
-  const { selectedStudent } = useAuthStore();
+  const { selectedStudent, profile, students } = useAuthStore();
+  const showHeader = profile?.role === 'parent' && students.length > 0;
 
   // Load all data when student changes
   useEffect(() => {
@@ -89,9 +92,12 @@ export default function AcademicsScreen() {
   };
 
   return (
-    <View className="flex-1 bg-background">
+    <SafeAreaView edges={showHeader ? [] : ['top']} className="flex-1 bg-background">
+      <View className="px-4 pt-4 pb-3">
+
+      </View>
       <AcademicsTabs activeTab={activeTab} onTabChange={handleTabChange} />
       {renderContent()}
-    </View>
+    </SafeAreaView>
   );
 }

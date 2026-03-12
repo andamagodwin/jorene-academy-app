@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 import { Timetable } from '../../types/database';
 
 interface TimetableViewProps {
@@ -23,7 +23,7 @@ export const TimetableView: React.FC<TimetableViewProps> = ({ timetable, isLoadi
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Ionicons name="hourglass" size={48} color="#CCBEB7" />
+        <AppIcon name="hourglass" size={48} color="#CCBEB7" />
         <Text className="text-gray-600 mt-4">Loading timetable...</Text>
       </View>
     );
@@ -31,23 +31,23 @@ export const TimetableView: React.FC<TimetableViewProps> = ({ timetable, isLoadi
 
   return (
     <ScrollView className="flex-1 bg-background">
-      <View className="px-4 pt-4">
+      <View className="px-4 pt-2">
         {/* Day Selector */}
-        <Text className="text-sm text-gray-600 mb-2 font-medium">Select Day</Text>
+        <Text className="text-sm text-black mb-3 font-semibold">Select Day</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
           {DAYS.map((day) => (
             <TouchableOpacity
               key={day}
               onPress={() => setSelectedDay(day)}
-              className={`px-4 py-2 rounded-full mr-2 border ${
+              className={`px-4 py-2.5 rounded-2xl mr-2 border ${
                 day === selectedDay
                   ? 'bg-primary border-primary'
-                  : 'bg-white border-gray-200'
+                  : 'bg-white border-black/10'
               }`}
             >
               <Text
-                className={`font-medium text-sm ${
-                  day === selectedDay ? 'text-white' : 'text-gray-800'
+                className={`font-semibold text-sm ${
+                  day === selectedDay ? 'text-white' : 'text-black'
                 }`}
               >
                 {day.slice(0, 3)}
@@ -59,13 +59,13 @@ export const TimetableView: React.FC<TimetableViewProps> = ({ timetable, isLoadi
         {/* Classes for Selected Day */}
         {dayTimetable.length > 0 ? (
           <View className="pb-4">
-            <Text className="text-lg font-semibold text-gray-800 mb-3">
+            <Text className="text-lg font-semibold text-black mb-3">
               {selectedDay}&apos;s Classes
             </Text>
             {dayTimetable.map((item) => (
               <View
                 key={item.id}
-                className="bg-white rounded-lg p-4 mb-3 border border-gray-200 flex-row items-center"
+                className="bg-white rounded-[24px] p-5 mb-3 border border-black/5 flex-row items-center"
               >
                 {/* Time Indicator */}
                 <View className="w-1 h-16 bg-primary rounded mr-4" />
@@ -73,24 +73,24 @@ export const TimetableView: React.FC<TimetableViewProps> = ({ timetable, isLoadi
                 {/* Class Details */}
                 <View className="flex-1">
                   <View className="flex-row items-center justify-between mb-2">
-                    <Text className="text-base font-semibold text-gray-800">
+                    <Text className="text-base font-semibold text-black">
                       {item.subject}
                     </Text>
-                    <Text className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                    <Text className="text-xs font-medium text-black/70 bg-black/5 px-2 py-1 rounded-full">
                       Room {item.room || 'TBA'}
                     </Text>
                   </View>
 
                   <View className="flex-row items-center mb-2">
-                    <Ionicons name="time" size={14} color="#6B7280" />
-                    <Text className="text-sm text-gray-600 ml-2">
+                    <AppIcon name="time" size={14} color="#6B7280" />
+                    <Text className="text-sm text-black/75 ml-2">
                       {item.start_time} - {item.end_time}
                     </Text>
                   </View>
 
                   <View className="flex-row items-center">
-                    <Ionicons name="person" size={14} color="#6B7280" />
-                    <Text className="text-sm text-gray-600 ml-2">
+                    <AppIcon name="person" size={14} color="#6B7280" />
+                    <Text className="text-sm text-black/75 ml-2">
                       {item.teacher}
                     </Text>
                   </View>
@@ -99,9 +99,9 @@ export const TimetableView: React.FC<TimetableViewProps> = ({ timetable, isLoadi
             ))}
           </View>
         ) : (
-          <View className="items-center py-12">
-            <Ionicons name="calendar-outline" size={48} color="#CCBEB7" />
-            <Text className="text-gray-600 mt-4">No classes on {selectedDay}</Text>
+          <View className="items-center py-14 bg-white rounded-[24px] border border-black/5">
+            <AppIcon name="calendar-outline" size={48} color="#CCBEB7" />
+            <Text className="text-black mt-4 font-semibold">No classes on {selectedDay}</Text>
           </View>
         )}
       </View>

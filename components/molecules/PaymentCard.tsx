@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 import { Payment } from '../../types/database';
 
 interface PaymentCardProps {
@@ -57,7 +57,7 @@ export const PaymentCard: React.FC<PaymentCardProps> = ({ payment, onPress }) =>
         {/* Left: Icon + Details */}
         <View className="flex-row items-center flex-1">
           <View className="w-10 h-10 bg-accent/10 rounded-full items-center justify-center mr-3">
-            <Ionicons name={getMethodIcon()} size={20} color="#10A753" />
+            <AppIcon name={getMethodIcon()} size={20} color="#10A753" variant="Bold" />
           </View>
           <View className="flex-1">
             <Text className="text-base font-semibold text-gray-800">
@@ -76,7 +76,7 @@ export const PaymentCard: React.FC<PaymentCardProps> = ({ payment, onPress }) =>
 
         {/* Right: Arrow */}
         {onPress && (
-          <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+          <AppIcon name="chevron-forward" size={20} color="#9CA3AF" />
         )}
       </View>
     </TouchableOpacity>

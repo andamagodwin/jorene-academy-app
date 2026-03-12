@@ -38,7 +38,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <TouchableOpacity
-      className={`h-[50px] rounded-lg justify-center items-center px-6 ${variantClasses[variant]} ${
+      className={`h-[50px] rounded-2xl justify-center items-center px-6 ${variantClasses[variant]} ${
         fullWidth ? 'w-full' : ''
       } ${isDisabled ? 'opacity-50' : ''} ${className || ''}`}
       disabled={isDisabled}

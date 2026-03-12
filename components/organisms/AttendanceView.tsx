@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 
 interface AttendanceViewProps {
   attendancePercentage: number;
@@ -72,7 +72,7 @@ export const AttendanceView: React.FC<AttendanceViewProps> = ({
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Ionicons name="hourglass" size={48} color="#CCBEB7" />
+        <AppIcon name="hourglass" size={48} color="#CCBEB7" />
         <Text className="text-gray-600 mt-4">Loading attendance...</Text>
       </View>
     );
@@ -80,29 +80,29 @@ export const AttendanceView: React.FC<AttendanceViewProps> = ({
 
   return (
     <ScrollView className="flex-1 bg-background">
-      <View className="px-4 pt-4">
+      <View className="px-4 pt-2">
         {/* Attendance Summary Card */}
-        <View className="bg-white rounded-lg p-6 mb-4 border border-gray-200">
+        <View className="bg-white rounded-[24px] p-6 mb-4 border border-black/5">
           <View className="items-center mb-4">
             <View className="w-24 h-24 rounded-full bg-accent/20 items-center justify-center mb-3">
               <Text className="text-4xl font-bold text-accent">
                 {attendancePercentage}%
               </Text>
             </View>
-            <Text className="text-gray-800 font-semibold text-lg">
+            <Text className="text-black font-semibold text-lg">
               Current Attendance
             </Text>
           </View>
 
           <View className="flex-row justify-around pt-4 border-t border-gray-200">
             <View className="items-center">
-              <Text className="text-sm text-gray-600">Present Days</Text>
+              <Text className="text-sm text-black">Present Days</Text>
               <Text className="text-xl font-bold text-accent mt-1">
                 ~{Math.round((attendancePercentage / 100) * 20)}
               </Text>
             </View>
             <View className="items-center">
-              <Text className="text-sm text-gray-600">Absent Days</Text>
+              <Text className="text-sm text-black">Absent Days</Text>
               <Text className="text-xl font-bold text-red-500 mt-1">
                 ~{Math.round((20 * (100 - attendancePercentage)) / 100)}
               </Text>
@@ -111,19 +111,19 @@ export const AttendanceView: React.FC<AttendanceViewProps> = ({
         </View>
 
         {/* Calendar View */}
-        <View className="bg-white rounded-lg p-4 mb-4 border border-gray-200">
+        <View className="bg-white rounded-[24px] p-4 mb-4 border border-black/5">
           <View className="flex-row items-center justify-between mb-4">
-            <Text className="text-lg font-semibold text-gray-800">
+            <Text className="text-lg font-semibold text-black">
               {monthName}
             </Text>
-            <Ionicons name="calendar" size={20} color="#750E11" />
+            <AppIcon name="calendar" size={20} color="#750E11" variant="Bold" />
           </View>
 
           {/* Day Headers */}
           <View className="flex-row mb-2">
             {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => (
               <View key={index} className="flex-1 items-center py-2">
-                <Text className="text-xs font-bold text-gray-500">
+                <Text className="text-xs font-bold text-black/65">
                   {day}
                 </Text>
               </View>
@@ -163,19 +163,19 @@ export const AttendanceView: React.FC<AttendanceViewProps> = ({
           <View className="flex-row flex-wrap justify-center mt-4 pt-4 border-t border-gray-200">
             <View className="flex-row items-center mr-4 mb-2">
               <View className="w-4 h-4 bg-green-500 rounded-full mr-2" />
-              <Text className="text-xs text-gray-600">Present</Text>
+              <Text className="text-xs text-black">Present</Text>
             </View>
             <View className="flex-row items-center mr-4 mb-2">
               <View className="w-4 h-4 bg-red-500 rounded-full mr-2" />
-              <Text className="text-xs text-gray-600">Absent</Text>
+              <Text className="text-xs text-black">Absent</Text>
             </View>
             <View className="flex-row items-center mr-4 mb-2">
               <View className="w-4 h-4 bg-gray-200 rounded-full mr-2" />
-              <Text className="text-xs text-gray-600">Weekend</Text>
+              <Text className="text-xs text-black">Weekend</Text>
             </View>
             <View className="flex-row items-center mb-2">
               <View className="w-4 h-4 bg-primary rounded-full mr-2" />
-              <Text className="text-xs text-gray-600">Today</Text>
+              <Text className="text-xs text-black">Today</Text>
             </View>
           </View>
         </View>

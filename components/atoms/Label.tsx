@@ -7,7 +7,7 @@ interface LabelProps extends TextProps {
 
 export const Label: React.FC<LabelProps> = ({ children, required, className, ...props }) => {
   return (
-    <Text className={`text-sm font-medium text-gray-700 mb-1.5 ${className || ''}`} {...props}>
+    <Text className={`text-sm font-medium text-black mb-1.5 ${className || ''}`} {...props}>
       {children}
       {required && <Text className="text-red-500"> *</Text>}
     </Text>

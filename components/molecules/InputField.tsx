@@ -9,6 +9,7 @@ interface InputFieldProps extends TextInputProps {
   error?: string;
   required?: boolean;
   isPassword?: boolean;
+  leftIcon?: React.ReactNode;
 }
 
 export const InputField: React.FC<InputFieldProps> = ({
@@ -16,12 +17,13 @@ export const InputField: React.FC<InputFieldProps> = ({
   error,
   required,
   isPassword = false,
+  leftIcon,
   ...inputProps
 }) => {
   return (
     <View className="mb-4">
       {label && <Label required={required}>{label}</Label>}
-      <Input error={!!error} isPassword={isPassword} {...inputProps} />
+      <Input error={!!error} isPassword={isPassword} leftIcon={leftIcon} {...inputProps} />
       <ErrorText>{error}</ErrorText>
     </View>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 
 export type AlertVariant = 'success' | 'error' | 'warning' | 'info';
 
@@ -58,7 +58,7 @@ export const Alert: React.FC<AlertProps> = ({
     <View
       className={`${config.bgColor} ${config.borderColor} border rounded-xl p-4 mb-4 flex-row`}>
       <View className="mr-3 pt-0.5">
-        <Ionicons name={config.iconName} size={24} color={config.iconColor} />
+        <AppIcon name={config.iconName} size={24} color={config.iconColor} variant="Bold" />
       </View>
       <View className="flex-1">
         {title && (
@@ -70,7 +70,7 @@ export const Alert: React.FC<AlertProps> = ({
       </View>
       {onClose && (
         <TouchableOpacity onPress={onClose} className="ml-2" activeOpacity={0.7}>
-          <Ionicons name="close" size={20} color={config.iconColor} />
+          <AppIcon name="close" size={20} color={config.iconColor} />
         </TouchableOpacity>
       )}
     </View>

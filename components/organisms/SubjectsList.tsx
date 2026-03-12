@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 
 interface SubjectsListProps {
   subjects: string[];
@@ -57,10 +57,11 @@ export const SubjectsList: React.FC<SubjectsListProps> = ({
             >
               <View className="items-center">
                 <View className="w-12 h-12 rounded-full items-center justify-center mb-2 bg-white/20">
-                  <Ionicons
+                  <AppIcon
                     name={getSubjectIcon(subject)}
                     size={24}
                     color="white"
+                    variant="Bold"
                   />
                 </View>
                 <Text

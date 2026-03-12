@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 import { BalanceInfo } from '../../store/feesStore';
 
 interface BalanceCardProps {
@@ -48,7 +48,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({ balance }) => {
       <View className="flex-row items-center justify-between mb-6" style={{ zIndex: 10 }}>
         <View className="flex-row items-center">
           <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)' }} className="w-12 h-12 rounded-full items-center justify-center mr-3">
-            <Ionicons name="wallet" size={24} color="#FFFFFF" />
+            <AppIcon name="wallet" size={24} color="#FFFFFF" variant="Bold" />
           </View>
           <View>
             <Text style={{ color: '#FFFFFF' }} className="text-xl font-bold">
@@ -96,14 +96,14 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({ balance }) => {
       {/* Status Badge */}
       {balance.balance <= 0 && (
         <View style={{ backgroundColor: '#10A753', zIndex: 10 }} className="mt-4 rounded-lg p-3 flex-row items-center">
-          <Ionicons name="checkmark-circle" size={20} color="#FFFFFF" />
+          <AppIcon name="checkmark-circle" size={20} color="#FFFFFF" variant="Bold" />
           <Text style={{ color: '#FFFFFF' }} className="font-semibold ml-2">Fully Paid</Text>
         </View>
       )}
 
       {balance.balance > 0 && balance.balance < balance.totalFees && (
         <View style={{ backgroundColor: '#FCB316', zIndex: 10 }} className="mt-4 rounded-lg p-3 flex-row items-center">
-          <Ionicons name="time" size={20} color="#FFFFFF" />
+          <AppIcon name="time" size={20} color="#FFFFFF" variant="Bold" />
           <Text style={{ color: '#FFFFFF' }} className="font-semibold ml-2">
             Partial Payment
           </Text>
@@ -112,7 +112,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({ balance }) => {
       
       {balance.balance >= balance.totalFees && (
         <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', zIndex: 10 }} className="mt-4 rounded-lg p-3 flex-row items-center">
-          <Ionicons name="alert-circle" size={20} color="#FFFFFF" />
+          <AppIcon name="alert-circle" size={20} color="#FFFFFF" variant="Bold" />
           <Text style={{ color: '#FFFFFF' }} className="font-semibold ml-2">
             Outstanding Balance
           </Text>

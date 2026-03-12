@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { TextInput, TextInputProps, View, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Eye, EyeSlash } from 'iconsax-react-native';
 
 interface InputProps extends TextInputProps {
   error?: boolean;
   isPassword?: boolean;
+  leftIcon?: React.ReactNode;
 }
 
 export const Input: React.FC<InputProps> = ({ 
@@ -12,20 +13,29 @@ export const Input: React.FC<InputProps> = ({
   className, 
   isPassword = false,
   secureTextEntry,
+  leftIcon,
   ...props 
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   
   const shouldSecureText = isPassword ? !isPasswordVisible : secureTextEntry;
+  const hasLeftIcon = !!leftIcon;
 
   if (isPassword) {
     return (
-      <View className="relative">
+      <View className="relative flex-row items-center">
+        {hasLeftIcon && (
+          <View className="absolute left-0 h-full justify-center pl-4 z-10">
+            {leftIcon}
+          </View>
+        )}
         <TextInput
-          className={`h-[50px] border rounded-lg px-4 pr-12 text-base bg-white text-gray-800 ${
-            error ? 'border-red-500' : 'border-gray-300'
+          className={`flex-1 h-[50px] border rounded-2xl text-base bg-white text-black ${
+            hasLeftIcon ? 'pl-12' : 'px-4'
+          } pr-12 ${
+            error ? 'border-red-500' : 'border-black'
           } ${className || ''}`}
-          placeholderTextColor="#9CA3AF"
+          placeholderTextColor="#999"
           secureTextEntry={shouldSecureText}
           {...props}
         />
@@ -33,24 +43,33 @@ export const Input: React.FC<InputProps> = ({
           onPress={() => setIsPasswordVisible(!isPasswordVisible)}
           className="absolute right-0 h-full justify-center px-4"
           activeOpacity={0.7}>
-          <Ionicons
-            name={isPasswordVisible ? 'eye-off-outline' : 'eye-outline'}
-            size={20}
-            color="#6B7280"
-          />
+          {isPasswordVisible ? (
+            <EyeSlash size={20} color="#000" variant="Linear" />
+          ) : (
+            <Eye size={20} color="#000" variant="Linear" />
+          )}
         </TouchableOpacity>
       </View>
     );
   }
 
   return (
-    <TextInput
-      className={`h-[50px] border rounded-lg px-4 text-base bg-white text-gray-800 ${
-        error ? 'border-red-500' : 'border-gray-300'
-      } ${className || ''}`}
-      placeholderTextColor="#9CA3AF"
-      secureTextEntry={secureTextEntry}
-      {...props}
-    />
+    <View className="relative flex-row items-center">
+      {hasLeftIcon && (
+        <View className="absolute left-0 h-full justify-center pl-4 z-10">
+          {leftIcon}
+        </View>
+      )}
+      <TextInput
+        className={`flex-1 h-[50px] border rounded-2xl text-base bg-white text-black ${
+          hasLeftIcon ? 'pl-12' : 'px-4'
+        } ${
+          error ? 'border-red-500' : 'border-black'
+        } ${className || ''}`}
+        placeholderTextColor="#999"
+        secureTextEntry={secureTextEntry}
+        {...props}
+      />
+    </View>
   );
 };

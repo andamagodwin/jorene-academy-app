@@ -6,6 +6,7 @@ import { StudentSwitcher } from '../../components/molecules/StudentSwitcher';
 export default function TabLayout() {
   const router = useRouter();
   const { profile, students, selectedStudent, setSelectedStudent } = useAuthStore();
+  const showStudentHeader = profile?.role === 'parent' && students.length > 0;
 
   const handleNotificationPress = () => {
     router.push('/(tabs)/notifications');
@@ -15,14 +16,15 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#750E11',
+        tabBarInactiveTintColor: '#000000',
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home-fill" color={color} family="octicons" />,
-          headerShown: profile?.role === 'parent' && students.length > 0,
-          header: () => profile?.role === 'parent' && students.length > 0 ? (
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="home-fill" color={color} focused={focused} />,
+          headerShown: showStudentHeader,
+          header: () => showStudentHeader ? (
             <StudentSwitcher
               students={students}
               selectedStudent={selectedStudent}
@@ -36,9 +38,9 @@ export default function TabLayout() {
         name="academics"
         options={{
           title: 'Academics',
-          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
-          headerShown: profile?.role === 'parent',
-          header: () => profile?.role === 'parent' ? (
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="book" color={color} focused={focused} />,
+          headerShown: showStudentHeader,
+          header: () => showStudentHeader ? (
             <StudentSwitcher
               students={students}
               selectedStudent={selectedStudent}
@@ -52,9 +54,9 @@ export default function TabLayout() {
         name="resources"
         options={{
           title: 'Resources',
-          tabBarIcon: ({ color }) => <TabBarIcon name="folder" color={color} />,
-          headerShown: profile?.role === 'parent',
-          header: () => profile?.role === 'parent' ? (
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="folder" color={color} focused={focused} />,
+          headerShown: showStudentHeader,
+          header: () => showStudentHeader ? (
             <StudentSwitcher
               students={students}
               selectedStudent={selectedStudent}
@@ -68,9 +70,9 @@ export default function TabLayout() {
         name="fees"
         options={{
           title: 'Fees',
-          tabBarIcon: ({ color }) => <TabBarIcon name="dollar" color={color} />,
-          headerShown: profile?.role === 'parent',
-          header: () => profile?.role === 'parent' ? (
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="dollar" color={color} focused={focused} />,
+          headerShown: showStudentHeader,
+          header: () => showStudentHeader ? (
             <StudentSwitcher
               students={students}
               selectedStudent={selectedStudent}
@@ -84,7 +86,7 @@ export default function TabLayout() {
         name="two"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="user" color={color} focused={focused} />,
         }}
       />
       <Tabs.Screen

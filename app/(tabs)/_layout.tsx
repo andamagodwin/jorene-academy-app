@@ -21,7 +21,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home-fill" color={color} family="octicons" />,
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="home-fill" color={color} focused={focused} />,
           headerShown: showStudentHeader,
           header: () => showStudentHeader ? (
             <StudentSwitcher
@@ -37,7 +37,7 @@ export default function TabLayout() {
         name="academics"
         options={{
           title: 'Academics',
-          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="book" color={color} focused={focused} />,
           headerShown: showStudentHeader,
           header: () => showStudentHeader ? (
             <StudentSwitcher
@@ -53,7 +53,7 @@ export default function TabLayout() {
         name="resources"
         options={{
           title: 'Resources',
-          tabBarIcon: ({ color }) => <TabBarIcon name="folder" color={color} />,
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="folder" color={color} focused={focused} />,
           headerShown: showStudentHeader,
           header: () => showStudentHeader ? (
             <StudentSwitcher
@@ -69,7 +69,7 @@ export default function TabLayout() {
         name="fees"
         options={{
           title: 'Fees',
-          tabBarIcon: ({ color }) => <TabBarIcon name="dollar" color={color} />,
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="dollar" color={color} focused={focused} />,
           headerShown: showStudentHeader,
           header: () => showStudentHeader ? (
             <StudentSwitcher
@@ -85,7 +85,7 @@ export default function TabLayout() {
         name="two"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="user" color={color} focused={focused} />,
         }}
       />
       <Tabs.Screen

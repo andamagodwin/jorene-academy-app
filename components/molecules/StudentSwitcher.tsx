@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, ScrollView, Image } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AppIcon } from '../AppIcon';
 import { Student } from '../../types/database';
 
 interface StudentSwitcherProps {
@@ -48,7 +48,7 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
           </View>
           {onNotificationPress && (
             <TouchableOpacity onPress={onNotificationPress} className="p-2">
-              <Ionicons name="notifications-outline" size={24} color="#750E11" />
+              <AppIcon name="notifications-outline" size={24} color="#750E11" />
             </TouchableOpacity>
           )}
         </View>
@@ -85,11 +85,11 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
                 <Text className="text-xs text-white/70">{selectedStudent.class}</Text>
               )}
             </View>
-            <Ionicons name="chevron-down" size={18} color="#c8c9ca" />
+            <AppIcon name="chevron-down" size={18} color="#c8c9ca" />
           </TouchableOpacity>
           {onNotificationPress && (
             <TouchableOpacity onPress={onNotificationPress} className="p-2">
-              <Ionicons name="notifications-outline" size={24} color="white" />
+              <AppIcon name="notifications-outline" size={24} color="white" />
             </TouchableOpacity>
           )}
         </View>
@@ -145,7 +145,7 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
                       </Text>
                     </View>
                     {selectedStudent?.id === student.id && (
-                      <Ionicons name="checkmark-circle" size={24} color="#750E11" />
+                      <AppIcon name="checkmark-circle" size={24} color="#750E11" variant="Bold" />
                     )}
                   </View>
                 </TouchableOpacity>

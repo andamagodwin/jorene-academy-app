@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../../components/AppIcon';
 import { useDashboardStore } from '~/store/dashboardStore';
 
 export default function NotificationsScreen() {
@@ -50,10 +50,11 @@ export default function NotificationsScreen() {
               >
                 <View className="flex-row items-start">
                   <View className={`w-10 h-10 rounded-full items-center justify-center mr-3 ${getAlertBgColor(alert.severity)}`}>
-                    <Ionicons
+                    <AppIcon
                       name={getAlertIcon(alert.type)}
                       size={24}
                       color={getAlertColor(alert.severity)}
+                      variant="Bold"
                     />
                   </View>
                   
@@ -74,7 +75,7 @@ export default function NotificationsScreen() {
           ) : (
             <View className="items-center justify-center py-20">
               <View className="w-20 h-20 rounded-full bg-gray-100 items-center justify-center mb-4">
-                <Ionicons name="notifications-off-outline" size={40} color="#9CA3AF" />
+                <AppIcon name="notifications-off-outline" size={40} color="#9CA3AF" />
               </View>
               <Text className="text-gray-800 font-semibold text-lg">No Notifications</Text>
               <Text className="text-gray-500 text-center mt-2 px-8">
@@ -94,7 +95,7 @@ export default function NotificationsScreen() {
             <View className="bg-white rounded-lg p-4 mb-3 opacity-50">
               <View className="flex-row items-start">
                 <View className="w-10 h-10 rounded-full bg-green-100 items-center justify-center mr-3">
-                  <Ionicons name="checkmark-circle" size={24} color="#10A753" />
+                  <AppIcon name="checkmark-circle" size={24} color="#10A753" variant="Bold" />
                 </View>
                 <View className="flex-1">
                   <Text className="text-base font-semibold text-gray-800 mb-1">
@@ -113,7 +114,7 @@ export default function NotificationsScreen() {
             <View className="bg-white rounded-lg p-4 mb-3 opacity-50">
               <View className="flex-row items-start">
                 <View className="w-10 h-10 rounded-full bg-blue-100 items-center justify-center mr-3">
-                  <Ionicons name="information-circle" size={24} color="#3B82F6" />
+                  <AppIcon name="information-circle" size={24} color="#3B82F6" />
                 </View>
                 <View className="flex-1">
                   <Text className="text-base font-semibold text-gray-800 mb-1">

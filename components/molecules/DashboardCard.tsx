@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 
 interface DashboardCardProps {
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: string;
   iconColor: string;
   title: string;
   mainText: string;
@@ -40,7 +40,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({
       />
       
       <View className="flex-row items-center mb-3">
-        <Ionicons name={icon} size={20} color="#FFFFFF" />
+        <AppIcon name={icon} size={20} color={iconColor} variant="Bold" />
         <Text className="text-white font-semibold ml-2">{title}</Text>
       </View>
       <Text className="text-2xl font-bold mb-1 text-white">

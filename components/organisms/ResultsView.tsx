@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 import { Result } from '../../types/database';
 
 interface ResultsViewProps {
@@ -36,7 +36,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Ionicons name="hourglass" size={48} color="#CCBEB7" />
+        <AppIcon name="hourglass" size={48} color="#CCBEB7" />
         <Text className="text-gray-600 mt-4">Loading results...</Text>
       </View>
     );
@@ -117,7 +117,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                 <Text className="text-2xl font-bold text-primary">{average}%</Text>
               </View>
               <View className="flex-row items-center mt-3 pt-3 border-t border-primary/20">
-                <Ionicons name="star" size={16} color="#F59E0B" />
+                <AppIcon name="star" size={16} color="#F59E0B" variant="Bold" />
                 <Text className="text-sm text-gray-600 ml-2">
                   {termResults.length} subjects
                 </Text>
@@ -126,7 +126,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
           </>
         ) : (
           <View className="items-center py-12">
-            <Ionicons name="document-outline" size={48} color="#CCBEB7" />
+            <AppIcon name="document-outline" size={48} color="#CCBEB7" />
             <Text className="text-gray-600 mt-4">No results available</Text>
           </View>
         )}

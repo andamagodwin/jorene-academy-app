@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Linking } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 import { Resource } from '../../types/database';
 
 interface ResourceCardProps {
@@ -40,7 +40,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onDownload
       <View className="flex-row items-start">
         {/* File Icon */}
         <View className="w-12 h-12 bg-primary/10 rounded-lg items-center justify-center mr-3">
-          <Ionicons name={getFileIcon(resource.file_type)} size={24} color="#750E11" />
+          <AppIcon name={getFileIcon(resource.file_type)} size={24} color="#750E11" variant="Bold" />
         </View>
 
         {/* File Info */}
@@ -72,7 +72,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ resource, onDownload
           onPress={handleDownload}
           className="w-10 h-10 bg-accent rounded-lg items-center justify-center ml-2"
         >
-          <Ionicons name="download-outline" size={20} color="white" />
+          <AppIcon name="download-outline" size={20} color="white" variant="Bold" />
         </TouchableOpacity>
       </View>
     </View>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 
 interface Tab {
   id: string;
@@ -37,10 +37,11 @@ export const AcademicsTabs: React.FC<AcademicsTabsProps> = ({
                 isActive ? 'border-primary' : 'border-transparent'
               }`}
             >
-              <Ionicons
+              <AppIcon
                 name={tab.icon as any}
                 size={18}
                 color={isActive ? '#750E11' : '#9CA3AF'}
+                variant={isActive ? 'Bold' : 'Linear'}
               />
               <Text
                 className={`ml-2 font-medium ${

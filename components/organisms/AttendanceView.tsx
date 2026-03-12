@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 
 interface AttendanceViewProps {
   attendancePercentage: number;
@@ -72,7 +72,7 @@ export const AttendanceView: React.FC<AttendanceViewProps> = ({
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Ionicons name="hourglass" size={48} color="#CCBEB7" />
+        <AppIcon name="hourglass" size={48} color="#CCBEB7" />
         <Text className="text-gray-600 mt-4">Loading attendance...</Text>
       </View>
     );
@@ -116,7 +116,7 @@ export const AttendanceView: React.FC<AttendanceViewProps> = ({
             <Text className="text-lg font-semibold text-gray-800">
               {monthName}
             </Text>
-            <Ionicons name="calendar" size={20} color="#750E11" />
+            <AppIcon name="calendar" size={20} color="#750E11" variant="Bold" />
           </View>
 
           {/* Day Headers */}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 
 interface PerformanceViewProps {
   termAverages: { term: string; average: number }[];
@@ -41,7 +41,7 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Ionicons name="hourglass" size={48} color="#CCBEB7" />
+        <AppIcon name="hourglass" size={48} color="#CCBEB7" />
         <Text className="text-gray-600 mt-4">Loading performance...</Text>
       </View>
     );
@@ -98,7 +98,7 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({
                     </Text>
                   </View>
                   <View className="items-center">
-                    <Ionicons
+                    <AppIcon
                       name={getTrendIcon(subject.scores)}
                       size={24}
                       color={getTrendColor(subject.scores)}
@@ -150,7 +150,7 @@ export const PerformanceView: React.FC<PerformanceViewProps> = ({
 
         {termAverages.length === 0 && subjectTrends.length === 0 && (
           <View className="items-center py-12">
-            <Ionicons name="analytics" size={48} color="#CCBEB7" />
+            <AppIcon name="analytics" size={48} color="#CCBEB7" />
             <Text className="text-gray-600 mt-4">No performance data available</Text>
           </View>
         )}

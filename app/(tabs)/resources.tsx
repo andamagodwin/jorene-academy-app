@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AppIcon } from '../../components/AppIcon';
 import { useAuthStore } from '../../store/authStore';
 import { useResourcesStore } from '../../store/resourcesStore';
 import { SubjectsList } from '../../components/organisms/SubjectsList';
@@ -50,7 +50,7 @@ export default function ResourcesScreen() {
         {/* Search Bar */}
         <View className="px-4 mb-4">
           <View className="flex-row items-center bg-white rounded-xl px-4 py-3">
-            <Ionicons name="search" size={20} color="#9CA3AF" />
+            <AppIcon name="search" size={20} color="#9CA3AF" />
             <TextInput
               className="flex-1 ml-3 text-gray-800"
               placeholder="Search by title, subject..."
@@ -60,7 +60,7 @@ export default function ResourcesScreen() {
             />
             {searchQuery.length > 0 && (
               <TouchableOpacity onPress={() => setSearchQuery('')}>
-                <Ionicons name="close-circle" size={20} color="#9CA3AF" />
+                <AppIcon name="close-circle" size={20} color="#9CA3AF" />
               </TouchableOpacity>
             )}
           </View>
@@ -99,7 +99,7 @@ export default function ResourcesScreen() {
             ))
           ) : (
             <View className="items-center py-12">
-              <Ionicons name="folder-open-outline" size={48} color="#CCBEB7" />
+              <AppIcon name="folder-open-outline" size={48} color="#CCBEB7" />
               <Text className="text-gray-600 mt-4 text-center">
                 {searchQuery
                   ? 'No resources found matching your search'

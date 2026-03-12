@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 import { Invoice } from '../../types/database';
 
 interface InvoiceCardProps {
@@ -71,7 +71,7 @@ export const InvoiceCard: React.FC<InvoiceCardProps> = ({ invoice, onPress }) =>
       <View className="flex-row items-center justify-between mb-3">
         <View className="flex-row items-center flex-1">
           <View className="w-10 h-10 bg-primary/10 rounded-full items-center justify-center mr-3">
-            <Ionicons name="document-text" size={20} color="#750E11" />
+            <AppIcon name="document-text" size={20} color="#750E11" variant="Bold" />
           </View>
           <View className="flex-1">
             <Text className="text-base font-semibold text-gray-800">
@@ -153,7 +153,7 @@ export const InvoiceCard: React.FC<InvoiceCardProps> = ({ invoice, onPress }) =>
       {/* Arrow */}
       {onPress && (
         <View className="absolute top-4 right-4">
-          <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+          <AppIcon name="chevron-forward" size={20} color="#9CA3AF" />
         </View>
       )}
     </TouchableOpacity>

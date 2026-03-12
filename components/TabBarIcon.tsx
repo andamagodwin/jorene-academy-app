@@ -1,19 +1,23 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Octicons from '@expo/vector-icons/Octicons';
 import { StyleSheet } from 'react-native';
+import { AppIcon } from './AppIcon';
 
-type TabBarIconProps = 
-  | { name: React.ComponentProps<typeof FontAwesome>['name']; color: string; family?: 'fontawesome' }
-  | { name: React.ComponentProps<typeof Octicons>['name']; color: string; family: 'octicons' };
+type TabBarIconProps = {
+  name: string;
+  color: string;
+  focused?: boolean;
+};
 
 export const TabBarIcon = (props: TabBarIconProps) => {
-  const { family = 'fontawesome', ...rest } = props;
-  
-  if (family === 'octicons') {
-    return <Octicons size={24} style={styles.tabBarIcon} {...rest as any} />;
-  }
-  
-  return <FontAwesome size={28} style={styles.tabBarIcon} {...rest as any} />;
+  const { focused = false, ...rest } = props;
+
+  return (
+    <AppIcon
+      size={24}
+      variant={focused ? 'Bold' : 'Linear'}
+      style={styles.tabBarIcon}
+      {...rest}
+    />
+  );
 };
 
 export const styles = StyleSheet.create({

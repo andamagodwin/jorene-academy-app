@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 import { Announcement } from '../../types/database';
 
 interface AnnouncementCardProps {
@@ -18,7 +18,7 @@ export const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
     return (
       <View className="bg-white p-4 rounded-xl shadow-sm h-full">
         <View className="flex-row items-center mb-2">
-          <Ionicons name="megaphone" size={20} color="#750E11" />
+          <AppIcon name="megaphone" size={20} color="#750E11" variant="Bold" />
           <Text className="text-sm font-bold text-gray-800 ml-2">News</Text>
         </View>
         <View className="items-center py-4">
@@ -47,7 +47,7 @@ export const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
     <View className="bg-white p-4 rounded-xl shadow-sm h-full">
       <View className="flex-row items-center justify-between mb-3">
         <View className="flex-row items-center">
-          <Ionicons name="megaphone" size={20} color="#750E11" />
+          <AppIcon name="megaphone" size={20} color="#750E11" variant="Bold" />
           <Text className="text-sm font-bold text-gray-800 ml-2">News</Text>
         </View>
         {announcements.length > 0 && (
@@ -75,7 +75,7 @@ export const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
         </View>
       ) : (
         <View className="items-center py-2">
-          <Ionicons name="information-circle" size={24} color="#6B7280" />
+          <AppIcon name="information-circle" size={24} color="#6B7280" />
           <Text className="text-xs text-gray-600 mt-1">No news</Text>
         </View>
       )}

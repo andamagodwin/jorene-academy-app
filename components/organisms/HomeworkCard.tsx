@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 import { Homework } from '../../types/database';
 
 interface HomeworkCardProps {
@@ -14,7 +14,7 @@ export const HomeworkCard: React.FC<HomeworkCardProps> = ({ homework, isLoading,
     return (
       <View className="bg-white p-4 rounded-xl shadow-sm h-full">
         <View className="flex-row items-center mb-2">
-          <Ionicons name="book" size={20} color="#750E11" />
+          <AppIcon name="book" size={20} color="#750E11" variant="Bold" />
           <Text className="text-sm font-bold text-gray-800 ml-2">Homework</Text>
         </View>
         <View className="items-center py-4">
@@ -52,7 +52,7 @@ export const HomeworkCard: React.FC<HomeworkCardProps> = ({ homework, isLoading,
     <View className="bg-white p-4 rounded-xl shadow-sm h-full">
       <View className="flex-row items-center justify-between mb-3">
         <View className="flex-row items-center">
-          <Ionicons name="book" size={20} color="#750E11" />
+          <AppIcon name="book" size={20} color="#750E11" variant="Bold" />
           <Text className="text-sm font-bold text-gray-800 ml-2">Homework</Text>
         </View>
         {homework.length > 0 && (
@@ -83,7 +83,7 @@ export const HomeworkCard: React.FC<HomeworkCardProps> = ({ homework, isLoading,
         </View>
       ) : (
         <View className="items-center py-2">
-          <Ionicons name="checkmark-circle" size={24} color="#10A753" />
+          <AppIcon name="checkmark-circle" size={24} color="#10A753" variant="Bold" />
           <Text className="text-xs text-gray-600 mt-1">All done! 🎉</Text>
         </View>
       )}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Linking } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 import { Receipt } from '../../types/database';
 
 interface ReceiptCardProps {
@@ -33,7 +33,7 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
         {/* Left: Icon + Details */}
         <View className="flex-row items-center flex-1">
           <View className="w-10 h-10 bg-info/10 rounded-full items-center justify-center mr-3">
-            <Ionicons name="receipt" size={20} color="#4D3E84" />
+            <AppIcon name="receipt" size={20} color="#4D3E84" variant="Bold" />
           </View>
           <View className="flex-1">
             <Text className="text-base font-semibold text-gray-800">
@@ -51,7 +51,7 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
             onPress={handleViewReceipt}
             className="bg-primary rounded-lg px-4 py-2 flex-row items-center"
           >
-            <Ionicons name="eye" size={16} color="white" />
+            <AppIcon name="eye" size={16} color="white" variant="Bold" />
             <Text className="text-white font-semibold ml-1.5 text-sm">
               View PDF
             </Text>

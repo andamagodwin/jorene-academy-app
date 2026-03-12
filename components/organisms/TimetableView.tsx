@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { AppIcon } from '../AppIcon';
 import { Timetable } from '../../types/database';
 
 interface TimetableViewProps {
@@ -23,7 +23,7 @@ export const TimetableView: React.FC<TimetableViewProps> = ({ timetable, isLoadi
   if (isLoading) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Ionicons name="hourglass" size={48} color="#CCBEB7" />
+        <AppIcon name="hourglass" size={48} color="#CCBEB7" />
         <Text className="text-gray-600 mt-4">Loading timetable...</Text>
       </View>
     );
@@ -82,14 +82,14 @@ export const TimetableView: React.FC<TimetableViewProps> = ({ timetable, isLoadi
                   </View>
 
                   <View className="flex-row items-center mb-2">
-                    <Ionicons name="time" size={14} color="#6B7280" />
+                    <AppIcon name="time" size={14} color="#6B7280" />
                     <Text className="text-sm text-gray-600 ml-2">
                       {item.start_time} - {item.end_time}
                     </Text>
                   </View>
 
                   <View className="flex-row items-center">
-                    <Ionicons name="person" size={14} color="#6B7280" />
+                    <AppIcon name="person" size={14} color="#6B7280" />
                     <Text className="text-sm text-gray-600 ml-2">
                       {item.teacher}
                     </Text>
@@ -100,7 +100,7 @@ export const TimetableView: React.FC<TimetableViewProps> = ({ timetable, isLoadi
           </View>
         ) : (
           <View className="items-center py-12">
-            <Ionicons name="calendar-outline" size={48} color="#CCBEB7" />
+            <AppIcon name="calendar-outline" size={48} color="#CCBEB7" />
             <Text className="text-gray-600 mt-4">No classes on {selectedDay}</Text>
           </View>
         )}

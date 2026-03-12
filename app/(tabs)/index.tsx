@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Image } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { AppIcon } from '../../components/AppIcon';
 import { useAuthStore } from '~/store/authStore';
 import { useDashboardStore } from '~/store/dashboardStore';
 import { AttendanceCard } from '~/components/organisms/AttendanceCard';
@@ -170,7 +170,7 @@ export default function Home() {
                     <View key={announcement.id} className="bg-white rounded-xl p-4 mb-3">
                       <View className="flex-row items-start">
                         <View className="w-10 h-10 bg-primary/10 rounded-full items-center justify-center mr-3">
-                          <Ionicons name="megaphone" size={20} color="#750E11" />
+                          <AppIcon name="megaphone" size={20} color="#750E11" variant="Bold" />
                         </View>
                         <View className="flex-1">
                           <Text className="text-base font-semibold text-gray-800 mb-1">
@@ -188,7 +188,7 @@ export default function Home() {
                   ))
                 ) : (
                   <View className="bg-white rounded-xl p-6 items-center">
-                    <Ionicons name="megaphone-outline" size={40} color="#CCBEB7" />
+                    <AppIcon name="megaphone-outline" size={40} color="#CCBEB7" />
                     <Text className="text-gray-500 mt-2">No announcements yet</Text>
                   </View>
                 )}
@@ -196,7 +196,7 @@ export default function Home() {
             </>
           ) : profile?.role === 'parent' && !selectedStudent ? (
             <View className="bg-white mx-4 my-2 p-8 rounded-xl shadow-sm items-center">
-              <Ionicons name="people" size={48} color="#CCBEB7" />
+              <AppIcon name="people" size={48} color="#CCBEB7" />
               <Text className="text-gray-600 text-center mt-4">
                 No students linked to your account yet.
               </Text>
@@ -209,7 +209,7 @@ export default function Home() {
           {/* Teacher/Admin View - Coming Soon */}
           {(profile?.role === 'teacher' || profile?.role === 'admin') && (
             <View className="bg-white mx-4 my-2 p-8 rounded-xl shadow-sm items-center">
-              <Ionicons name="construct" size={48} color="#CCBEB7" />
+              <AppIcon name="construct" size={48} color="#CCBEB7" />
               <Text className="text-gray-800 font-bold text-lg mt-4">
                 {profile.role === 'teacher' ? 'Teacher' : 'Admin'} Dashboard
               </Text>

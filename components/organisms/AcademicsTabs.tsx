@@ -33,9 +33,8 @@ export const AcademicsTabs: React.FC<AcademicsTabsProps> = ({
             <TouchableOpacity
               key={tab.id}
               onPress={() => onTabChange(tab.id)}
-              className={`mr-3 px-4 py-3 rounded-2xl flex-row items-center border ${
-                isActive ? 'bg-primary border-primary' : 'bg-white border-black/10'
-              }`}
+              className={`mr-3 px-4 py-3 rounded-2xl flex-row items-center border ${isActive ? 'bg-primary border-primary' : 'bg-white border-black'
+                }`}
             >
               <AppIcon
                 name={tab.icon as any}
@@ -44,9 +43,8 @@ export const AcademicsTabs: React.FC<AcademicsTabsProps> = ({
                 variant={isActive ? 'Bold' : 'Linear'}
               />
               <Text
-                className={`ml-2 font-semibold ${
-                  isActive ? 'text-white' : 'text-black'
-                }`}
+                className={`ml-2 font-semibold ${isActive ? 'text-white' : 'text-black'
+                  }`}
               >
                 {tab.label}
               </Text>

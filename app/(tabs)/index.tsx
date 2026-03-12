@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { AppIcon } from '../../components/AppIcon';
+import StudentRaisedHandIllustration from '../../assets/illustrations/student-raised-hand.svg';
 import { useAuthStore } from '~/store/authStore';
 import { useDashboardStore } from '~/store/dashboardStore';
 import { AttendanceCard } from '~/components/organisms/AttendanceCard';
@@ -195,8 +196,8 @@ export default function Home() {
               </View>
             </>
           ) : profile?.role === 'parent' && !selectedStudent ? (
-            <View className="bg-white mx-4 my-2 p-8 rounded-xl shadow-sm items-center">
-              <AppIcon name="people" size={48} color="#CCBEB7" />
+            <View className="bg-white mx-4 my-2 p-8 rounded-xl items-center">
+              <StudentRaisedHandIllustration width={180} height={180} />
               <Text className="text-gray-600 text-center mt-4">
                 No students linked to your account yet.
               </Text>

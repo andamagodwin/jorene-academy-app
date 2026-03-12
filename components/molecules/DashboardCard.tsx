@@ -7,7 +7,7 @@ interface DashboardCardProps {
   iconColor: string;
   title: string;
   mainText: string;
-  subtitle: string;
+  subtitle?: string;
   buttonText: string;
   buttonColor: string;
   buttonTextColor: string;
@@ -26,7 +26,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({
   onPress,
 }) => {
   return (
-    <View className="bg-primary rounded-xl p-4 shadow-sm" style={{ height: 170, overflow: 'hidden' }}>
+    <View className="bg-primary rounded-xl p-4 shadow-sm flex-col justify-between" style={{ height: 170, overflow: 'hidden' }}>
       {/* Decorative Circle */}
       <View 
         className="absolute rounded-full" 
@@ -39,18 +39,23 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({
         }} 
       />
       
-      <View className="flex-row items-center mb-3">
-        <AppIcon name={icon} size={20} color={iconColor} variant="Bold" />
-        <Text className="text-white font-semibold ml-2">{title}</Text>
+      <View className="flex-1">
+        <View className="flex-row items-center mb-3">
+          <AppIcon name={icon} size={20} color={iconColor} variant="Bold" />
+          <Text className="text-white font-semibold ml-2">{title}</Text>
+        </View>
+        <Text className="text-2xl font-bold mb-1 text-white">
+          {mainText}
+        </Text>
+        {subtitle && (
+          <Text className="text-xs text-white/70 mb-2">
+            {subtitle}
+          </Text>
+        )}
       </View>
-      <Text className="text-2xl font-bold mb-1 text-white">
-        {mainText}
-      </Text>
-      <Text className="text-xs text-white/70 mb-2">
-        {subtitle}
-      </Text>
+
       <TouchableOpacity 
-        className="rounded-lg py-2 items-center mt-2"
+        className="rounded-lg py-2 items-center mt-auto"
         style={{ backgroundColor: buttonColor }}
         onPress={onPress}
       >

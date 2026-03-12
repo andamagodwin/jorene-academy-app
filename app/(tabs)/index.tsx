@@ -4,16 +4,19 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { AppIcon } from '../../components/AppIcon';
 import StudentRaisedHandIllustration from '../../assets/illustrations/student-raised-hand.svg';
+import BannerNewIllustration from '../../assets/illustrations/banner-new.svg';
 import { useAuthStore } from '~/store/authStore';
 import { useDashboardStore } from '~/store/dashboardStore';
 import { AttendanceCard } from '~/components/organisms/AttendanceCard';
 import { AlertCard } from '~/components/organisms/AlertCard';
 import { LoadingScreen } from '~/components/organisms/LoadingScreen';
 import { DashboardCard } from '~/components/molecules/DashboardCard';
+import { useFeesStore } from '~/store/feesStore';
 
 export default function Home() {
   const { profile, selectedStudent, isInitialized } = useAuthStore();
   const { attendance, announcements, alerts, isLoading, loadDashboardData } = useDashboardStore();
+  const { balance, loadBalance } = useFeesStore();
   const [refreshing, setRefreshing] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [isBannerVisible, setIsBannerVisible] = useState(true);
@@ -28,7 +31,10 @@ export default function Home() {
     const loadInitialData = async () => {
       // For parents with students, load dashboard data
       if (profile?.role === 'parent' && selectedStudent) {
-        await loadDashboardData(selectedStudent.id, selectedStudent.class);
+        await Promise.all([
+          loadDashboardData(selectedStudent.id, selectedStudent.class),
+          loadBalance(selectedStudent.id, selectedStudent.class)
+        ]);
       }
       
       // Mark as ready only once after first successful load
@@ -44,9 +50,10 @@ export default function Home() {
     } else if (selectedStudent) {
       // Subsequent student changes - load without showing loading screen
       loadDashboardData(selectedStudent.id, selectedStudent.class);
+      loadBalance(selectedStudent.id, selectedStudent.class);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isInitialized, profile?.role, selectedStudent?.id, loadDashboardData]);
+  }, [isInitialized, profile?.role, selectedStudent?.id, loadDashboardData, loadBalance]);
 
   // Show loading screen only during initial app load
   if (!isInitialized || !isReady) {
@@ -56,7 +63,10 @@ export default function Home() {
   const handleRefresh = async () => {
     if (selectedStudent) {
       setRefreshing(true);
-      await loadDashboardData(selectedStudent.id, selectedStudent.class);
+      await Promise.all([
+        loadDashboardData(selectedStudent.id, selectedStudent.class),
+        loadBalance(selectedStudent.id, selectedStudent.class)
+      ]);
       setRefreshing(false);
     }
   };
@@ -80,12 +90,8 @@ export default function Home() {
           {/* Banner Image */}
           {isBannerVisible && (
             <View className="px-4 pt-4">
-              <View className="relative">
-                <Image
-                  source={require('../../assets/images/banner-1.png')}
-                  className="w-full h-40 rounded-2xl"
-                  resizeMode="cover"
-                />
+              <View className="relative w-full h-40 rounded-2xl overflow-hidden bg-[#FFEEEE]">
+                <BannerNewIllustration width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
                 <TouchableOpacity
                   onPress={() => setIsBannerVisible(false)}
                   className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/50 items-center justify-center"
@@ -126,7 +132,6 @@ export default function Home() {
                       iconColor="#FFFFFF"
                       title="Resources"
                       mainText="26"
-                      subtitle="Learning Materials"
                       buttonText="Browse Files"
                       buttonColor="#FFFFFF"
                       buttonTextColor="#750E11"
@@ -140,8 +145,7 @@ export default function Home() {
                       icon="wallet"
                       iconColor="#FFFFFF"
                       title="Fees"
-                      mainText="Term 1"
-                      subtitle="Payment Status"
+                      mainText={balance ? `UGX ${balance.balance.toLocaleString()}` : "UGX 0"}
                       buttonText="View Details"
                       buttonColor="#FFFFFF"
                       buttonTextColor="#750E11"
@@ -156,7 +160,6 @@ export default function Home() {
                       iconColor="#FFFFFF"
                       title="Results"
                       mainText="Term 1"
-                      subtitle="Academic Performance"
                       buttonText="View Grades"
                       buttonColor="#FCB316"
                       buttonTextColor="#750E11"
@@ -168,18 +171,18 @@ export default function Home() {
 
               {/* Announcements Section */}
               <View className="px-4 mb-4">
-                <View className="bg-primary rounded-xl px-4 py-3 flex-row items-center justify-between mb-3">
-                  <Text className="text-lg font-semibold text-white">Announcements</Text>
+                <View className="flex-row items-center justify-between mb-3 pt-2">
+                  <Text className="text-lg font-bold text-gray-800">Announcements</Text>
                   <TouchableOpacity onPress={() => router.push('/notifications')}>
-                    <Text className="text-sm text-white font-medium">View All</Text>
+                    <Text className="text-sm text-gray-500 font-medium">View All</Text>
                   </TouchableOpacity>
                 </View>
                 {announcements && announcements.length > 0 ? (
                   announcements.slice(0, 3).map((announcement) => (
                     <View key={announcement.id} className="bg-white rounded-xl p-4 mb-3">
                       <View className="flex-row items-start">
-                        <View className="w-10 h-10 bg-primary/10 rounded-full items-center justify-center mr-3">
-                          <AppIcon name="megaphone" size={20} color="#750E11" variant="Bold" />
+                         <View className="w-10 h-10 border border-gray-100 rounded-full items-center justify-center mr-3">
+                          <AppIcon name="megaphone" size={20} color="#000" variant="Linear" />
                         </View>
                         <View className="flex-1">
                           <Text className="text-base font-semibold text-gray-800 mb-1">
@@ -196,8 +199,8 @@ export default function Home() {
                     </View>
                   ))
                 ) : (
-                  <View className="bg-white rounded-xl p-6 items-center">
-                    <AppIcon name="megaphone-outline" size={40} color="#CCBEB7" />
+                  <View className="bg-white rounded-xl p-6 items-center border border-gray-100">
+                    <AppIcon name="megaphone" size={40} color="#000" variant="Linear" />
                     <Text className="text-gray-500 mt-2">No announcements yet</Text>
                   </View>
                 )}

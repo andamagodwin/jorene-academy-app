@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppIcon } from '../../components/AppIcon';
 import { useAuthStore } from '../../store/authStore';
@@ -7,6 +7,7 @@ import { useResourcesStore } from '../../store/resourcesStore';
 import { SubjectsList } from '../../components/organisms/SubjectsList';
 import { ResourceCard } from '../../components/molecules/ResourceCard';
 import { LoadingScreen } from '../../components/organisms/LoadingScreen';
+import { SearchBar } from '../../components/molecules/SearchBar';
 
 export default function ResourcesScreen() {
   const { selectedStudent, profile, students } = useAuthStore();
@@ -48,22 +49,12 @@ export default function ResourcesScreen() {
     <SafeAreaView edges={showHeader ? [] : ['top']} className="flex-1 bg-background">
       <ScrollView className="flex-1">
         {/* Search Bar */}
-        <View className="px-4 mb-4">
-          <View className="flex-row items-center bg-white rounded-xl px-4 py-3">
-            <AppIcon name="search" size={20} color="#9CA3AF" />
-            <TextInput
-              className="flex-1 ml-3 text-gray-800"
-              placeholder="Search by title, subject..."
-              placeholderTextColor="#9CA3AF"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-            {searchQuery.length > 0 && (
-              <TouchableOpacity onPress={() => setSearchQuery('')}>
-                <AppIcon name="close-circle" size={20} color="#9CA3AF" />
-              </TouchableOpacity>
-            )}
-          </View>
+        <View className="px-4 mb-4 mt-2">
+          <SearchBar 
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Search by title, subject..."
+          />
         </View>
 
         {/* Subjects List */}

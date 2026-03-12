@@ -16,6 +16,7 @@ export default function Home() {
   const { attendance, announcements, alerts, isLoading, loadDashboardData } = useDashboardStore();
   const [refreshing, setRefreshing] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [isBannerVisible, setIsBannerVisible] = useState(true);
   const hasLoadedOnce = useRef(false);
   const showHeader = profile?.role === 'parent' && selectedStudent;
 
@@ -77,24 +78,31 @@ export default function Home() {
         }
       >
           {/* Banner Image */}
-          <View className="px-4 pt-4">
-            <Image
-              source={require('../../assets/images/banner-1.png')}
-              className="w-full h-40 rounded-2xl"
-              resizeMode="cover"
-            />
-          </View>
+          {isBannerVisible && (
+            <View className="px-4 pt-4">
+              <View className="relative">
+                <Image
+                  source={require('../../assets/images/banner-1.png')}
+                  className="w-full h-40 rounded-2xl"
+                  resizeMode="cover"
+                />
+                <TouchableOpacity
+                  onPress={() => setIsBannerVisible(false)}
+                  className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/50 items-center justify-center"
+                  accessibilityRole="button"
+                  accessibilityLabel="Close banner"
+                >
+                  <AppIcon name="close" size={18} color="#FFFFFF" variant="Bold" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
 
           {/* Greeting */}
           <View className="px-6 pt-6 pb-4">
             <Text className="text-2xl font-bold text-gray-800">
               {getGreeting()}, {profile?.full_name?.split(' ')[0] || 'Parent'} 👋
             </Text>
-            {selectedStudent && (
-              <Text className="text-sm text-gray-500 mt-1">
-                Viewing {selectedStudent.full_name}&apos;s dashboard
-              </Text>
-            )}
           </View>
 
           {/* Dashboard Cards - Only show for parents with selected student */}

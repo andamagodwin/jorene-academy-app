@@ -1,11 +1,16 @@
 import { create } from 'zustand';
 import { supabase } from '../utils/supabase';
 import { Attendance, Homework, Announcement } from '../types/database';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const READ_ALERTS_KEY = '@jorene_read_alerts';
 
 export interface DashboardAlert {
+  id: string;
   type: 'fees' | 'attendance' | 'performance' | 'general';
   message: string;
   severity: 'warning' | 'error' | 'info';
+  isRead?: boolean;
 }
 
 export interface DashboardState {
@@ -13,10 +18,12 @@ export interface DashboardState {
   homework: Homework[];
   announcements: Announcement[];
   alerts: DashboardAlert[];
+  readAlertIds: string[];
   isLoading: boolean;
 
   loadDashboardData: (studentId: string, studentClass: string) => Promise<void>;
   generateAlerts: (attendance: Attendance | null, studentId: string) => void;
+  markAlertAsRead: (id: string) => Promise<void>;
   clearDashboard: () => void;
 }
 
@@ -25,6 +32,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   homework: [],
   announcements: [],
   alerts: [],
+  readAlertIds: [],
   isLoading: false,
 
   loadDashboardData: async (studentId: string, studentClass: string) => {
@@ -34,7 +42,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       const today = new Date().toISOString().split('T')[0];
 
       // Fetch all data in parallel
-      const [attendanceRes, homeworkRes, announcementsRes] = await Promise.all([
+      const [attendanceRes, homeworkRes, announcementsRes, readAlertKeys] = await Promise.all([
         // Today's attendance
         supabase
           .from('attendance')
@@ -59,13 +67,17 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
           .or(`target_audience.eq.all,target_audience.eq.parents,and(target_audience.eq.specific_class,specific_class.eq.${studentClass})`)
           .order('created_at', { ascending: false })
           .limit(3),
+
+        // Read alerts
+        AsyncStorage.getItem(READ_ALERTS_KEY),
       ]);
 
       const attendance = attendanceRes.data || null;
       const homework = homeworkRes.data || [];
       const announcements = announcementsRes.data || [];
+      const readAlertIds = readAlertKeys ? JSON.parse(readAlertKeys) : [];
 
-      set({ attendance, homework, announcements });
+      set({ attendance, homework, announcements, readAlertIds });
 
       // Generate alerts based on data
       get().generateAlerts(attendance, studentId);
@@ -79,20 +91,24 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
 
   generateAlerts: (attendance: Attendance | null, studentId: string) => {
     const alerts: DashboardAlert[] = [];
-    const announcements = get().announcements;
+    const { announcements, readAlertIds } = get();
 
     // Check attendance
     if (!attendance) {
       alerts.push({
+        id: `attendance-missing-${studentId}`,
         type: 'attendance',
         message: 'No attendance recorded today',
         severity: 'warning',
+        isRead: readAlertIds.includes(`attendance-missing-${studentId}`),
       });
     } else if (attendance.status === 'absent') {
       alerts.push({
+        id: `attendance-absent-${studentId}-${attendance.date}`,
         type: 'attendance',
         message: 'Student was absent today',
         severity: 'error',
+        isRead: readAlertIds.includes(`attendance-absent-${studentId}-${attendance.date}`),
       });
     }
 
@@ -100,9 +116,11 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     if (announcements && announcements.length > 0) {
       announcements.forEach((ann) => {
         alerts.push({
+          id: `announcement-${ann.id}`,
           type: 'general',
           message: `${ann.title}: ${ann.content}`,
           severity: 'info',
+          isRead: readAlertIds.includes(`announcement-${ann.id}`),
         });
       });
     }
@@ -115,12 +133,28 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     set({ alerts });
   },
 
+  markAlertAsRead: async (id: string) => {
+    const { readAlertIds, alerts } = get();
+    if (!readAlertIds.includes(id)) {
+      const newReadAlertIds = [...readAlertIds, id];
+      set({ readAlertIds: newReadAlertIds });
+      await AsyncStorage.setItem(READ_ALERTS_KEY, JSON.stringify(newReadAlertIds));
+      
+      // Update alerts array
+      const updatedAlerts = alerts.map(alert => 
+        alert.id === id ? { ...alert, isRead: true } : alert
+      );
+      set({ alerts: updatedAlerts });
+    }
+  },
+
   clearDashboard: () => {
     set({
       attendance: null,
       homework: [],
       announcements: [],
       alerts: [],
+      readAlertIds: [],
     });
   },
 }));

@@ -20,7 +20,7 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const alerts = useDashboardStore(state => state.alerts);
-  const hasUnreadNotifications = alerts.some(a => a.type === 'general');
+  const unreadCount = alerts.filter(a => a.type === 'general' && !a.isRead).length;
 
   if (!students || students.length === 0) return null;
 
@@ -52,8 +52,12 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
           {onNotificationPress && (
             <TouchableOpacity onPress={onNotificationPress} className="p-2 relative">
               <AppIcon name="notifications-outline" size={24} color="#750E11" />
-              {hasUnreadNotifications && (
-                <View className="absolute top-2 right-2.5 w-2 h-2 rounded-full bg-red-500" />
+              {unreadCount > 0 && (
+                <View className="absolute top-1 right-1 min-w-[18px] h-[18px] rounded-full bg-red-500 items-center justify-center px-1 border-2 border-white">
+                  <Text className="text-white text-[9px] font-bold leading-tight">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </Text>
+                </View>
               )}
             </TouchableOpacity>
           )}
@@ -96,8 +100,12 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
           {onNotificationPress && (
             <TouchableOpacity onPress={onNotificationPress} className="p-2 relative">
               <AppIcon name="notifications-outline" size={24} color="white" />
-              {hasUnreadNotifications && (
-                <View className="absolute top-2 right-2.5 w-2 h-2 rounded-full bg-red-500" />
+              {unreadCount > 0 && (
+                <View className="absolute top-1 right-1 min-w-[18px] h-[18px] rounded-full bg-red-500 items-center justify-center px-1 border-2 border-primary">
+                  <Text className="text-white text-[9px] font-bold leading-tight">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </Text>
+                </View>
               )}
             </TouchableOpacity>
           )}

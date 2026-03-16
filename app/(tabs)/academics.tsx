@@ -3,7 +3,6 @@ import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AcademicsTabs } from '../../components/organisms/AcademicsTabs';
 import { ResultsView } from '../../components/organisms/ResultsView';
-import { AttendanceView } from '../../components/organisms/AttendanceView';
 import { TimetableView } from '../../components/organisms/TimetableView';
 import { PerformanceView } from '../../components/organisms/PerformanceView';
 import { AppIcon } from '../../components/AppIcon';
@@ -11,7 +10,7 @@ import { useAcademicsStore } from '../../store/academicsStore';
 import { useAuthStore } from '../../store/authStore';
 import { LoadingScreen } from '../../components/organisms/LoadingScreen';
 
-type TabType = 'results' | 'attendance' | 'timetable' | 'performance';
+type TabType = 'results' | 'timetable' | 'performance';
 
 export default function AcademicsScreen() {
   const [activeTab, setActiveTab] = useState<TabType>('results');
@@ -19,14 +18,12 @@ export default function AcademicsScreen() {
   const {
     results,
     timetable,
-    attendancePercentage,
     termAverages,
     subjectTrends,
     selectedTerm,
     isLoading,
     loadResults,
     loadTimetable,
-    loadAttendanceSummary,
     loadPerformanceMetrics,
     setSelectedTerm,
   } = useAcademicsStore();
@@ -39,10 +36,9 @@ export default function AcademicsScreen() {
     if (selectedStudent) {
       loadResults(selectedStudent.id);
       loadTimetable(selectedStudent.class);
-      loadAttendanceSummary(selectedStudent.id);
       loadPerformanceMetrics(selectedStudent.id);
     }
-  }, [selectedStudent, loadResults, loadTimetable, loadAttendanceSummary, loadPerformanceMetrics]);
+  }, [selectedStudent, loadResults, loadTimetable, loadPerformanceMetrics]);
 
   // Show loading screen only on initial load
   if (isLoading && results.length === 0) {
@@ -60,13 +56,7 @@ export default function AcademicsScreen() {
             isLoading={isLoading}
           />
         );
-      case 'attendance':
-        return (
-          <AttendanceView
-            attendancePercentage={attendancePercentage}
-            isLoading={isLoading}
-          />
-        );
+
       case 'timetable':
         return (
           <TimetableView

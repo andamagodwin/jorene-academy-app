@@ -8,8 +8,7 @@ export default function NotificationsScreen() {
 
   const getAlertIcon = (type: string) => {
     switch (type) {
-      case 'attendance': return 'calendar';
-      case 'fees': return 'cash';
+      case 'finance': return 'cash';
       case 'performance': return 'trending-up';
       default: return 'information-circle';
     }

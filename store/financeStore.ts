@@ -10,7 +10,7 @@ export interface BalanceInfo {
   year: number;
 }
 
-export interface FeesState {
+export interface FinanceState {
   balance: BalanceInfo | null;
   payments: Payment[];
   invoices: Invoice[];
@@ -21,10 +21,10 @@ export interface FeesState {
   loadPayments: (studentId: string) => Promise<void>;
   loadInvoices: (studentId: string) => Promise<void>;
   loadReceipts: (studentId: string) => Promise<void>;
-  clearFees: () => void;
+  clearFinance: () => void;
 }
 
-export const useFeesStore = create<FeesState>((set, get) => ({
+export const useFinanceStore = create<FinanceState>((set, get) => ({
   balance: null,
   payments: [],
   invoices: [],
@@ -142,7 +142,7 @@ export const useFeesStore = create<FeesState>((set, get) => ({
     }
   },
 
-  clearFees: () => {
+  clearFinance: () => {
     set({
       balance: null,
       payments: [],

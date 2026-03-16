@@ -43,7 +43,6 @@ export const SubjectsList: React.FC<SubjectsListProps> = ({
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {subjects.map((subject) => {
           const isSelected = selectedSubject === subject;
-          const count = resourceCounts[subject] || 0;
 
           return (
             <TouchableOpacity
@@ -71,7 +70,7 @@ export const SubjectsList: React.FC<SubjectsListProps> = ({
                   {subject}
                 </Text>
                 <Text className="text-xs text-white/80">
-                  {count} file{count !== 1 ? 's' : ''}
+                  View Materials
                 </Text>
               </View>
             </TouchableOpacity>

@@ -7,9 +7,6 @@ export interface AcademicsState {
   results: Result[];
   selectedTerm: string;
   
-  // Attendance summary
-  attendancePercentage: number;
-  
   // Timetable
   timetable: Timetable[];
   
@@ -23,7 +20,6 @@ export interface AcademicsState {
   // Actions
   loadResults: (studentId: string) => Promise<void>;
   loadTimetable: (studentClass: string) => Promise<void>;
-  loadAttendanceSummary: (studentId: string) => Promise<void>;
   loadPerformanceMetrics: (studentId: string) => Promise<void>;
   setSelectedTerm: (term: string) => void;
   clearAcademics: () => void;
@@ -32,7 +28,6 @@ export interface AcademicsState {
 export const useAcademicsStore = create<AcademicsState>((set, get) => ({
   results: [],
   selectedTerm: 'Term 1',
-  attendancePercentage: 0,
   timetable: [],
   termAverages: [],
   subjectTrends: [],
@@ -80,35 +75,7 @@ export const useAcademicsStore = create<AcademicsState>((set, get) => ({
     }
   },
 
-  loadAttendanceSummary: async (studentId: string) => {
-    try {
-      const today = new Date();
-      const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
-        .toISOString()
-        .split('T')[0];
-      const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
-        .toISOString()
-        .split('T')[0];
 
-      const { data, error } = await supabase
-        .from('attendance')
-        .select('*')
-        .eq('student_id', studentId)
-        .gte('date', startOfMonth)
-        .lte('date', endOfMonth);
-
-      if (error) throw error;
-
-      const attendance = data || [];
-      const presentDays = attendance.filter(a => a.status === 'present').length;
-      const totalDays = attendance.length;
-      const percentage = totalDays > 0 ? Math.round((presentDays / totalDays) * 100) : 0;
-
-      set({ attendancePercentage: percentage });
-    } catch (error) {
-      console.error('Error loading attendance summary:', error);
-    }
-  },
 
   loadPerformanceMetrics: async (studentId: string) => {
     try {
@@ -164,7 +131,6 @@ export const useAcademicsStore = create<AcademicsState>((set, get) => ({
     set({
       results: [],
       selectedTerm: 'Term 1',
-      attendancePercentage: 0,
       timetable: [],
       termAverages: [],
       subjectTrends: [],

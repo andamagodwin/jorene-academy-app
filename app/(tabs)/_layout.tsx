@@ -50,26 +50,11 @@ export default function TabLayout() {
           ) : null,
         }}
       />
+
       <Tabs.Screen
-        name="resources"
+        name="finance"
         options={{
-          title: 'Resources',
-          tabBarIcon: ({ color, focused }) => <TabBarIcon name="folder" color={color} focused={focused} />,
-          headerShown: showStudentHeader,
-          header: () => showStudentHeader ? (
-            <StudentSwitcher
-              students={students}
-              selectedStudent={selectedStudent}
-              onSelectStudent={setSelectedStudent}
-              onNotificationPress={handleNotificationPress}
-            />
-          ) : null,
-        }}
-      />
-      <Tabs.Screen
-        name="fees"
-        options={{
-          title: 'Fees',
+          title: 'Finance',
           tabBarIcon: ({ color, focused }) => <TabBarIcon name="dollar" color={color} focused={focused} />,
           headerShown: showStudentHeader,
           header: () => showStudentHeader ? (

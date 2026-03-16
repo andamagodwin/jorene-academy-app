@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuthStore } from '../../store/authStore';
-import { useFeesStore } from '../../store/feesStore';
+import { useFinanceStore } from '../../store/financeStore';
 import { BalanceCard } from '../../components/molecules/BalanceCard';
 import { PaymentCard } from '../../components/molecules/PaymentCard';
 import { InvoiceCard } from '../../components/molecules/InvoiceCard';
@@ -11,7 +11,7 @@ import { LoadingScreen } from '../../components/organisms/LoadingScreen';
 
 type TabType = 'overview' | 'history' | 'invoices' | 'receipts';
 
-export default function FeesScreen() {
+export default function FinanceScreen() {
   const { selectedStudent, profile, students } = useAuthStore();
   const showHeader = profile?.role === 'parent' && students.length > 0;
   const {
@@ -24,7 +24,7 @@ export default function FeesScreen() {
     loadPayments,
     loadInvoices,
     loadReceipts,
-  } = useFeesStore();
+  } = useFinanceStore();
 
   const [activeTab, setActiveTab] = useState<TabType>('overview');
 
@@ -100,7 +100,7 @@ export default function FeesScreen() {
         return (
           <View className="py-4 px-4">
             {payments.length > 0 ? (
-              payments.map((payment) => (
+              payments.map((payment: any) => (
                 <PaymentCard key={payment.id} payment={payment} />
               ))
             ) : (
@@ -117,7 +117,7 @@ export default function FeesScreen() {
         return (
           <View className="py-4 px-4">
             {invoices.length > 0 ? (
-              invoices.map((invoice) => (
+              invoices.map((invoice: any) => (
                 <InvoiceCard key={invoice.id} invoice={invoice} />
               ))
             ) : (
@@ -134,7 +134,7 @@ export default function FeesScreen() {
         return (
           <View className="py-4 px-4">
             {receipts.length > 0 ? (
-              receipts.map((receipt) => (
+              receipts.map((receipt: any) => (
                 <ReceiptCard key={receipt.id} receipt={receipt} />
               ))
             ) : (

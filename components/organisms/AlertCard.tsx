@@ -13,14 +13,12 @@ export const AlertCard: React.FC<AlertCardProps> = ({ alerts, onFixNow }) => {
 
   const getAlertIcon = (type: string) => {
     switch (type) {
-      case 'fees':
-        return 'cash';
-      case 'attendance':
-        return 'calendar';
+      case 'finance':
+        return 'wallet';
       case 'performance':
-        return 'trending-down';
+        return 'star';
       default:
-        return 'alert-circle';
+        return 'notification';
     }
   };
 

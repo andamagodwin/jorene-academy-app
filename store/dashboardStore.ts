@@ -1,20 +1,21 @@
 import { create } from 'zustand';
 import { supabase } from '../utils/supabase';
-import { Attendance, Homework, Announcement } from '../types/database';
+import { Homework, Announcement } from '../types/database';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const READ_ALERTS_KEY = '@jorene_read_alerts';
 
 export interface DashboardAlert {
   id: string;
-  type: 'fees' | 'attendance' | 'performance' | 'general';
+  title: string;
   message: string;
+  type: 'finance' | 'performance' | 'general';
   severity: 'warning' | 'error' | 'info';
-  isRead?: boolean;
+  isRead: boolean;
+  date: string;
 }
 
 export interface DashboardState {
-  attendance: Attendance | null;
   homework: Homework[];
   announcements: Announcement[];
   alerts: DashboardAlert[];
@@ -22,13 +23,12 @@ export interface DashboardState {
   isLoading: boolean;
 
   loadDashboardData: (studentId: string, studentClass: string) => Promise<void>;
-  generateAlerts: (attendance: Attendance | null, studentId: string) => void;
+  generateAlerts: (studentId: string) => void;
   markAlertAsRead: (id: string) => Promise<void>;
   clearDashboard: () => void;
 }
 
 export const useDashboardStore = create<DashboardState>((set, get) => ({
-  attendance: null,
   homework: [],
   announcements: [],
   alerts: [],
@@ -42,15 +42,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       const today = new Date().toISOString().split('T')[0];
 
       // Fetch all data in parallel
-      const [attendanceRes, homeworkRes, announcementsRes, readAlertKeys] = await Promise.all([
-        // Today's attendance
-        supabase
-          .from('attendance')
-          .select('*')
-          .eq('student_id', studentId)
-          .eq('date', today)
-          .maybeSingle(),
-
+      const [homeworkRes, announcementsRes, readAlertKeys] = await Promise.all([
         // Upcoming homework
         supabase
           .from('homework')
@@ -72,15 +64,14 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
         AsyncStorage.getItem(READ_ALERTS_KEY),
       ]);
 
-      const attendance = attendanceRes.data || null;
       const homework = homeworkRes.data || [];
       const announcements = announcementsRes.data || [];
       const readAlertIds = readAlertKeys ? JSON.parse(readAlertKeys) : [];
 
-      set({ attendance, homework, announcements, readAlertIds });
+      set({ homework, announcements, readAlertIds });
 
       // Generate alerts based on data
-      get().generateAlerts(attendance, studentId);
+      get().generateAlerts(studentId);
 
       set({ isLoading: false });
     } catch (error) {
@@ -89,46 +80,24 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     }
   },
 
-  generateAlerts: (attendance: Attendance | null, studentId: string) => {
+  generateAlerts: (studentId: string) => {
     const alerts: DashboardAlert[] = [];
     const { announcements, readAlertIds } = get();
-
-    // Check attendance
-    if (!attendance) {
-      alerts.push({
-        id: `attendance-missing-${studentId}`,
-        type: 'attendance',
-        message: 'No attendance recorded today',
-        severity: 'warning',
-        isRead: readAlertIds.includes(`attendance-missing-${studentId}`),
-      });
-    } else if (attendance.status === 'absent') {
-      alerts.push({
-        id: `attendance-absent-${studentId}-${attendance.date}`,
-        type: 'attendance',
-        message: 'Student was absent today',
-        severity: 'error',
-        isRead: readAlertIds.includes(`attendance-absent-${studentId}-${attendance.date}`),
-      });
-    }
 
     // Map recent announcements to general alerts
     if (announcements && announcements.length > 0) {
       announcements.forEach((ann) => {
         alerts.push({
           id: `announcement-${ann.id}`,
+          title: ann.title,
           type: 'general',
-          message: `${ann.title}: ${ann.content}`,
+          message: ann.content,
           severity: 'info',
           isRead: readAlertIds.includes(`announcement-${ann.id}`),
+          date: ann.created_at,
         });
       });
     }
-
-    // TODO: Add more alert logic
-    // - Check fees balance (when fees module is ready)
-    // - Check for low performance (when grades module is ready)
-    // - Check for pending homework submissions
 
     set({ alerts });
   },
@@ -150,7 +119,6 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
 
   clearDashboard: () => {
     set({
-      attendance: null,
       homework: [],
       announcements: [],
       alerts: [],

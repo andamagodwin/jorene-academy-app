@@ -6,8 +6,6 @@ export type Gender = 'male' | 'female';
 
 export type Relationship = 'father' | 'mother' | 'guardian';
 
-export type AttendanceStatus = 'present' | 'absent';
-
 export type AnnouncementAudience = 'all' | 'parents' | 'teachers' | 'specific_class';
 
 export interface Profile {
@@ -46,15 +44,6 @@ export interface ParentStudent {
   parent_id: string;
   student_id: string;
   relationship: Relationship;
-  created_at: string;
-}
-
-export interface Attendance {
-  id: string;
-  student_id: string;
-  date: string; // ISO date string
-  status: AttendanceStatus;
-  time_marked?: string; // ISO timestamp
   created_at: string;
 }
 
@@ -98,19 +87,6 @@ export interface Timetable {
   subject: string;
   teacher: string;
   room?: string;
-  created_at: string;
-}
-
-export interface Resource {
-  id: string;
-  title: string;
-  class: string;
-  subject: string;
-  file_url: string;
-  file_type?: string;
-  file_size?: number;
-  description?: string;
-  uploaded_by?: string;
   created_at: string;
 }
 

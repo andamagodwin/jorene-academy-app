@@ -7,16 +7,15 @@ import StudentRaisedHandIllustration from '../../assets/illustrations/student-ra
 import BannerNewIllustration from '../../assets/illustrations/banner-new.svg';
 import { useAuthStore } from '~/store/authStore';
 import { useDashboardStore } from '~/store/dashboardStore';
-import { AttendanceCard } from '~/components/organisms/AttendanceCard';
 import { AlertCard } from '~/components/organisms/AlertCard';
 import { LoadingScreen } from '~/components/organisms/LoadingScreen';
 import { DashboardCard } from '~/components/molecules/DashboardCard';
-import { useFeesStore } from '~/store/feesStore';
+import { useFinanceStore } from '~/store/financeStore';
 
 export default function Home() {
   const { profile, selectedStudent, isInitialized } = useAuthStore();
-  const { attendance, announcements, alerts, isLoading, loadDashboardData } = useDashboardStore();
-  const { balance, loadBalance } = useFeesStore();
+  const { announcements, alerts, loadDashboardData, isLoading: isDashboardLoading } = useDashboardStore();
+  const { balance, loadBalance, isLoading: isFinanceLoading } = useFinanceStore();
   const [refreshing, setRefreshing] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [isBannerVisible, setIsBannerVisible] = useState(true);
@@ -115,32 +114,13 @@ export default function Home() {
           {profile?.role === 'parent' && selectedStudent ? (
             <>
               {/* Alerts Card - Full Width */}
-              <AlertCard alerts={alerts.filter(a => a.type !== 'general')} />
+              <AlertCard alerts={alerts.filter((a: any) => a.type !== 'general')} />
 
               {/* 2x2 Grid of Cards */}
               <View className="px-4">
                 <View className="flex-row flex-wrap justify-between">
-                  {/* Attendance Card */}
-                  <View className="w-[48%] mb-3">
-                    <AttendanceCard attendance={attendance} isLoading={isLoading} />
-                  </View>
-
-                  {/* Resources Card */}
-                  <View className="w-[48%] mb-3">
-                    <DashboardCard
-                      icon="folder"
-                      iconColor="#FFFFFF"
-                      title="Resources"
-                      mainText="26"
-                      buttonText="Browse Files"
-                      buttonColor="#FFFFFF"
-                      buttonTextColor="#750E11"
-                      onPress={() => router.push('/resources')}
-                    />
-                  </View>
-
                   {/* Fees Summary Card */}
-                  <View className="w-[48%] mb-3">
+                  <View className="w-full mb-3">
                     <DashboardCard
                       icon="wallet"
                       iconColor="#FFFFFF"
@@ -149,12 +129,12 @@ export default function Home() {
                       buttonText="View Details"
                       buttonColor="#FFFFFF"
                       buttonTextColor="#750E11"
-                      onPress={() => router.push('/fees')}
+                      onPress={() => router.push('/finance')}
                     />
                   </View>
 
                   {/* Results Card */}
-                  <View className="w-[48%] mb-3">
+                  <View className="w-full mb-3">
                     <DashboardCard
                       icon="trophy"
                       iconColor="#FFFFFF"
@@ -178,7 +158,7 @@ export default function Home() {
                   </TouchableOpacity>
                 </View>
                 {announcements && announcements.length > 0 ? (
-                  announcements.slice(0, 3).map((announcement) => (
+                  announcements.slice(0, 3).map((announcement: any) => (
                     <View key={announcement.id} className="bg-white rounded-[24px] p-5 mb-3">
                       <View className="flex-row items-start">
                          <View className="w-10 h-10 border border-gray-100 rounded-full items-center justify-center mr-3">

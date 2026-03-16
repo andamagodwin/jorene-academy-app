@@ -14,8 +14,9 @@ export interface Profile {
   id: string; // references auth.users.id
   full_name: string;
   role: UserRole;
-  phone?: string;
-  avatar_url?: string;
+  phone: string | null;
+  avatar_url: string | null;
+  push_token?: string | null;
   created_at: string;
 }
 

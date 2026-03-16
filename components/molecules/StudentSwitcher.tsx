@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Modal, ScrollView, Image } from 'react-na
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppIcon } from '../AppIcon';
 import { Student } from '../../types/database';
+import { useDashboardStore } from '~/store/dashboardStore';
 
 interface StudentSwitcherProps {
   students: Student[];
@@ -18,6 +19,8 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
   onNotificationPress,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const alerts = useDashboardStore(state => state.alerts);
+  const unreadCount = alerts.filter(a => a.type === 'general' && !a.isRead).length;
 
   if (!students || students.length === 0) return null;
 
@@ -47,8 +50,15 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
             </View>
           </View>
           {onNotificationPress && (
-            <TouchableOpacity onPress={onNotificationPress} className="p-2">
+            <TouchableOpacity onPress={onNotificationPress} className="p-2 relative">
               <AppIcon name="notifications-outline" size={24} color="#750E11" />
+              {unreadCount > 0 && (
+                <View className="absolute top-1 right-1 min-w-[18px] h-[18px] rounded-full bg-red-500 items-center justify-center px-1 border-2 border-white">
+                  <Text className="text-white text-[9px] font-bold leading-tight">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </Text>
+                </View>
+              )}
             </TouchableOpacity>
           )}
         </View>
@@ -88,8 +98,15 @@ export const StudentSwitcher: React.FC<StudentSwitcherProps> = ({
             <AppIcon name="chevron-down" size={18} color="#c8c9ca" />
           </TouchableOpacity>
           {onNotificationPress && (
-            <TouchableOpacity onPress={onNotificationPress} className="p-2">
+            <TouchableOpacity onPress={onNotificationPress} className="p-2 relative">
               <AppIcon name="notifications-outline" size={24} color="white" />
+              {unreadCount > 0 && (
+                <View className="absolute top-1 right-1 min-w-[18px] h-[18px] rounded-full bg-red-500 items-center justify-center px-1 border-2 border-primary">
+                  <Text className="text-white text-[9px] font-bold leading-tight">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </Text>
+                </View>
+              )}
             </TouchableOpacity>
           )}
         </View>

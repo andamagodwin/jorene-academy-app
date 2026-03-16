@@ -115,7 +115,7 @@ export default function Home() {
           {profile?.role === 'parent' && selectedStudent ? (
             <>
               {/* Alerts Card - Full Width */}
-              <AlertCard alerts={alerts} />
+              <AlertCard alerts={alerts.filter(a => a.type !== 'general')} />
 
               {/* 2x2 Grid of Cards */}
               <View className="px-4">

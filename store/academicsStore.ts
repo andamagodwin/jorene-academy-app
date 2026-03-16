@@ -1,14 +1,11 @@
 import { create } from 'zustand';
 import { supabase } from '../utils/supabase';
-import { Result, Timetable } from '../types/database';
+import { Result } from '../types/database';
 
 export interface AcademicsState {
   // Results
   results: Result[];
   selectedTerm: string;
-  
-  // Timetable
-  timetable: Timetable[];
   
   // Performance metrics
   termAverages: { term: string; average: number }[];
@@ -19,7 +16,6 @@ export interface AcademicsState {
   
   // Actions
   loadResults: (studentId: string) => Promise<void>;
-  loadTimetable: (studentClass: string) => Promise<void>;
   loadPerformanceMetrics: (studentId: string) => Promise<void>;
   setSelectedTerm: (term: string) => void;
   clearAcademics: () => void;
@@ -28,7 +24,6 @@ export interface AcademicsState {
 export const useAcademicsStore = create<AcademicsState>((set, get) => ({
   results: [],
   selectedTerm: 'Term 1',
-  timetable: [],
   termAverages: [],
   subjectTrends: [],
   isLoading: false,
@@ -59,21 +54,7 @@ export const useAcademicsStore = create<AcademicsState>((set, get) => ({
     }
   },
 
-  loadTimetable: async (studentClass: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('timetables')
-        .select('*')
-        .eq('class', studentClass)
-        .order('day', { ascending: true })
-        .order('start_time', { ascending: true });
 
-      if (error) throw error;
-      set({ timetable: data || [] });
-    } catch (error) {
-      console.error('Error loading timetable:', error);
-    }
-  },
 
 
 
@@ -131,7 +112,6 @@ export const useAcademicsStore = create<AcademicsState>((set, get) => ({
     set({
       results: [],
       selectedTerm: 'Term 1',
-      timetable: [],
       termAverages: [],
       subjectTrends: [],
     });

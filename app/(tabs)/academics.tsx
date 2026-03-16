@@ -3,27 +3,24 @@ import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AcademicsTabs } from '../../components/organisms/AcademicsTabs';
 import { ResultsView } from '../../components/organisms/ResultsView';
-import { TimetableView } from '../../components/organisms/TimetableView';
 import { PerformanceView } from '../../components/organisms/PerformanceView';
 import { AppIcon } from '../../components/AppIcon';
 import { useAcademicsStore } from '../../store/academicsStore';
 import { useAuthStore } from '../../store/authStore';
 import { LoadingScreen } from '../../components/organisms/LoadingScreen';
 
-type TabType = 'results' | 'timetable' | 'performance';
+type TabType = 'results' | 'performance';
 
 export default function AcademicsScreen() {
   const [activeTab, setActiveTab] = useState<TabType>('results');
 
   const {
     results,
-    timetable,
     termAverages,
     subjectTrends,
     selectedTerm,
     isLoading,
     loadResults,
-    loadTimetable,
     loadPerformanceMetrics,
     setSelectedTerm,
   } = useAcademicsStore();
@@ -35,10 +32,9 @@ export default function AcademicsScreen() {
   useEffect(() => {
     if (selectedStudent) {
       loadResults(selectedStudent.id);
-      loadTimetable(selectedStudent.class);
       loadPerformanceMetrics(selectedStudent.id);
     }
-  }, [selectedStudent, loadResults, loadTimetable, loadPerformanceMetrics]);
+  }, [selectedStudent, loadResults, loadPerformanceMetrics]);
 
   // Show loading screen only on initial load
   if (isLoading && results.length === 0) {
@@ -51,19 +47,11 @@ export default function AcademicsScreen() {
         return (
           <ResultsView
             results={results}
-            selectedTerm={selectedTerm}
-            onTermChange={setSelectedTerm}
             isLoading={isLoading}
           />
         );
 
-      case 'timetable':
-        return (
-          <TimetableView
-            timetable={timetable}
-            isLoading={isLoading}
-          />
-        );
+
       case 'performance':
         return (
           <PerformanceView
@@ -83,9 +71,7 @@ export default function AcademicsScreen() {
 
   return (
     <SafeAreaView edges={showHeader ? [] : ['top']} className="flex-1 bg-background">
-      <View className="px-4 pt-4 pb-3">
 
-      </View>
       <AcademicsTabs activeTab={activeTab} onTabChange={handleTabChange} />
       {renderContent()}
     </SafeAreaView>

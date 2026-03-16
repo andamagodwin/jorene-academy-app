@@ -10,7 +10,6 @@ interface Tab {
 
 const TABS: Tab[] = [
   { id: 'results', label: 'Report Cards', icon: 'document-text' },
-  { id: 'timetable', label: 'Timetable', icon: 'time' },
   { id: 'performance', label: 'Performance', icon: 'analytics' },
 ];
 

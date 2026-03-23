@@ -2,6 +2,7 @@ import { View, Text, ScrollView, RefreshControl, TouchableOpacity, Image } from 
 import { useEffect, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
 import { AppIcon } from '../../components/AppIcon';
 import StudentRaisedHandIllustration from '../../assets/illustrations/student-raised-hand.svg';
 import BannerNewIllustration from '../../assets/illustrations/banner-new.svg';
@@ -153,11 +154,18 @@ export default function Home() {
                       icon="document-text"
                       iconColor="#FFFFFF"
                       title="Circular"
-                      mainText="Term 1"
+                      mainText={useDashboardStore.getState().circular?.title || "Latest"}
                       buttonText="View"
                       buttonColor="#FFFFFF"
                       buttonTextColor="#111827"
-                      onPress={() => router.push('/circular/view')}
+                      onPress={async () => {
+                        const circular = useDashboardStore.getState().circular;
+                        if (circular?.pdf_url) {
+                          await WebBrowser.openBrowserAsync(circular.pdf_url);
+                        } else {
+                          alert('No circular available at the moment.');
+                        }
+                      }}
                     />
                   </View>
                 </View>

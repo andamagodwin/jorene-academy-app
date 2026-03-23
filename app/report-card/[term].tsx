@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AppIcon } from '../../components/AppIcon';
+import { Ionicons } from '@expo/vector-icons';
 import { useAcademicsStore } from '../../store/academicsStore';
 
 export default function ReportCardDetailScreen() {
@@ -34,7 +34,7 @@ export default function ReportCardDetailScreen() {
           onPress={() => router.back()}
           className="w-10 h-10 items-center justify-center rounded-full bg-gray-50"
         >
-          <AppIcon name="arrow-back" size={24} color="#000000" />
+          <Ionicons name="arrow-back" size={24} color="#000000" />
         </TouchableOpacity>
         <Text className="text-xl font-bold text-black">{term} Report Card</Text>
         <View className="w-10" />
@@ -49,7 +49,7 @@ export default function ReportCardDetailScreen() {
               <Text className="text-white text-5xl font-bold mt-1">{average}%</Text>
             </View>
             <View className="w-16 h-16 rounded-3xl bg-white/20 items-center justify-center">
-              <AppIcon name="ribbon" size={32} color="white" variant="Bold" />
+              <Ionicons name="ribbon" size={32} color="white" />
             </View>
           </View>
           <View className="h-[1px] bg-white/20 w-full mb-4" />
@@ -106,7 +106,7 @@ export default function ReportCardDetailScreen() {
       {/* Action Button */}
       <View className="p-6 border-t border-gray-50">
         <TouchableOpacity className="bg-black py-4 rounded-2xl flex-row items-center justify-center">
-          <AppIcon name="download" size={20} color="white" />
+          <Ionicons name="download-outline" size={20} color="white" />
           <Text className="text-white font-bold ml-2">Download PDF Report</Text>
         </TouchableOpacity>
       </View>

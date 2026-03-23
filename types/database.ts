@@ -151,6 +151,13 @@ export interface SchoolEvent {
   created_at: string;
 }
 
+export interface Circular {
+  id: string;
+  title: string;
+  pdf_url: string;
+  created_at: string;
+}
+
 // Extended types with relationships
 export interface StudentWithRelationship extends Student {
   relationship?: Relationship;

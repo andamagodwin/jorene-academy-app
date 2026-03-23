@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { supabase } from '../utils/supabase';
-import { Homework, Announcement, SchoolEvent } from '../types/database';
+import { Homework, Announcement, SchoolEvent, Circular } from '../types/database';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const READ_ALERTS_KEY = '@jorene_read_alerts';
@@ -19,6 +19,7 @@ export interface DashboardState {
   homework: Homework[];
   announcements: Announcement[];
   events: SchoolEvent[];
+  circular: Circular | null;
   alerts: DashboardAlert[];
   readAlertIds: string[];
   isLoading: boolean;
@@ -33,6 +34,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
   homework: [],
   announcements: [],
   events: [],
+  circular: null,
   alerts: [],
   readAlertIds: [],
   isLoading: false,
@@ -44,7 +46,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       const today = new Date().toISOString().split('T')[0];
 
       // Fetch all data in parallel
-      const [homeworkRes, announcementsRes, eventsRes, readAlertKeys] = await Promise.all([
+      const [homeworkRes, announcementsRes, eventsRes, circularsRes, readAlertKeys] = await Promise.all([
         // Upcoming homework
         supabase
           .from('homework')
@@ -70,6 +72,14 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
           .order('event_date', { ascending: true })
           .limit(5),
 
+        // Latest circular
+        supabase
+          .from('circulars')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single(),
+
         // Read alerts
         AsyncStorage.getItem(READ_ALERTS_KEY),
       ]);
@@ -77,9 +87,10 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       const homework = homeworkRes.data || [];
       const announcements = announcementsRes.data || [];
       const events = eventsRes.data || [];
+      const circular = circularsRes.data || null;
       const readAlertIds = readAlertKeys ? JSON.parse(readAlertKeys) : [];
 
-      set({ homework, announcements, events, readAlertIds });
+      set({ homework, announcements, events, circular, readAlertIds });
 
       // Generate alerts based on data
       get().generateAlerts(studentId);

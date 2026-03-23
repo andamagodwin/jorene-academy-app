@@ -147,20 +147,17 @@ export default function Home() {
                     />
                   </View>
 
-                  {/* Circular Card - Side by Side */}
+                   {/* Circular Card - Side by Side */}
                   <View className="w-[48%] mb-3">
                     <DashboardCard
                       icon="document-text"
                       iconColor="#FFFFFF"
                       title="Circular"
                       mainText="Term 1"
-                      buttonText="Download"
+                      buttonText="View"
                       buttonColor="#FFFFFF"
                       buttonTextColor="#111827"
-                      onPress={() => {
-                        console.log('Downloading circular...');
-                        alert('Downloading School Circular... (Term 1)');
-                      }}
+                      onPress={() => router.push('/circular/view')}
                     />
                   </View>
                 </View>

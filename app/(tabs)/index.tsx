@@ -116,10 +116,10 @@ export default function Home() {
               {/* Alerts Card - Full Width */}
               <AlertCard alerts={alerts.filter((a: any) => a.type !== 'general')} />
 
-              {/* 2x2 Grid of Cards */}
+              {/* Grid of Cards */}
               <View className="px-4">
                 <View className="flex-row flex-wrap justify-between">
-                  {/* Fees Summary Card */}
+                  {/* Fees Summary Card - Keep Full Width for importance */}
                   <View className="w-full mb-3">
                     <DashboardCard
                       icon="wallet"
@@ -133,20 +133,87 @@ export default function Home() {
                     />
                   </View>
 
-                  {/* Results Card */}
-                  <View className="w-full mb-3">
+                  {/* Results Card - Side by Side */}
+                  <View className="w-[48%] mb-3">
                     <DashboardCard
                       icon="trophy"
                       iconColor="#FFFFFF"
                       title="Results"
                       mainText="Term 1"
-                      buttonText="View Grades"
+                      buttonText="View"
                       buttonColor="#FCB316"
                       buttonTextColor="#750E11"
                       onPress={() => router.push('/academics')}
                     />
                   </View>
+
+                  {/* Circular Card - Side by Side */}
+                  <View className="w-[48%] mb-3">
+                    <DashboardCard
+                      icon="document-text"
+                      iconColor="#FFFFFF"
+                      title="Circular"
+                      mainText="Term 1"
+                      buttonText="Download"
+                      buttonColor="#FFFFFF"
+                      buttonTextColor="#111827"
+                      onPress={() => {
+                        console.log('Downloading circular...');
+                        alert('Downloading School Circular... (Term 1)');
+                      }}
+                    />
+                  </View>
                 </View>
+              </View>
+
+              {/* Upcoming Events Section */}
+              <View className="px-4 mb-4">
+                <View className="flex-row items-center justify-between mb-3 pt-2">
+                  <Text className="text-lg font-bold text-gray-800">Upcoming Events</Text>
+                  <View className="w-8 h-8 items-center justify-center rounded-full bg-gray-50">
+                    <AppIcon name="calendar" size={18} color="#6B7280" />
+                  </View>
+                </View>
+                
+                {useDashboardStore.getState().events && useDashboardStore.getState().events.length > 0 ? (
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
+                    {useDashboardStore.getState().events.map((event: any) => {
+                      const eventDate = new Date(event.event_date);
+                      return (
+                        <View key={event.id} className="bg-white rounded-[24px] p-4 mr-3 border border-gray-100 shadow-sm w-[260px]">
+                          <View className="flex-row items-center mb-3">
+                            <View className="bg-primary/10 px-3 py-1 rounded-full">
+                              <Text className="text-primary text-[10px] font-bold uppercase tracking-wider">
+                                {event.category || 'School Event'}
+                              </Text>
+                            </View>
+                          </View>
+                          <Text className="text-base font-bold text-gray-800 mb-2 truncate" numberOfLines={1}>
+                            {event.title}
+                          </Text>
+                          <View className="flex-row items-center mb-1">
+                            <AppIcon name="time" size={14} color="#9CA3AF" />
+                            <Text className="text-xs text-gray-500 ml-1">
+                              {eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </Text>
+                          </View>
+                          {event.location && (
+                            <View className="flex-row items-center">
+                              <AppIcon name="globe" size={14} color="#9CA3AF" />
+                              <Text className="text-xs text-gray-500 ml-1 truncate flex-1">
+                                {event.location}
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      );
+                    })}
+                  </ScrollView>
+                ) : (
+                  <View className="bg-gray-50 rounded-[24px] p-6 items-center border border-dashed border-gray-200">
+                    <Text className="text-gray-400 text-sm">No upcoming events scheduled</Text>
+                  </View>
+                )}
               </View>
 
               {/* Announcements Section */}

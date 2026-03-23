@@ -140,6 +140,17 @@ export interface Receipt {
   issued_at: string; // ISO timestamp
 }
 
+export interface SchoolEvent {
+  id: string;
+  title: string;
+  description?: string;
+  event_date: string; // ISO timestamp
+  location?: string;
+  category?: string;
+  image_url?: string;
+  created_at: string;
+}
+
 // Extended types with relationships
 export interface StudentWithRelationship extends Student {
   relationship?: Relationship;

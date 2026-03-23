@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { supabase } from '../utils/supabase';
-import { Homework, Announcement } from '../types/database';
+import { Homework, Announcement, SchoolEvent } from '../types/database';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const READ_ALERTS_KEY = '@jorene_read_alerts';
@@ -18,6 +18,7 @@ export interface DashboardAlert {
 export interface DashboardState {
   homework: Homework[];
   announcements: Announcement[];
+  events: SchoolEvent[];
   alerts: DashboardAlert[];
   readAlertIds: string[];
   isLoading: boolean;
@@ -31,6 +32,7 @@ export interface DashboardState {
 export const useDashboardStore = create<DashboardState>((set, get) => ({
   homework: [],
   announcements: [],
+  events: [],
   alerts: [],
   readAlertIds: [],
   isLoading: false,
@@ -42,7 +44,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
       const today = new Date().toISOString().split('T')[0];
 
       // Fetch all data in parallel
-      const [homeworkRes, announcementsRes, readAlertKeys] = await Promise.all([
+      const [homeworkRes, announcementsRes, eventsRes, readAlertKeys] = await Promise.all([
         // Upcoming homework
         supabase
           .from('homework')
@@ -60,15 +62,24 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
           .order('created_at', { ascending: false })
           .limit(3),
 
+        // Upcoming events
+        supabase
+          .from('events')
+          .select('*')
+          .gte('event_date', today)
+          .order('event_date', { ascending: true })
+          .limit(5),
+
         // Read alerts
         AsyncStorage.getItem(READ_ALERTS_KEY),
       ]);
 
       const homework = homeworkRes.data || [];
       const announcements = announcementsRes.data || [];
+      const events = eventsRes.data || [];
       const readAlertIds = readAlertKeys ? JSON.parse(readAlertKeys) : [];
 
-      set({ homework, announcements, readAlertIds });
+      set({ homework, announcements, events, readAlertIds });
 
       // Generate alerts based on data
       get().generateAlerts(studentId);
@@ -121,6 +132,7 @@ export const useDashboardStore = create<DashboardState>((set, get) => ({
     set({
       homework: [],
       announcements: [],
+      events: [],
       alerts: [],
       readAlertIds: [],
     });
